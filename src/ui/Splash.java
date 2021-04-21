@@ -4,6 +4,7 @@ import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -13,12 +14,12 @@ public class Splash extends Preloader {
     private Scene scene;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         preloaderStage = primaryStage;
         preloaderStage.setScene(scene);
         preloaderStage.initStyle(StageStyle.UNDECORATED);
-        /* Icon Loading space
-        */
+        Image icon = new Image(String.valueOf(getClass().getResource("resources/snl-logo.png")));
+        primaryStage.getIcons().add(icon);
         preloaderStage.show();
     }
 

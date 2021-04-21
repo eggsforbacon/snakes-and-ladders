@@ -6,6 +6,7 @@ import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainFX extends Application {
@@ -22,7 +23,7 @@ public class MainFX extends Application {
     }
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         load(0);
     }
 
@@ -41,13 +42,15 @@ public class MainFX extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        Image icon = new Image(String.valueOf(getClass().getResource("resources/snl-logo.png")));
+        primaryStage.getIcons().add(icon);
         scene.getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
         primaryStage.setTitle("Snakes and Ladders: Start");
         primaryStage.show();
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         System.out.println("Closed, gBye");
     }
 }
