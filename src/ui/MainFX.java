@@ -20,6 +20,7 @@ public class MainFX extends Application {
 
     public static void main(String[] args) {
         LauncherImpl.launchApplication(MainFX.class, Splash.class, args);
+        
     }
 
     @Override
