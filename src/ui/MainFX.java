@@ -23,15 +23,10 @@ public class MainFX extends Application {
 
     @Override
     public void init() throws Exception {
-        loading(0);
-    }
-
-    private void loading(int i) {
-        if (i < COUNT_LIMIT) {
+        for (int i = 0; i < COUNT_LIMIT; i++) {
             double progress = (100.0 * i) / COUNT_LIMIT;
             LauncherImpl.notifyPreloader(this,new Preloader.ProgressNotification(progress));
-            loading (i + 1);
-        } else System.out.println("STOP");
+        }
     }
 
     @Override
@@ -41,7 +36,7 @@ public class MainFX extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        //scene.getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
+        scene.getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
         primaryStage.setTitle("Snakes and Ladders: Start");
         primaryStage.show();
     }
