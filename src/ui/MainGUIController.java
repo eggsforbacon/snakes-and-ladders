@@ -18,12 +18,7 @@ public class MainGUIController implements Initializable {
     @FXML
     private Label progress;
 
-    @FXML
-    private Label quirkyLBL;
-
     public static Label label;
-
-    private final String[] QUIRKY_LOADING_TEXTS = {"Trimming snakes...", "Cleaning ladders...", "Rinsing spots...", "Calculating rage levels...","Generating null spaces...", "Tuning the flute..."};
 
     /*Main Pane*/
 
@@ -37,11 +32,4 @@ public class MainGUIController implements Initializable {
 
     /***************************************METHODS***************************************/
 
-    /*Splash Screen*/
-
-    private void randomQuirkyText() {
-        Random r = new Random();
-        int max = 7, min = 1;
-        quirkyLBL.setText(QUIRKY_LOADING_TEXTS[r.nextInt(max - min) + min]);
-    }
 }

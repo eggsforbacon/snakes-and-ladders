@@ -9,13 +9,10 @@
       <Label text="This is the preloader" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <Label fx:id="quirkyLBL" text="SOME_QUIRKY_TEXT" BorderPane.alignment="CENTER">
+      <Label fx:id="progress" text="Snakes are climbing..." BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="25.0" />
          </BorderPane.margin>
       </Label>
    </bottom>
-   <top>
-      <Label fx:id="progress" BorderPane.alignment="CENTER" />
-   </top>
 </BorderPane>
