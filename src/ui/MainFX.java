@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class MainFX extends Application {
 
-    static final int COUNT_LIMIT = 60000;
+    static final int COUNT_LIMIT = 5000; //<- Number CAN'T UNDER ANY CIRCUMSTANCES be greater than this
     MainGUIController controller;
 
     public MainFX() {
@@ -23,9 +23,14 @@ public class MainFX extends Application {
 
     @Override
     public void init() throws Exception {
-        for (int i = 0; i < COUNT_LIMIT; i++) {
+        load(0);
+    }
+
+    public void load(int i) {
+        if (i < COUNT_LIMIT) {
             double progress = (100.0 * i) / COUNT_LIMIT;
             LauncherImpl.notifyPreloader(this,new Preloader.ProgressNotification(progress));
+            load(i + 1);
         }
     }
 
