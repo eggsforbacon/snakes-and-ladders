@@ -61,11 +61,14 @@ public class Board {
 	
 	private void putLadders(int i,int ladders) {
 		if (i < ladders) {
-			int random = (int) Math.floor(Math.random()*(size-((ladders*2)+1))+1);
-			int ladderStart = chooseBoxes(1,random);
-			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+1))+ladderStart);
-			int ladderEnd = chooseBoxes(ladderStart,random2);
-			addToSavedNumbers(ladderEnd);
+			int random = (int) Math.floor(Math.random()*(size-(rows+1))+1);
+			int ladderStart = chooseBoxes(size-(rows+1),1,random);
+			int aux = numberToHisBase(ladderStart);
+			System.out.println(aux+" es el numero base");
+			System.out.println("Empieza desde: "+(ladderStart+((rows+2)-aux)));
+			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+((rows+2)-aux)))+(ladderStart+((rows+2)-aux)));
+			System.out.println("Originalmente era "+random2);
+			int ladderEnd = chooseBoxes(ladderStart+((rows+2)-aux),ladderStart+((rows+2)-aux),random2);
 			System.out.println(ladderStart);
 			System.out.println(ladderEnd);
 			getANode(ladderStart, upper(matrix)).setStart(true); 
@@ -76,29 +79,41 @@ public class Board {
 		
 	}
 
+	private int numberToHisBase(int number){
+		if(number > rows+1){
+			return numberToHisBase(number-(rows+1));
+		}
+		else{
+			return number;
+		}
+	}
+
 	public void putSnakes(int snakes){
 		putSnakes(0,snakes);
 	}
 
 	private void putSnakes(int i,int snakes){
 		if(i<snakes){
-			int random = (int) Math.floor(Math.random()*(size-((ladders*2)+1))+1);
+			int random = (int) Math.floor(Math.random()*(size-1)+((snakes*2)+1));
+			int snakeHead = chooseBoxes(1,(snakes*2)+1,random);
+			int random2 = (int) Math.floor(Math.random()*((snakes*2)+2))+1;
+			int snakeTail = chooseBoxes((snakes*2)+2,1,random2);
 
 
 			putSnakes(i+1,snakes);
 		}
 	}
 	
-	public int chooseBoxes(int min,int number) {
+	public int chooseBoxes(int a,int b,int number) {
 			if(!cycleThroughSavedNumbers(number, first)) {
 				addToSavedNumbers(number);
 				return number;
 			}
 			else {
 				if(number + 1 == size) {
-					number = (int)Math.floor(Math.random()*(size-min)+min);
+					number = (int)Math.floor(Math.random()*(size-a)+b);
 				}
-				return chooseBoxes(min,number+1);
+				return chooseBoxes(a,b,number+1);
 			}	
 		}
 		
