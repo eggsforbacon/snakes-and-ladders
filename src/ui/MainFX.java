@@ -47,6 +47,7 @@ public class MainFX extends Application {
         primaryStage.getIcons().add(icon);
         scene.getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
         primaryStage.setTitle("Snakes and Ladders: Start");
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

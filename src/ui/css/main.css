@@ -1,0 +1,40 @@
+.root {
+  -fx-font-family: "Helvetica";
+  -fx-font-size: 15px;
+}
+
+#main-pane {
+  -fx-background-image: url("../resources/snl-background.png");
+  -fx-background-size: 612, 614;
+  -fx-background-repeat: no-repeat;
+}
+
+.label {
+  -fx-text-fill: #a83939;
+}
+
+#title-lbl {
+  -fx-font-size: 32px;
+  -fx-stroke: white;
+  -fx-stroke-width: 6;
+  -fx-font-weight: bold;
+}
+
+.button {
+  -fx-text-fill: #e8dcd1;
+  -fx-background-color: #e88527;
+  -fx-font-weight: bold;
+}
+
+.button:hover {
+  -fx-text-fill: #e88527;
+  -fx-background-color: #e8dcd1;
+  -fx-font-weight: bold;
+}
+
+#main-pane-btn {
+  -fx-font-size: 22px;
+  -fx-background-radius: 8;
+  -fx-pref-width: 185.0;
+  -fx-pref-height: 60.0;
+}
