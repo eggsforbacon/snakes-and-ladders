@@ -3,10 +3,12 @@ package model;
 public class Node {
 	
 	private int position;
-	private int ladderStart;
-	private int ladderEnd;
-	private int snakeHead;
-	private int snakeTail;
+	private Node ladder;
+	private boolean isStart;
+	private boolean isEnd;
+	private boolean isHead;
+	private boolean isTail;
+	private Node snake;
 	private Node next;
     private Node prev;
     private Node up;
@@ -14,10 +16,8 @@ public class Node {
     
     public Node(int position) {
     	this.position = position;
-    	ladderStart = 0;
-    	ladderEnd = 0;
-    	snakeHead = 0;
-    	snakeTail = 0;
+    	ladder=null;
+    	snake = null;
     	next = null;
     	prev = null;
     	up = null;
@@ -32,36 +32,52 @@ public class Node {
 		this.position = position;
 	}
 
-	public int getLadderStart() {
-		return ladderStart;
+	public Node getLadder() {
+		return ladder;
 	}
 
-	public void setLadderStart(int ladderStart) {
-		this.ladderStart = ladderStart;
+	public void setLadder(Node ladder) {
+		this.ladder = ladder;
 	}
 
-	public int getLadderEnd() {
-		return ladderEnd;
+	public boolean isStart() {
+		return isStart;
 	}
 
-	public void setLadderEnd(int ladderEnd) {
-		this.ladderEnd = ladderEnd;
+	public void setStart(boolean isStart) {
+		this.isStart = isStart;
 	}
 
-	public int getSnakeHead() {
-		return snakeHead;
+	public boolean isEnd() {
+		return isEnd;
 	}
 
-	public void setSnakeHead(int snakeHead) {
-		this.snakeHead = snakeHead;
+	public void setEnd(boolean isEnd) {
+		this.isEnd = isEnd;
 	}
 
-	public int getSnakeTail() {
-		return snakeTail;
+	public boolean isHead() {
+		return isHead;
 	}
 
-	public void setSnakeTail(int snakeTail) {
-		this.snakeTail = snakeTail;
+	public void setHead(boolean isHead) {
+		this.isHead = isHead;
+	}
+
+	public boolean isTail() {
+		return isTail;
+	}
+
+	public void setTail(boolean isTail) {
+		this.isTail = isTail;
+	}
+
+	public Node getSnake() {
+		return snake;
+	}
+
+	public void setSnake(Node snake) {
+		this.snake = snake;
 	}
 
 	public Node getNext() {
