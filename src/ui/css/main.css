@@ -3,10 +3,24 @@
   -fx-font-size: 15px;
 }
 
+#preloader {
+  -fx-background-image: url("../resources/snl-splash-screen.png");
+  -fx-background-size: 712, 414;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
+}
+
+#preloader-label {
+  -fx-font-size: 24px;
+  -fx-text-fill: white;
+  -fx-font-weight: bold;
+}
+
 #main-pane {
   -fx-background-image: url("../resources/snl-background.png");
   -fx-background-size: 612, 614;
   -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
 }
 
 .label {

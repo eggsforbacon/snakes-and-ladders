@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class MainFX extends Application {
 
-    static final int COUNT_LIMIT = 5000; //<- Number CAN'T UNDER ANY CIRCUMSTANCES be greater than this
+    static final int COUNT_LIMIT = 5500; //<- Number CAN'T UNDER ANY CIRCUMSTANCES be greater than this
     MainGUIController controller;
 
     public MainFX() {
@@ -20,7 +20,6 @@ public class MainFX extends Application {
 
     public static void main(String[] args) {
         LauncherImpl.launchApplication(MainFX.class, Splash.class, args);
-        
     }
 
     @Override

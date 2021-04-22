@@ -5,11 +5,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
-import javax.swing.text.html.CSS;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MainGUIController implements Initializable, CSSIDs {
@@ -17,6 +16,8 @@ public class MainGUIController implements Initializable, CSSIDs {
     /****************************************FIELDS****************************************/
 
     /*Splash Screen*/
+    @FXML
+    private BorderPane preloaderPane;
 
     @FXML
     private Label progress;
@@ -46,7 +47,6 @@ public class MainGUIController implements Initializable, CSSIDs {
         label = progress;
         initializeMainMenu();
     }
-
 
 
     /***************************************METHODS***************************************/
