@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import sun.applet.Main;
 
 public class Splash extends Preloader {
 
@@ -29,6 +30,7 @@ public class Splash extends Preloader {
         fxmlLoader.setController(MainGUIController.class);
         Parent root = fxmlLoader.load();
         scene = new Scene(root);
+        scene.getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
     }
 
     @Override
