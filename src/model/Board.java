@@ -11,6 +11,7 @@ public class Board {
 	private int size;
 	private SavedNumber first;
 	private String boardString="";
+
 	
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
 		this.rows = rows;
