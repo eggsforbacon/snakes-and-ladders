@@ -8,6 +8,8 @@ public class Board {
 	private Node matrix;
 	private int rows;
 	private int columns;
+	private int ladders;
+	private int snakes;
 	private int size;
 	private SavedNumber first;
 	private String boardString="";
@@ -16,6 +18,8 @@ public class Board {
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
 		this.rows = rows;
 		this.columns = columns;
+		this.ladders = ladders;
+		this.snakes=snakes;
 		size = rows*columns;
 		matrix=buildTheBoard(0,0,null);
 		putLadders(ladders);
@@ -57,11 +61,9 @@ public class Board {
 	
 	private void putLadders(int i,int ladders) {
 		if (i < ladders) {
-			System.out.println(" does this stop? ");
-			int random = (int) Math.floor(Math.random()*(size-1)+1);
+			int random = (int) Math.floor(Math.random()*(size-((ladders*2)+1))+1);
 			int ladderStart = chooseBoxes(1,random);
-			int random2 = (int) Math.floor(Math.random()*(size-ladderStart)+ladderStart);
-			System.out.println("originalmente era "+random2);
+			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+1))+ladderStart);
 			int ladderEnd = chooseBoxes(ladderStart,random2);
 			addToSavedNumbers(ladderEnd);
 			System.out.println(ladderStart);
@@ -72,7 +74,20 @@ public class Board {
 			putLadders(i + 1,ladders);
 		}
 		
-	}	
+	}
+
+	public void putSnakes(int snakes){
+		putSnakes(0,snakes);
+	}
+
+	private void putSnakes(int i,int snakes){
+		if(i<snakes){
+			int random = (int) Math.floor(Math.random()*(size-((ladders*2)+1))+1);
+
+
+			putSnakes(i+1,snakes);
+		}
+	}
 	
 	public int chooseBoxes(int min,int number) {
 			if(!cycleThroughSavedNumbers(number, first)) {
