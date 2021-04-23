@@ -2,11 +2,20 @@ package ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import model.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,13 +50,32 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private Label mainTitleLBL;
 
+    /*Game Pane*/
+
+    @FXML
+    private BorderPane boardPane;
+
+    @FXML
+    private ImageView diceIMV;
+
+    @FXML
+    private TableView<Player> localLeaderboardTBV;
+
+    @FXML
+    private TableColumn<Player, String> nameColBoard;
+
+    @FXML
+    private TableColumn<Player, Integer> scoreColBoard;
+
+    @FXML
+    private Label timerLBL;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         label = progress;
         initializeMainMenu();
     }
-
 
     /***************************************METHODS***************************************/
 
@@ -59,6 +87,35 @@ public class MainGUIController implements Initializable, CSSIDs {
         newGameBTN.setId(mainPaneButtonsID);
         scoreBoardBTN.setId(mainPaneButtonsID);
         eraseAllDataBTN.setId(mainPaneButtonsID);
+    }
+
+    private void launchWindow(String fxml, String title) {
+        try {
+            Parent loadedPane = loadFxml(fxml);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loadedPane));
+            Image icon = new Image(String.valueOf(getClass().getResource("resources/snl-logo.png")));
+            stage.getIcons().add(icon);
+            stage.getScene().getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
+            stage.setTitle(title);
+            stage.setResizable(false);
+            stage.show();
+        } catch (NullPointerException npe) {
+            System.out.println("Can't load requested window right now.\nRequested window: \"" + fxml + "\"");
+            System.err.println(npe.getMessage());
+        }
+    }
+
+    private Parent loadFxml(String fxml) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+            fxmlLoader.setController(this);
+            System.out.println("is it working?");
+            return fxmlLoader.load();
+        } catch (Exception e) {
+            System.out.println("Can't load requested document right now.\nRequested document: \"" + fxml + "\"");
+            throw new NullPointerException("Document is null");
+        }
     }
 
     /*Main Pane*/
@@ -74,11 +131,36 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void newGame(ActionEvent event) {
-
+        ((Stage)mainPane.getScene().getWindow()).close();
+        launchWindow("fxml/board/board-pane.fxml", "Now playing!");
+        Parent board = loadFxml("fxml/board/board.fxml");
+        boardPane.setCenter(board);
     }
 
     @FXML
     void scoreBoard(ActionEvent event) {
+
+    }
+
+    /*Game Pane*/
+
+    @FXML
+    void restartGame(ActionEvent event) {
+
+    }
+
+    @FXML
+    void rollDice(MouseEvent event) {
+
+    }
+
+    @FXML
+    void endGame(ActionEvent event) {
+
+    }
+
+    @FXML
+    void skipTurn(ActionEvent event) {
 
     }
 }
