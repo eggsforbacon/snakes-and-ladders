@@ -61,14 +61,20 @@ public class Board {
 	
 	private void putLadders(int i,int ladders) {
 		if (i < ladders) {
-			int random = (int) Math.floor(Math.random()*(size-(rows+1))+1);
-			int ladderStart = chooseBoxes(size-(rows+1),1,random);
+			int limit = rows+1;
+			if(ladders>limit){
+				limit = ladders;
+			}
+			int random = (int) Math.floor(Math.random()*(size-limit)+1);
+			System.out.println(random+" es el numero generado");
+			int ladderStart = chooseBoxes(limit,1,random,limit);
 			int aux = numberToHisBase(ladderStart);
+			System.out.println(ladderStart+" es el principio");
 			System.out.println(aux+" es el numero base");
-			System.out.println("Empieza desde: "+(ladderStart+((rows+2)-aux)));
-			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+((rows+2)-aux)))+(ladderStart+((rows+2)-aux)));
+			System.out.println("Empieza desde: "+(ladderStart+((rows+1)-aux)));
+			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+((rows+1)-aux)))+(ladderStart+((rows+1)-aux)));
 			System.out.println("Originalmente era "+random2);
-			int ladderEnd = chooseBoxes(ladderStart+((rows+2)-aux),ladderStart+((rows+2)-aux),random2);
+			int ladderEnd = chooseBoxes(ladderStart+((rows+1)-aux),ladderStart+((rows+1)-aux),random2,1);
 			System.out.println(ladderStart);
 			System.out.println(ladderEnd);
 			getANode(ladderStart, upper(matrix)).setStart(true); 
@@ -80,8 +86,8 @@ public class Board {
 	}
 
 	private int numberToHisBase(int number){
-		if(number > rows+1){
-			return numberToHisBase(number-(rows+1));
+		if(number > rows){
+			return numberToHisBase(number-(rows));
 		}
 		else{
 			return number;
@@ -95,25 +101,26 @@ public class Board {
 	private void putSnakes(int i,int snakes){
 		if(i<snakes){
 			int random = (int) Math.floor(Math.random()*(size-1)+((snakes*2)+1));
-			int snakeHead = chooseBoxes(1,(snakes*2)+1,random);
+			int snakeHead = chooseBoxes(1,(snakes*2)+1,random,0);
 			int random2 = (int) Math.floor(Math.random()*((snakes*2)+2))+1;
-			int snakeTail = chooseBoxes((snakes*2)+2,1,random2);
+			int snakeTail = chooseBoxes((snakes*2)+2,1,random2,0);
 
 
 			putSnakes(i+1,snakes);
 		}
 	}
 	
-	public int chooseBoxes(int a,int b,int number) {
+	public int chooseBoxes(int a,int b,int number,int limit) {
 			if(!cycleThroughSavedNumbers(number, first)) {
 				addToSavedNumbers(number);
 				return number;
 			}
 			else {
-				if(number + 1 == size) {
+				if(number >= size-limit) {
 					number = (int)Math.floor(Math.random()*(size-a)+b);
+					System.out.println("se propone "+number);
 				}
-				return chooseBoxes(a,b,number+1);
+				return chooseBoxes(a,b,number+1,limit);
 			}	
 		}
 		
