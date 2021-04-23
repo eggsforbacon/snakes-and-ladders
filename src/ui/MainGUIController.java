@@ -70,10 +70,10 @@ public class MainGUIController implements Initializable, CSSIDs {
     /*Game Pane*/
 
     @FXML
-    private BorderPane boardPane;
+    private BorderPane boardPane = new BorderPane();
 
     @FXML
-    private TilePane boardTP;
+    private TilePane boardTP = new TilePane();
 
     @FXML
     private ImageView diceIMV;
@@ -93,7 +93,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     //Tiles
 
     @FXML
-    private Label tileLBL;
+    private Label tileLBL = new Label();
 
     @FXML
     private AnchorPane tileAP = new AnchorPane();
@@ -142,7 +142,6 @@ public class MainGUIController implements Initializable, CSSIDs {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
             fxmlLoader.setController(this);
-            System.out.println("is it working?");
             return fxmlLoader.load();
         } catch (Exception e) {
             System.out.println("Can't load requested document right now.\nRequested document: \"" + fxml + "\"");
@@ -177,18 +176,58 @@ public class MainGUIController implements Initializable, CSSIDs {
     void startGame(ActionEvent event) {
         ((Stage)playersLV.getScene().getWindow()).close();
         ((Stage)mainPane.getScene().getWindow()).close();
+        Board b = new Board(5,6,3,3,2);
+        initializeBoard(0,b);
         launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE);
         Parent board = loadFxml("fxml/board/board.fxml");
         boardPane.setCenter(board);
-        Board b = new Board(5,6,3,3,2);
-        initializeBoard(0,b);
     }
 
     void initializeBoard(int i, Board board) {
-
-        if (i < board.get) {
-            tileLBL.setText("");
+        if (i < board.getSize()) {
+            Node node = nextTile(i,board.getMatrix(),board);
+            tileLBL.setText(String.valueOf(node.getPosition()));
+            AnchorPane tile = (AnchorPane) loadFxml("fxml/board/tile.fxml");
+            //tile.setId((i % 2 == 0) ? "tile-even" : "odd-tile");
+            //boardTP.getChildren().add(tile);
+            boardTP.getChildren().add(new Label(""+i));
+            initializeBoard(i + 1, board);
         }
+    }
+
+    Node nextTile(int i, Node node, Board board) {
+        if (i > 0) {
+            if (i % board.getColumns() != 0) {
+                return nextTile(i - 1, node.getNext(), board);
+            }
+            else if (i % board.getColumns() == 0) {
+                return nextTile(i - 1, node.getUp(), board);
+            }
+        }
+
+        System.out.println(node.getPosition());
+        try {
+            System.out.println("-Next: " + node.getNext().getPosition());
+        } catch (NullPointerException npe) {
+            System.out.println("-Next: null");
+        } try {
+            System.out.println("-Prev: " + node.getPrev().getPosition());
+        } catch (NullPointerException npe) {
+            System.out.println("-Prev: null");
+        } try {
+            System.out.println("-Down: " + node.getDown().getPosition());
+        } catch (NullPointerException npe) {
+            System.out.println("-Down: null");
+        } try {
+            System.out.println("-Up: " + node.getUp().getPosition());
+        } catch (NullPointerException npe) {
+            System.out.println("-Up: null");
+        }
+        return node;
+    }
+
+    boolean toggleOrientation(boolean orientation) {
+        return !orientation;
     }
 
     @FXML
