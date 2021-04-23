@@ -11,6 +11,8 @@ public class Board {
 	private int ladders;
 	private int snakes;
 	private int size;
+	private GamePiece gp;
+	private int turn;
 	private SavedNumber first;
 	private String boardString="";
 	private String boxesInformation="";
@@ -21,6 +23,7 @@ public class Board {
 		this.columns = columns;
 		this.ladders = ladders;
 		this.snakes=snakes;
+		turn = 1;
 		size = rows*columns;
 		addToSavedNumbers(size);
 		matrix=buildTheBoard(0,0,null);
@@ -42,6 +45,23 @@ public class Board {
 		aux.setUp(buildTheBoard(r+1, c, aux));
 		return aux;
 	}
+
+	public GamePiece gpAt(int index,GamePiece aux) {
+		if (aux.getNext() == null) {
+			if (aux.getNumber() == index) {
+				return aux;
+			} else {
+				return null;
+			}
+		} else {
+			if (aux.getNumber() == index) {
+				return aux;
+			} else {
+				return gpAt(index, gp.getNext());
+			}
+		}
+	}
+
 	
 	
 	public int translator(int r,int c) {
@@ -57,7 +77,11 @@ public class Board {
 		}
 		return first+((r+1)*change);
 	}
-	
+
+	public void movePieces(int turn){
+
+	}
+
 	public void putLadders(int ladders) {
 		putLadders(0,ladders);
 	}
@@ -66,27 +90,36 @@ public class Board {
 		if (i < ladders) {
 			int limit = 1; //antes era columns+1
 			//System.out.println("El limite es "+limit);
-			if(ladders>limit){
+			if (ladders > limit) {
 				limit = ladders;
 			}
-			int random = (int) Math.floor(Math.random()*(size-limit-columns)+1);
+			int random = (int) Math.floor(Math.random() * (size - limit - columns) + 1);
 			//System.out.println(random+" es el numero generado");
-			int ladderStart = chooseBoxes(limit-columns,1,random,limit);
+			int ladderStart = chooseBoxes(limit - columns, 1, random, limit);
 			int aux = numberToHisBase(ladderStart);
 			//System.out.println(ladderStart+" es el principio");
 			//System.out.println(aux+" es el numero base");
 			//System.out.println("Empieza desde: "+(ladderStart+((columns+1)-aux)));
-			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+((columns+1)-aux)))+(ladderStart+((columns+1)-aux)));
+			int random2 = (int) Math.floor(Math.random() * (size - (ladderStart + ((columns + 1) - aux))) + (ladderStart + ((columns + 1) - aux)));
 			//System.out.println("Originalmente era "+random2);
-			int ladderEnd = chooseBoxes(ladderStart+((columns+1)-aux),ladderStart+((columns+1)-aux),random2,1);
+			int ladderEnd = chooseBoxes(ladderStart + ((columns + 1) - aux), ladderStart + ((columns + 1) - aux), random2, 1);
 			//System.out.println(ladderStart);
 			//System.out.println(ladderEnd);
 			getANode(ladderStart, upper(matrix)).setTypeOfBox(1);
 			getANode(ladderStart, upper(matrix)).setLadder(getANode(ladderEnd, upper(matrix)));
 			getANode(ladderEnd, upper(matrix)).setTypeOfBox(2);
-			putLadders(i + 1,ladders);
+			putLadders(i + 1, ladders);
 		}
-		
+	}
+
+	public void putPlayers(int players){
+		putPlayers(players,0);
+	}
+
+	private void putPlayers(int players,int i){
+		if(i < players){
+
+		}
 	}
 
 	private int numberToHisBase(int number){
