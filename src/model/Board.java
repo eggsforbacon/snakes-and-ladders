@@ -21,8 +21,10 @@ public class Board {
 		this.ladders = ladders;
 		this.snakes=snakes;
 		size = rows*columns;
+		addToSavedNumbers(size);
 		matrix=buildTheBoard(0,0,null);
 		putLadders(ladders);
+		putSnakes(snakes);
 		
 	}
 	
@@ -61,22 +63,23 @@ public class Board {
 	
 	private void putLadders(int i,int ladders) {
 		if (i < ladders) {
-			int limit = rows+1;
+			int limit = columns+1;
+			//System.out.println("El limite es "+limit);
 			if(ladders>limit){
 				limit = ladders;
 			}
-			int random = (int) Math.floor(Math.random()*(size-limit)+1);
-			//System.out.println(random+" es el numero generado");
-			int ladderStart = chooseBoxes(limit,1,random,limit);
+			int random = (int) Math.floor(Math.random()*(size-limit-columns)+1);
+			System.out.println(random+" es el numero generado");
+			int ladderStart = chooseBoxes(limit-columns,1,random,limit);
 			int aux = numberToHisBase(ladderStart);
-			//System.out.println(ladderStart+" es el principio");
-			//System.out.println(aux+" es el numero base");
-			//System.out.println("Empieza desde: "+(ladderStart+((rows+1)-aux)));
-			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+((rows+1)-aux)))+(ladderStart+((rows+1)-aux)));
-			//System.out.println("Originalmente era "+random2);
-			int ladderEnd = chooseBoxes(ladderStart+((rows+1)-aux),ladderStart+((rows+1)-aux),random2,1);
-			//System.out.println(ladderStart);
-			//System.out.println(ladderEnd);
+			System.out.println(ladderStart+" es el principio");
+			System.out.println(aux+" es el numero base");
+			System.out.println("Empieza desde: "+(ladderStart+((columns+1)-aux)));
+			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+((columns+1)-aux)))+(ladderStart+((columns+1)-aux)));
+			System.out.println("Originalmente era "+random2);
+			int ladderEnd = chooseBoxes(ladderStart+((columns+1)-aux),ladderStart+((columns+1)-aux),random2,1);
+			System.out.println(ladderStart);
+			System.out.println(ladderEnd);
 			getANode(ladderStart, upper(matrix)).setStart(true); 
 			getANode(ladderStart, upper(matrix)).setLadder(getANode(ladderEnd, upper(matrix)));
 			getANode(ladderEnd, upper(matrix)).setEnd(true);
@@ -86,8 +89,8 @@ public class Board {
 	}
 
 	private int numberToHisBase(int number){
-		if(number > rows){
-			return numberToHisBase(number-(rows));
+		if(number > columns){
+			return numberToHisBase(number-(columns));
 		}
 		else{
 			return number;
@@ -101,10 +104,13 @@ public class Board {
 	private void putSnakes(int i,int snakes){
 		if(i<snakes){
 			int limit = rows+1;
+			//System.out.println("El limite es "+limit);
 			if(snakes>limit){
 				limit = snakes;
+				System.out.println("El limite son las serpientes");
 			}
-			int random = (int) Math.floor(Math.random()*(size-limit)+1);
+			int random = (int) Math.floor(Math.random()*(size-limit-2)+limit);
+			//System.out.println(random);
 			putSnakes(i+1,snakes);
 		}
 	}
@@ -158,7 +164,7 @@ public class Board {
 		}
 		else {
 			if(advance(node,number)!=null){
-				System.out.println(" entra ");
+				//System.out.println(" entra ");
 				return advance(node,number);
 			}
 			else {
