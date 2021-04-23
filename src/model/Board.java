@@ -118,7 +118,8 @@ public class Board {
 
 	private void putPlayers(int players,int i){
 		if(i < players){
-
+			char p = (char)(i+33);
+			gpAt(i,gp).setCharacter(p);
 		}
 	}
 
@@ -207,10 +208,14 @@ public class Board {
 		}
 	}
 	
-	public String getMatrix() {
+	public String getBoardInformation() {
 		Node last = upper(matrix);
 		toDown(last);
 		return boardString;
+	}
+
+	public Node getMatrix(){
+		return matrix;
 	}
 
 	public String getBoxesInformation(){

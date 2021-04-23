@@ -1,7 +1,7 @@
 package model;
 
 public class GamePiece {
-    private String character;
+    private char character;
     private String path;
     private GamePiece next;
     private int number;
@@ -9,7 +9,7 @@ public class GamePiece {
     private int actualBox;
     private int movements;
 
-    public GamePiece(String character,String path){
+    public GamePiece(char character,String path){
         this.character=character;
         this.path = path;
         next = null;
@@ -24,11 +24,11 @@ public class GamePiece {
         movements++;
     }
 
-    public String getCharacter() {
+    public char getCharacter() {
         return character;
     }
 
-    public void setCharacter(String character) {
+    public void setCharacter(char character) {
         this.character = character;
     }
 
