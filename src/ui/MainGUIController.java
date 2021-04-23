@@ -10,7 +10,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
@@ -71,6 +73,9 @@ public class MainGUIController implements Initializable, CSSIDs {
     private BorderPane boardPane;
 
     @FXML
+    private TilePane boardTP;
+
+    @FXML
     private ImageView diceIMV;
 
     @FXML
@@ -89,6 +94,9 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     private Label tileLBL;
+
+    @FXML
+    private AnchorPane tileAP = new AnchorPane();
 
     @FXML
     private ImageView specialTileLBL;
@@ -172,11 +180,15 @@ public class MainGUIController implements Initializable, CSSIDs {
         launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE);
         Parent board = loadFxml("fxml/board/board.fxml");
         boardPane.setCenter(board);
-        initializeBoard();
+        Board b = new Board(5,6,3,3,2);
+        initializeBoard(0,b);
     }
 
-    void initializeBoard() {
+    void initializeBoard(int i, Board board) {
 
+        if (i < board.get) {
+            tileLBL.setText("");
+        }
     }
 
     @FXML

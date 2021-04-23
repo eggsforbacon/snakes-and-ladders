@@ -339,4 +339,26 @@ public class Board {
 			return upper(up.getUp());
 		}
 	}
+
+	/*Getters*/
+
+	public int getSize() {
+		return size;
+	}
+
+	public int getSnakes() {
+		return snakes;
+	}
+
+	public int getLadders() {
+		return ladders;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public int getColumns() {
+		return columns;
+	}
 }

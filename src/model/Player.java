@@ -5,6 +5,7 @@ public class Player {
     private Player next;
     private String name;
     private int score;
+    private Node node;
 
     public Player(String name, int score) {
         this.name = name;
@@ -25,6 +26,10 @@ public class Player {
         return next;
     }
 
+    public Node getNode() {
+        return node;
+    }
+
     /*Setters*/
 
     public void setName(String name) {
@@ -37,5 +42,9 @@ public class Player {
 
     public void setNext(Player next) {
         this.next = next;
+    }
+
+    public void setNode(Node node) {
+        this.node = node;
     }
 }
