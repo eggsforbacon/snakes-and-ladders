@@ -6,14 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
 
@@ -50,6 +48,23 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private Label mainTitleLBL;
 
+    //New Game
+
+    @FXML
+    private ListView<String> playersLV;
+
+    @FXML
+    private TextField columnsTF;
+
+    @FXML
+    private TextField rowsTF;
+
+    @FXML
+    private TextField snakesTF;
+
+    @FXML
+    private TextField laddersTF;
+
     /*Game Pane*/
 
     @FXML
@@ -70,6 +85,14 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private Label timerLBL;
 
+    //Tiles
+
+    @FXML
+    private Label tileLBL;
+
+    @FXML
+    private ImageView specialTileLBL;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,7 +112,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         eraseAllDataBTN.setId(mainPaneButtonsID);
     }
 
-    private void launchWindow(String fxml, String title) {
+    private void launchWindow(String fxml, String title, Modality modality) {
         try {
             Parent loadedPane = loadFxml(fxml);
             Stage stage = new Stage();
@@ -98,6 +121,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             stage.getIcons().add(icon);
             stage.getScene().getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
             stage.setTitle(title);
+            stage.initModality(modality);
             stage.setResizable(false);
             stage.show();
         } catch (NullPointerException npe) {
@@ -131,10 +155,28 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void newGame(ActionEvent event) {
+        launchWindow("fxml/board/create-board.fxml","Create new game", Modality.APPLICATION_MODAL);
+    }
+
+    //Pre Game
+
+    @FXML
+    void addPlayer(ActionEvent event) {
+
+    }
+
+    @FXML
+    void startGame(ActionEvent event) {
+        ((Stage)playersLV.getScene().getWindow()).close();
         ((Stage)mainPane.getScene().getWindow()).close();
-        launchWindow("fxml/board/board-pane.fxml", "Now playing!");
+        launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE);
         Parent board = loadFxml("fxml/board/board.fxml");
         boardPane.setCenter(board);
+        initializeBoard();
+    }
+
+    void initializeBoard() {
+
     }
 
     @FXML

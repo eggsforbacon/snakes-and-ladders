@@ -17,11 +17,32 @@
   -fx-background-radius: 7;
   -fx-pref-width: 155.0;
   -fx-pref-height: 35.0;
-  -fx-skin: 'ui.skins.ButtonHoverSkin';
+  -fx-skin: 'ui.skins.ButtonHoverSkinOrange';
 }
 
 .button:hover {
   -fx-text-fill: #e88527;
+}
+
+.table-view {
+  -fx-background-color: #1e83ba;
+  -fx-background-radius: 7, 0, 0, 7;
+}
+
+.table-view .column-header {
+  -fx-background-color: #4c5463;
+  -fx-border-color: black;
+  -fx-background-radius: 0, 7, 7, 0;
+}
+
+.table-view .column-header .label, .table-view .placeholder .label {
+    -fx-text-fill: #f5f7fa;
+    -fx-font-weight: bold;
+}
+
+.text-field {
+  -fx-background-radius: 8;
+  -fx-border-radius: 7;
 }
 
 /*preloader styles*/
@@ -49,9 +70,10 @@
 }
 
 #title-lbl {
+  -fx-text-fill: #dae5f5;
   -fx-font-size: 32px;
   -fx-stroke: white;
-  -fx-stroke-width: 6;
+  -fx-stroke-width: 6px;
   -fx-font-weight: bold;
 }
 
@@ -60,4 +82,58 @@
   -fx-background-radius: 8;
   -fx-pref-width: 185.0;
   -fx-pref-height: 60.0;
+}
+
+/*board pane styles*/
+
+#creator-hbox {
+  -fx-background-color: #db8ab1;
+  -fx-background-radius: 8;
+}
+
+#create-btn {
+  -fx-background-color: #1071e0;
+  -fx-text-fill: #d9f1ff;
+  -fx-font-size: 15px;
+  -fx-pref-width: 120.0;
+  -fx-pref-height: 35.0;
+  -fx-skin: 'ui.skins.ButtonHoverSkinBlue';
+}
+
+#player-lv, #player-lv .list-view .list-cell {
+  -fx-background-color: #af99bf;
+  -fx-text-fill: #e9f2f5;
+  -fx-pref-width: 100px;
+  -fx-font-weight: bold;
+  -fx-background-radius: 8;
+}
+
+#player-lv .list-view .list-cell:odd {
+  -fx-background-color: #786dbd;
+  -fx-text-fill: #e9f2f5;
+}
+
+#create-tf {
+  -fx-background-color: #3f93f2;
+  -fx-border-color: #0d60bd;
+}
+
+#create-lbl {
+  -fx-text-fill: #f5f7fa;
+  -fx-stroke: black;
+  -fx-stroke-width: 3px;
+  -fx-font-weight: bold;
+}
+
+#roll-lbl {
+  -fx-text-fill: #f5f7fa;
+  -fx-stroke: black;
+  -fx-stroke-width: 3px;
+  -fx-font-size: 22px;
+  -fx-font-weight: bold;
+}
+
+#game-sidebar {
+  -fx-background-color: #58b08b;
+  -fx-background-radius: 5;
 }
