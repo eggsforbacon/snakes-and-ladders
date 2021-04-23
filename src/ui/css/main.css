@@ -100,6 +100,10 @@
   -fx-skin: 'ui.skins.ButtonHoverSkinBlue';
 }
 
+#create-btn:hover {
+  -fx-text-fill: #1071e0;
+}
+
 #player-lv, #player-lv .list-view .list-cell {
   -fx-background-color: #af99bf;
   -fx-text-fill: #e9f2f5;
