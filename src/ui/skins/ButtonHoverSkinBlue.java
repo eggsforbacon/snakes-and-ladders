@@ -2,17 +2,16 @@ package ui.skins;
 
 import com.jfoenix.transitions.JFXFillTransition;
 import com.sun.javafx.scene.control.skin.ButtonSkin;
-import javafx.animation.FillTransition;
-import javafx.animation.ParallelTransition;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-public class ButtonHoverSkin extends ButtonSkin {
-    public ButtonHoverSkin(Button button) {
+public class ButtonHoverSkinBlue extends ButtonSkin {
+    public ButtonHoverSkinBlue(Button button) {
         super(button);
-        Color buttonColor = new Color(0.909803,0.52157,0.15294,1);
-        Color onHoverButton = new Color(0.909803,0.86274,0.81961,1);
+
+        Color buttonColor = new Color(0.06274,0.44314,0.87843,1);
+        Color onHoverButton = new Color(0.85098,0.94509,1,1);
 
         button.setOnMouseEntered(e -> {
             JFXFillTransition colorEaseIn = new JFXFillTransition();
