@@ -66,17 +66,17 @@ public class Board {
 				limit = ladders;
 			}
 			int random = (int) Math.floor(Math.random()*(size-limit)+1);
-			System.out.println(random+" es el numero generado");
+			//System.out.println(random+" es el numero generado");
 			int ladderStart = chooseBoxes(limit,1,random,limit);
 			int aux = numberToHisBase(ladderStart);
-			System.out.println(ladderStart+" es el principio");
-			System.out.println(aux+" es el numero base");
-			System.out.println("Empieza desde: "+(ladderStart+((rows+1)-aux)));
+			//System.out.println(ladderStart+" es el principio");
+			//System.out.println(aux+" es el numero base");
+			//System.out.println("Empieza desde: "+(ladderStart+((rows+1)-aux)));
 			int random2 = (int) Math.floor(Math.random()*(size-(ladderStart+((rows+1)-aux)))+(ladderStart+((rows+1)-aux)));
-			System.out.println("Originalmente era "+random2);
+			//System.out.println("Originalmente era "+random2);
 			int ladderEnd = chooseBoxes(ladderStart+((rows+1)-aux),ladderStart+((rows+1)-aux),random2,1);
-			System.out.println(ladderStart);
-			System.out.println(ladderEnd);
+			//System.out.println(ladderStart);
+			//System.out.println(ladderEnd);
 			getANode(ladderStart, upper(matrix)).setStart(true); 
 			getANode(ladderStart, upper(matrix)).setLadder(getANode(ladderEnd, upper(matrix)));
 			getANode(ladderEnd, upper(matrix)).setEnd(true);
@@ -100,12 +100,11 @@ public class Board {
 
 	private void putSnakes(int i,int snakes){
 		if(i<snakes){
-			int random = (int) Math.floor(Math.random()*(size-1)+((snakes*2)+1));
-			int snakeHead = chooseBoxes(1,(snakes*2)+1,random,0);
-			int random2 = (int) Math.floor(Math.random()*((snakes*2)+2))+1;
-			int snakeTail = chooseBoxes((snakes*2)+2,1,random2,0);
-
-
+			int limit = rows+1;
+			if(snakes>limit){
+				limit = snakes;
+			}
+			int random = (int) Math.floor(Math.random()*(size-limit)+1);
 			putSnakes(i+1,snakes);
 		}
 	}
@@ -206,11 +205,15 @@ public class Board {
 		if(right.getNext()==null) {
 			boardString += "[ "+right.getPosition();
 			if(right.isStart() || right.isEnd()) {
-				boardString += " H ]" +"\n";
+				boardString += " H ]"+"\n";
+			}
+			else if(right.isHead() || right.isTail()){
+				boardString += " S ] "+"\n";
 			}
 			else {
 				boardString += " ] "+"\n";
 			}
+
 					
 			return right;
 		}
@@ -218,6 +221,9 @@ public class Board {
 			boardString += "[ "+right.getPosition();
 			if(right.isStart() || right.isEnd()) {
 				boardString += " H ]";
+			}
+			else if(right.isHead() || right.isTail()){
+				boardString += " S ] ";
 			}
 			else {
 				boardString += " ] ";
