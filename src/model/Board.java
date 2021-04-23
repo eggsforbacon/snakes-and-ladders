@@ -81,9 +81,9 @@ public class Board {
 			int ladderEnd = chooseBoxes(ladderStart+((columns+1)-aux),ladderStart+((columns+1)-aux),random2,1);
 			//System.out.println(ladderStart);
 			//System.out.println(ladderEnd);
-			getANode(ladderStart, upper(matrix)).setStart(true); 
+			getANode(ladderStart, upper(matrix)).setTypeOfBox(1);
 			getANode(ladderStart, upper(matrix)).setLadder(getANode(ladderEnd, upper(matrix)));
-			getANode(ladderEnd, upper(matrix)).setEnd(true);
+			getANode(ladderEnd, upper(matrix)).setTypeOfBox(2);
 			putLadders(i + 1,ladders);
 		}
 		
@@ -120,9 +120,9 @@ public class Board {
 			//System.out.println("El segundo random es "+random2);
 			int snakeTail = chooseBoxesForSnakes(snakeHead-aux,1,random2);
 			//System.out.println(snakeTail+" nuevo valor");
-			getANode(snakeHead, upper(matrix)).setHead(true);
+			getANode(snakeHead, upper(matrix)).setTypeOfBox(3);
 			getANode(snakeHead, upper(matrix)).setSnake(getANode(snakeTail, upper(matrix)));
-			getANode(snakeTail, upper(matrix)).setTail(true);
+			getANode(snakeTail, upper(matrix)).setTypeOfBox(4);
 			putSnakes(i+1,snakes);
 		}
 	}
@@ -249,10 +249,10 @@ public class Board {
 	public Node toTheRight(Node right) {
 		if(right.getNext()==null) {
 			boardString += "[ "+right.getPosition();
-			if(right.isStart() || right.isEnd()) {
+			if(right.getTypeOfBox() == 1 || right.getTypeOfBox() == 2) {
 				boardString += " H ]"+"\n";
 			}
-			else if(right.isHead() || right.isTail()){
+			else if(right.getTypeOfBox() == 3|| right.getTypeOfBox() == 4){
 				boardString += " S ] "+"\n";
 			}
 			else {
@@ -264,10 +264,10 @@ public class Board {
 		}
 		else {
 			boardString += "[ "+right.getPosition();
-			if(right.isStart() || right.isEnd()) {
+			if(right.getTypeOfBox() == 1 || right.getTypeOfBox() == 2) {
 				boardString += " H ]";
 			}
-			else if(right.isHead() || right.isTail()){
+			else if(right.getTypeOfBox() == 3 || right.getTypeOfBox() == 4){
 				boardString += " S ] ";
 			}
 			else {
@@ -279,19 +279,19 @@ public class Board {
 
 	public Node anotherToTheRight(Node right) {
 		if(right.getNext()==null) {
-			if(right.isStart()) {
+			if(right.getTypeOfBox()==1) {
 				boxesInformation += "LADDER: "+right.getPosition()+" -> "+right.getLadder().getPosition()+"\n";
 			}
-			else if(right.isHead()){
+			else if(right.getTypeOfBox()==3){
 				boxesInformation += "SNAKE: "+right.getPosition()+" -> "+right.getSnake().getPosition()+"\n";
 			}
 			return right;
 		}
 		else {
-			if(right.isStart()) {
+			if(right.getTypeOfBox()==1) {
 				boxesInformation += "LADDER: "+right.getPosition()+" -> "+right.getLadder().getPosition()+"\n";
 			}
-			else if(right.isHead()){
+			else if(right.getTypeOfBox()==3){
 				boxesInformation += "SNAKE: "+right.getPosition()+" -> "+right.getSnake().getPosition()+"\n";
 			}
 			return anotherToTheRight(right.getNext());

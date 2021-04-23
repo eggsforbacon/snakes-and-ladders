@@ -4,10 +4,7 @@ public class Node {
 	
 	private int position;
 	private Node ladder;
-	private boolean isStart;
-	private boolean isEnd;
-	private boolean isHead;
-	private boolean isTail;
+	private int typeOfBox; //0 for normal, 1 for start, 2 for end, 3 for head, 4 for tail
 	private Node snake;
 	private Node next;
     private Node prev;
@@ -16,6 +13,7 @@ public class Node {
     
     public Node(int position) {
     	this.position = position;
+    	typeOfBox = 0;
     	ladder=null;
     	snake = null;
     	next = null;
@@ -40,6 +38,16 @@ public class Node {
 		this.ladder = ladder;
 	}
 
+	public int getTypeOfBox() {
+		return typeOfBox;
+	}
+
+	public void setTypeOfBox(int typeOfBox) {
+		this.typeOfBox = typeOfBox;
+	}
+
+
+	/*
 	public boolean isStart() {
 		return isStart;
 	}
@@ -71,6 +79,7 @@ public class Node {
 	public void setTail(boolean isTail) {
 		this.isTail = isTail;
 	}
+	*/
 
 	public Node getSnake() {
 		return snake;

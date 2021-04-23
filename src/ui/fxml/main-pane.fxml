@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -15,7 +15,7 @@
                <children>
                   <Button fx:id="newGameBTN" mnemonicParsing="false" onAction="#newGame" text="New Game" />
                   <Button fx:id="scoreBoardBTN" mnemonicParsing="false" onAction="#scoreBoard" text="Scoreboard" />
-                  <Button fx:id="eraseAllDataBTN" mnemonicParsing="false" onAction="#eraseAllData" text="Errase Data" />
+                  <Button fx:id="eraseAllDataBTN" mnemonicParsing="false" onAction="#eraseAllData" text="Erase Data" />
                </children>
             </VBox>
          </children>
