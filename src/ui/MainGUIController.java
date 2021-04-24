@@ -4,15 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
@@ -73,9 +73,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     private BorderPane boardPane = new BorderPane();
 
     @FXML
-    private TilePane boardTP = new TilePane();
-
-    @FXML
     private ImageView diceIMV;
 
     @FXML
@@ -90,6 +87,11 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private Label timerLBL;
 
+    //Board
+
+    @FXML
+    private GridPane boardGP = new GridPane();
+
     //Tiles
 
     @FXML
@@ -101,6 +103,9 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private ImageView specialTileLBL;
 
+    /*Fields*/
+
+    Board game = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,7 +116,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     /***************************************METHODS***************************************/
 
     /*General*/
-
     private void initIDs() {
         mainTitleLBL.setId(titleLBLId);
         mainPane.setId(mainPaneID);
@@ -162,7 +166,7 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void newGame(ActionEvent event) {
-        launchWindow("fxml/board/create-board.fxml","Create new game", Modality.APPLICATION_MODAL);
+        launchWindow("fxml/board/create-board.fxml", "Create new game", Modality.APPLICATION_MODAL);
     }
 
     //Pre Game
@@ -174,60 +178,39 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void startGame(ActionEvent event) {
-        ((Stage)playersLV.getScene().getWindow()).close();
-        ((Stage)mainPane.getScene().getWindow()).close();
-        Board b = new Board(5,6,3,3,2);
-        initializeBoard(0,b);
+        ((Stage) playersLV.getScene().getWindow()).close();
+        ((Stage) mainPane.getScene().getWindow()).close();
+        game = new Board(4, 4, 3, 3, 2);
+        GridPane board = boardGP;
+        tileAP.setMinSize(750.0/game.getColumns(),750.0/game.getRows());
+        tileAP.setMaxSize(750.0/game.getColumns(),750.0/game.getRows());
+        tileAP.setPrefSize(750.0/game.getColumns(),750.0/game.getRows());
+        System.out.println(tileAP.getPrefHeight() + "x" + tileAP.getPrefWidth());
+        board.setAlignment(Pos.CENTER);
+        board.setPrefSize(750, 750);
+        board.setMinSize(750, 750);
+        board.setMaxSize(750, 750);
+        board.setHgap(5);
+        board.setVgap(5);
+        board = initializeBoard(0, board, 0, 0);
         launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE);
-        Parent board = loadFxml("fxml/board/board.fxml");
         boardPane.setCenter(board);
     }
 
-    void initializeBoard(int i, Board board) {
-        if (i < board.getSize()) {
-            Node node = nextTile(i,board.getMatrix(),board);
-            tileLBL.setText(String.valueOf(node.getPosition()));
-            AnchorPane tile = (AnchorPane) loadFxml("fxml/board/tile.fxml");
-            //tile.setId((i % 2 == 0) ? "tile-even" : "odd-tile");
-            //boardTP.getChildren().add(tile);
-            boardTP.getChildren().add(new Label(""+i));
-            initializeBoard(i + 1, board);
-        }
-    }
-
-    Node nextTile(int i, Node node, Board board) {
-        if (i > 0) {
-            if (i % board.getColumns() != 0) {
-                return nextTile(i - 1, node.getNext(), board);
+    GridPane initializeBoard(int i, GridPane board, int y, int x) {
+        Parent tile;
+        if (i < game.getSize()) {
+            if (x == game.getColumns()) {
+                x = 0;
+                y++;
             }
-            else if (i % board.getColumns() == 0) {
-                return nextTile(i - 1, node.getUp(), board);
-            }
+            System.out.println(x + "," + y);
+            tile = loadFxml("fxml/board/tile.fxml");
+            tile.setId((i % 2 != 0) ? "odd-tile" : "even-tile");
+            board.add(tile,x,y);
+            return initializeBoard(i + 1, board, y, x + 1);
         }
-
-        System.out.println(node.getPosition());
-        try {
-            System.out.println("-Next: " + node.getNext().getPosition());
-        } catch (NullPointerException npe) {
-            System.out.println("-Next: null");
-        } try {
-            System.out.println("-Prev: " + node.getPrev().getPosition());
-        } catch (NullPointerException npe) {
-            System.out.println("-Prev: null");
-        } try {
-            System.out.println("-Down: " + node.getDown().getPosition());
-        } catch (NullPointerException npe) {
-            System.out.println("-Down: null");
-        } try {
-            System.out.println("-Up: " + node.getUp().getPosition());
-        } catch (NullPointerException npe) {
-            System.out.println("-Up: null");
-        }
-        return node;
-    }
-
-    boolean toggleOrientation(boolean orientation) {
-        return !orientation;
+        return board;
     }
 
     @FXML

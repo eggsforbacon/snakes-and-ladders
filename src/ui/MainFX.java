@@ -13,7 +13,6 @@ public class MainFX extends Application {
 
     static final int COUNT_LIMIT = 5500; //<- Number CAN'T UNDER ANY CIRCUMSTANCES be greater than this
     MainGUIController controller;
-
     public MainFX() {
         controller = new MainGUIController();
     }

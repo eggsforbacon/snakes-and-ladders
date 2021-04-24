@@ -45,6 +45,10 @@
   -fx-border-radius: 7;
 }
 
+.grid-pane {
+  -fx-background-radius: 8;
+}
+
 /*preloader styles*/
 
 #preloader {
@@ -140,4 +144,16 @@
 #game-sidebar {
   -fx-background-color: #58b08b;
   -fx-background-radius: 5;
+}
+
+/*Board styles*/
+
+#even-tile {
+  -fx-background-color: #f5aa42;
+  -fx-background-radius: 8;
+}
+
+#odd-tile {
+  -fx-background-color: #e06928;
+  -fx-background-radius: 8;
 }
