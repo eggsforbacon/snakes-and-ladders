@@ -198,19 +198,24 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
-        Parent tile;
+        tileAP.getChildren().add(new Label(""+(i)));
         if (i < game.getSize()) {
+            Parent tile;
             if (x == game.getColumns()) {
                 x = 0;
                 y++;
             }
             System.out.println(x + "," + y);
-            tileAP.getChildren().add(new Label(""+(i + 1)));
+            //System.out.println(i+1);
+
+            System.out.println(i+1);
             tile = loadFxml("fxml/board/tile.fxml");
             tile.setId((i % 2 != 0) ? "odd-tile" : "even-tile");
             board.add(tile,x,y);
             return initializeBoard(i + 1, board, y, x + 1);
+
         }
+
         return board;
     }
 

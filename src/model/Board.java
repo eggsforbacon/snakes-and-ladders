@@ -29,12 +29,26 @@ public class Board {
 		turn = 1;
 		size = rows*columns;
 		addToSavedNumbers(size);
-		matrix=buildTheBoard(0,0,null);
-		upper = upper(matrix);
-		putLadders(ladders);
-		putSnakes(snakes);
+		startBoard();
 		putPlayers(players);
+		//System.out.println(gp.getNumber());
+		//System.out.println(gp.getNext().getNumber());
+		//System.out.println(gp.getNext().getNext().getNumber());
+		//System.out.println(gp.getNext().getNext().getNext().getNumber());
 		
+	}
+
+	public void startBoard(){
+		try{
+			matrix=buildTheBoard(0,0,null);
+			upper = upper(matrix);
+			putLadders(ladders);
+			putSnakes(snakes);
+		}
+		catch (NullPointerException e){
+			System.out.println("Lo improbable sucedio");
+			startBoard();
+		}
 	}
 	
 	public Node buildTheBoard(int r, int c, Node current) {
@@ -52,17 +66,19 @@ public class Board {
 	}
 
 	public GamePiece gpAt(int index,GamePiece aux) {
-		if (aux.getNext() == null) {
-			if (aux.getNumber() == index) {
+		System.out.println(aux.getNumber());
+		if (aux == null) {
+			System.out.println("EN SERIO ....");
+			return null;
+		}
+		else{
+			System.out.println("entro aqui pero no entendio ");
+			System.out.println(aux.getNumber());
+			if(aux.getNumber()==index){
 				return aux;
-			} else {
-				return null;
 			}
-		} else {
-			if (aux.getNumber() == index) {
-				return aux;
-			} else {
-				return gpAt(index, gp.getNext());
+			else{
+				return gpAt(index,aux.getNext());
 			}
 		}
 	}
@@ -108,11 +124,11 @@ public class Board {
 	}
 
 	private void useALadder(int actualBox,int player){
-		getANode(actualBox,matrix).getLadder().addPiece(gpAt(player,gp));
+		getANode(actualBox,upper).getLadder().addPiece(gpAt(player,gp));
 	}
 
 	private void useASnake(int actualBox,int player){
-		getANode(actualBox,matrix).getSnake().addPiece(gpAt(player,gp));
+		getANode(actualBox,upper).getSnake().addPiece(gpAt(player,gp));
 	}
 
 	private int turnToHisBase(int number){
@@ -124,11 +140,11 @@ public class Board {
 		}
 	}
 
-	public void putLadders(int ladders) {
+	public void putLadders(int ladders) throws  NullPointerException{
 		putLadders(0,ladders);
 	}
 	
-	private void putLadders(int i,int ladders) {
+	private void putLadders(int i,int ladders) throws  NullPointerException{
 		if (i < ladders) {
 			int limit = 1; //antes era columns+1
 			//System.out.println("El limite es "+limit);
@@ -154,21 +170,22 @@ public class Board {
 		}
 	}
 
-	public void putPlayers(int players){
-		putPlayers(players,0);
+	public void putPlayers(int players) throws NullPointerException{
+		putPlayers(players,players-1);
 	}
 
-	private void putPlayers(int players,int i){
-		if(i < players){
+	private void putPlayers(int players,int i) throws  NullPointerException{
+		if(i >= 0){
 			char p = (char)(i+33);
-			if(gp==null){
-				gp = new GamePiece(p,"",i);
-			}
-			else{
-				gp.setNext(new GamePiece(p,"",i));
-			}
-			putPlayers(players,i+1);
+			System.out.println("se agrega el "+i);
+			GamePiece newPiece = new GamePiece(p,"",i);
+			GamePiece aux = gp;
+			gp = newPiece;
+			gp.setNext(aux);
+			putPlayers(players,i-1);
 		}
+		System.out.println(gp.getNumber()+" ->");
+		System.out.println(gp.getNext().getNumber());
 	}
 
 	private int numberToHisBase(int number){

@@ -11,5 +11,7 @@ public class Menu {
     	System.out.println(board.getBoxesInformation());
     	board.movePieces();
 		System.out.println(board.getBoardInformation());
+		board.movePieces();
+		System.out.println(board.getBoardInformation());
     }
 }
