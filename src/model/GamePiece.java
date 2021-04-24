@@ -19,7 +19,7 @@ public class GamePiece {
     }
 
     public void rollTheDice(){
-        int dice = (int) Math.floor(Math.random()*(5)+1);
+        int dice = (int) Math.floor(Math.random()*(6)+1);
         System.out.println("salio un "+dice);
         previousBox = actualBox;
         actualBox += dice;

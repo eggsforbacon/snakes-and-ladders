@@ -17,6 +17,7 @@ public class Board {
 	private SavedNumber first;
 	private String boardString="";
 	private String boxesInformation="";
+	private Node upper;
 
 	
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
@@ -29,6 +30,7 @@ public class Board {
 		size = rows*columns;
 		addToSavedNumbers(size);
 		matrix=buildTheBoard(0,0,null);
+		upper = upper(matrix);
 		putLadders(ladders);
 		putSnakes(snakes);
 		putPlayers(players);
@@ -90,16 +92,16 @@ public class Board {
 		int actualBox = gpAt(aux,gp).getActualBox();
 		System.out.println("Se pone en la casilla "+actualBox);
 		if(previousBox!=0){
-			getANode(previousBox,matrix).deletePiece(gpAt(aux,gp),matrix.getPiece());
+			getANode(previousBox,upper).deletePiece(gpAt(aux,gp),upper.getPiece());
 		}
-		if(getANode(actualBox,matrix).getTypeOfBox()==1){
+		if(getANode(actualBox,upper).getTypeOfBox()==1){
 			useALadder(actualBox,aux);
 		}
-		else if(getANode(actualBox,matrix).getTypeOfBox()==3){
+		else if(getANode(actualBox,upper).getTypeOfBox()==3){
 			useASnake(actualBox,aux);
 		}
 		else{
-			getANode(actualBox,matrix).addPiece(gpAt(aux,gp));
+			getANode(actualBox,upper).addPiece(gpAt(aux,gp));
 		}
 
 		turn++;
@@ -145,9 +147,9 @@ public class Board {
 			int ladderEnd = chooseBoxes(ladderStart + ((columns + 1) - aux), ladderStart + ((columns + 1) - aux), random2, 1);
 			//System.out.println(ladderStart);
 			//System.out.println(ladderEnd);
-			getANode(ladderStart, upper(matrix)).setTypeOfBox(1);
-			getANode(ladderStart, upper(matrix)).setLadder(getANode(ladderEnd, upper(matrix)));
-			getANode(ladderEnd, upper(matrix)).setTypeOfBox(2);
+			getANode(ladderStart, upper).setTypeOfBox(1);
+			getANode(ladderStart, upper).setLadder(getANode(ladderEnd, upper));
+			getANode(ladderEnd, upper).setTypeOfBox(2);
 			putLadders(i + 1, ladders);
 		}
 	}
@@ -200,9 +202,9 @@ public class Board {
 			//System.out.println("El segundo random es "+random2);
 			int snakeTail = chooseBoxesForSnakes(snakeHead-aux,1,random2);
 			//System.out.println(snakeTail+" nuevo valor");
-			getANode(snakeHead, upper(matrix)).setTypeOfBox(3);
-			getANode(snakeHead, upper(matrix)).setSnake(getANode(snakeTail, upper(matrix)));
-			getANode(snakeTail, upper(matrix)).setTypeOfBox(4);
+			getANode(snakeHead, upper).setTypeOfBox(3);
+			getANode(snakeHead, upper).setSnake(getANode(snakeTail, upper));
+			getANode(snakeTail, upper).setTypeOfBox(4);
 			putSnakes(i+1,snakes);
 		}
 	}
@@ -255,7 +257,7 @@ public class Board {
 	}
 	
 	public String getBoardInformation() {
-		Node last = upper(matrix);
+		Node last = upper;
 		toDown(last);
 		return boardString;
 	}
@@ -265,7 +267,7 @@ public class Board {
 	}
 
 	public String getBoxesInformation(){
-		Node last = upper(matrix);
+		Node last = upper;
 		seeInformation(last);
 		return boxesInformation;
 	}
@@ -303,6 +305,7 @@ public class Board {
 				return right;
 			}
 			else {
+				//System.out.println("aca esta el error");
 				return null;
 			}
 					
