@@ -10,6 +10,7 @@ public class Node {
     private Node prev;
     private Node up;
     private Node down;
+    private GamePiece piece;
     
     public Node(int position) {
     	this.position = position;
@@ -20,7 +21,56 @@ public class Node {
     	prev = null;
     	up = null;
     	down = null;
+    	piece = null;
     }
+
+    public void addPiece(GamePiece add){ ;
+		add.setNext(piece);
+		piece = add;
+	}
+
+    public void deletePiece(GamePiece delete,GamePiece start){
+    	if(delete == piece){
+    		piece = piece.getNext();
+    		return;
+		}
+    	if(start.getNext()==null){
+    		if(delete == start){
+				start = start.getNext();
+			}
+			return;
+		}
+    	else{
+			if(delete == start){
+				start = start.getNext();
+				return;
+			}
+			else{
+				deletePiece(delete,start.getNext());
+			}
+		}
+	}
+
+	public GamePiece getPiece() {
+		return piece;
+	}
+
+	public String getPieceString(){
+    	return getPieceString(piece);
+	}
+
+	public String getPieceString(GamePiece piece){
+    	if(piece==null){
+    		return "";
+		}
+    	else{
+    		return piece.getCharacter()+getPieceString(piece.getNext());
+		}
+	}
+
+	public void setPiece(GamePiece piece) {
+		this.piece = piece;
+	}
 
 	public int getPosition() {
 		return position;

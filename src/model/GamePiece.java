@@ -9,9 +9,10 @@ public class GamePiece {
     private int actualBox;
     private int movements;
 
-    public GamePiece(char character,String path){
+    public GamePiece(char character,String path,int number){
         this.character=character;
         this.path = path;
+        this.number = number;
         next = null;
         actualBox = 0;
         movements = 0;
@@ -19,8 +20,10 @@ public class GamePiece {
 
     public void rollTheDice(){
         int dice = (int) Math.floor(Math.random()*(5)+1);
+        System.out.println("salio un "+dice);
         previousBox = actualBox;
         actualBox += dice;
+        System.out.println("se mueve a la casilla "+actualBox);
         movements++;
     }
 
