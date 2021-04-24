@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -179,7 +180,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     void startGame(ActionEvent event) {
         ((Stage) playersLV.getScene().getWindow()).close();
         ((Stage) mainPane.getScene().getWindow()).close();
-        game = new Board(5, 5, 3, 3, 2);
+        game = new Board(4, 4, 3, 3, 2);
         GridPane board = boardGP;
         tileAP.setMinSize(750.0/game.getColumns(),750.0/game.getRows());
         tileAP.setMaxSize(750.0/game.getColumns(),750.0/game.getRows());
@@ -191,20 +192,20 @@ public class MainGUIController implements Initializable, CSSIDs {
         board.setMaxSize(750, 750);
         board.setHgap(5);
         board.setVgap(5);
-        board = initializeBoard(0, board, game.getRows() - 1, 0);
+        board = initializeBoard(0, board, 0, 0);
         launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE);
         boardPane.setCenter(board);
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
         Parent tile;
-        System.out.println("(" + x + "," + y + ")");
         if (i < game.getSize()) {
             if (x == game.getColumns()) {
                 x = 0;
-                y--;
+                y++;
             }
-            tileAP.getChildren().add(new Label("" + (i + 1)));
+            System.out.println(x + "," + y);
+            tileAP.getChildren().add(new Label(""+(i + 1)));
             tile = loadFxml("fxml/board/tile.fxml");
             tile.setId((i % 2 != 0) ? "odd-tile" : "even-tile");
             board.add(tile,x,y);
