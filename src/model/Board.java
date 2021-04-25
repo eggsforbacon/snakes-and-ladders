@@ -57,7 +57,7 @@ public class Board {
         }
 		
 		Node aux = new Node(translator(c,r),originalTranslator(c,r));
-		System.out.println(c+" "+r);
+		//System.out.println(c+" "+r);
 		
 		aux.setPrev(current);
 		aux.setDown(current);
@@ -66,7 +66,11 @@ public class Board {
 		return aux;
 	}
 
-	public GamePiece gpAt(int index,GamePiece aux) {
+	public GamePiece gpAt(int index){
+		return gpAt(index,gp);
+	}
+
+	private GamePiece gpAt(int index,GamePiece aux) {
 		System.out.println(aux.getNumber());
 		if (aux == null) {
 			System.out.println("EN SERIO ....");
@@ -85,7 +89,7 @@ public class Board {
 	}
 	public int originalTranslator(int r,int c){
 		int first = columns*(rows-c)-(columns);
-		System.out.println("first es: "+first);
+		//System.out.println("first es: "+first);
 		return first+r+1;
 	}
 	public int translator(int r,int c) {
@@ -106,12 +110,12 @@ public class Board {
 		boardString = "";
 		int aux = turnToHisBase(turn)-1;
 		System.out.println("Es el turno "+aux);
-		gpAt(aux,gp).rollTheDice();
-		int previousBox=gpAt(aux,gp).getPreviousBox();
-		int actualBox = gpAt(aux,gp).getActualBox();
+		gpAt(aux).rollTheDice();
+		int previousBox=gpAt(aux).getPreviousBox();
+		int actualBox = gpAt(aux).getActualBox();
 		System.out.println("Se pone en la casilla "+actualBox);
 		if(previousBox!=0){
-			getANode(previousBox,upper).deletePiece(gpAt(aux,gp),upper.getPiece());
+			getANode(previousBox,upper).deletePiece(gpAt(aux),upper.getPiece());
 		}
 		if(getANode(actualBox,upper).getTypeOfBox()==1){
 			useALadder(actualBox,aux);
@@ -120,18 +124,18 @@ public class Board {
 			useASnake(actualBox,aux);
 		}
 		else{
-			getANode(actualBox,upper).addPiece(gpAt(aux,gp));
+			getANode(actualBox,upper).addPiece(gpAt(aux));
 		}
 
 		turn++;
 	}
 
 	private void useALadder(int actualBox,int player){
-		getANode(actualBox,upper).getLadder().addPiece(gpAt(player,gp));
+		getANode(actualBox,upper).getLadder().addPiece(gpAt(player));
 	}
 
 	private void useASnake(int actualBox,int player){
-		getANode(actualBox,upper).getSnake().addPiece(gpAt(player,gp));
+		getANode(actualBox,upper).getSnake().addPiece(gpAt(player));
 	}
 
 	private int turnToHisBase(int number){
@@ -318,7 +322,8 @@ public class Board {
 			
 		}
 	}
-	
+
+
 	public Node advance(Node right,int number) {
 		if(right.getNext()==null) {
 			if(right.getPosition()==number) {
@@ -340,7 +345,11 @@ public class Board {
 		}
 	}
 
-	public Node getABox(int number,Node node) {
+	public Node getABox(int number){
+		return getABox(number,upper);
+	}
+
+	private Node getABox(int number,Node node) {
 		if(node.getDown()==null) {
 			return advance2(node,number);
 		}
