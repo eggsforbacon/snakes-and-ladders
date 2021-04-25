@@ -54,6 +54,7 @@ public class Board {
 		}
 		catch (NullPointerException e){
 			System.out.println("Lo improbable sucedio");
+			first=null;
 			startBoard();
 		}
 	}
@@ -116,8 +117,8 @@ public class Board {
 	public void movePieces(){
 		boardString = "";
 		int aux = turnToHisBase(turn-1);
-		System.out.println(turn);
-		System.out.println("Es el turno "+aux);
+		//System.out.println(turn);
+		//System.out.println("Es el turno "+aux);
 		gpAt(aux).rollTheDice();
 		int previousBox=gpAt(aux).getPreviousBox();
 		int actualBox = gpAt(aux).getActualBox();
