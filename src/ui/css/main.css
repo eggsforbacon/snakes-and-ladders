@@ -49,6 +49,11 @@
   -fx-background-radius: 8;
 }
 
+#top-bar {
+  -fx-background-color: #00000033;
+  -fx-spacing: 10;
+}
+
 /*preloader styles*/
 
 #preloader {
@@ -156,4 +161,10 @@
 #odd-tile {
   -fx-background-color: #e06928;
   -fx-background-radius: 8;
+}
+
+#tile-numbers {
+  -fx-text-fill: #202121;
+  -fx-font-size: 17px;
+  -fx-font-weight: bold;
 }

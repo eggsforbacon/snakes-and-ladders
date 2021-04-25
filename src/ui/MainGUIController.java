@@ -13,8 +13,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.*;
 
 import java.net.URL;
@@ -116,6 +118,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     /***************************************METHODS***************************************/
 
     /*General*/
+
     private void initIDs() {
         mainTitleLBL.setId(titleLBLId);
         mainPane.setId(mainPaneID);
@@ -180,7 +183,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     void startGame(ActionEvent event) {
         ((Stage) playersLV.getScene().getWindow()).close();
         ((Stage) mainPane.getScene().getWindow()).close();
-        game = new Board(10, 10, 3, 3, 2);
+        game = new Board(5, 6, 3, 3, 2);
         GridPane board = boardGP;
         board = gridProperties(board);
         board = initializeBoard(0, board, 0, 0);
@@ -202,7 +205,9 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
-        tileAP.getChildren().add(new Label(""+(i)));
+        Label number = new Label(String.valueOf(game.getABox(i).getPosition()));
+        number.setId("tile-numbers");
+        tileAP.getChildren().add(number);
         if (i < game.getSize()) {
             Parent tile;
             if (x == game.getColumns()) {
