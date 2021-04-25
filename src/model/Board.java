@@ -56,7 +56,8 @@ public class Board {
             return null;
         }
 		
-		Node aux = new Node(translator(c,r));
+		Node aux = new Node(translator(c,r),originalTranslator(c,r));
+		System.out.println(c+" "+r);
 		
 		aux.setPrev(current);
 		aux.setDown(current);
@@ -82,9 +83,11 @@ public class Board {
 			}
 		}
 	}
-
-	
-	
+	public int originalTranslator(int r,int c){
+		int first = columns*(rows-c)-(columns);
+		System.out.println("first es: "+first);
+		return first+r+1;
+	}
 	public int translator(int r,int c) {
 		int first = 0;
 		int change = 0;
@@ -352,7 +355,7 @@ public class Board {
 	
 	public Node toTheRight(Node right) {
 		if(right.getNext()==null) {
-			boardString += "[ "+right.getPosition();
+			boardString += "[ "+right.getPosition()+" "+right.getRealPosition();
 			if(right.getPiece()!=null){
 				boardString += " "+right.getPieceString();
 			}
@@ -370,7 +373,7 @@ public class Board {
 			return right;
 		}
 		else {
-			boardString += "[ "+right.getPosition();
+			boardString += "[ "+right.getPosition()+" "+right.getRealPosition();
 			if(right.getPiece()!=null){
 				boardString += " "+right.getPieceString();
 			}

@@ -3,6 +3,7 @@ package model;
 public class Node {
 	
 	private int position;
+	private int realPosition;
 	private Node ladder;
 	private int typeOfBox; //0 for normal, 1 for start, 2 for end, 3 for head, 4 for tail
 	private Node snake;
@@ -12,8 +13,9 @@ public class Node {
     private Node down;
     private GamePiece piece;
     
-    public Node(int position) {
+    public Node(int position,int realPosition) {
     	this.position = position;
+    	this.realPosition = realPosition;
     	typeOfBox = 0;
     	ladder=null;
     	snake = null;
@@ -169,5 +171,13 @@ public class Node {
 
 	public void setDown(Node down) {
 		this.down = down;
+	}
+
+	public int getRealPosition() {
+		return realPosition;
+	}
+
+	public void setRealPosition(int realPosition) {
+		this.realPosition = realPosition;
 	}
 }
