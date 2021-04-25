@@ -21,6 +21,7 @@ public class Board {
 
 	
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
+		gp=null;
 		this.rows = rows;
 		this.columns = columns;
 		this.ladders = ladders;
@@ -31,6 +32,8 @@ public class Board {
 		addToSavedNumbers(size);
 		startBoard();
 		putPlayers(players);
+		//System.out.println(" posicion real "+getABox(7).getPosition());
+
 		//System.out.println(gp.getNumber());
 		//System.out.println(gp.getNext().getNumber());
 		//System.out.println(gp.getNext().getNext().getNumber());

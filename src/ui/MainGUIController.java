@@ -205,9 +205,12 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
-        Label number = new Label(String.valueOf(game.getABox(i).getPosition()));
-        number.setId("tile-numbers");
-        tileAP.getChildren().add(number);
+        System.out.println(" i es "+i);
+        if(game.getABox(i) != null){
+            Label number = new Label(String.valueOf(game.getABox(i).getPosition()));
+            number.setId("tile-numbers");
+            tileAP.getChildren().add(number);
+        }
         if (i < game.getSize()) {
             Parent tile;
             if (x == game.getColumns()) {
