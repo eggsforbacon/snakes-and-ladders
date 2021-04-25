@@ -69,6 +69,14 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private TextField laddersTF;
 
+    //Add Player
+
+    @FXML
+    private TextField playernameTF;
+
+    @FXML
+    private ColorPicker colorPicker;
+
     /*Game Pane*/
 
     @FXML
@@ -180,10 +188,20 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     @FXML
+    void cancelPlayer(ActionEvent event) {
+
+    }
+
+    @FXML
+    void confirmPlayer(ActionEvent event) {
+
+    }
+
+    @FXML
     void startGame(ActionEvent event) {
         ((Stage) playersLV.getScene().getWindow()).close();
         ((Stage) mainPane.getScene().getWindow()).close();
-        game = new Board(5, 6, 3, 3, 2);
+        game = new Board(5, 5, 3, 3, 2);
         GridPane board = boardGP;
         board = gridProperties(board);
         board = initializeBoard(0, board, 0, 0);
@@ -218,17 +236,33 @@ public class MainGUIController implements Initializable, CSSIDs {
                 y++;
             }
             System.out.println("-Column: " + (x + 1) + ", Row: " + (y + 1));
-            //System.out.println(i+1);
-
-            System.out.println(i+1);
             tile = loadFxml("fxml/board/tile.fxml");
-            tile.setId((i % 2 != 0) ? "odd-tile" : "even-tile");
+            tile.setId(pickId(x,y));
             board.add(tile,x,y);
             return initializeBoard(i + 1, board, y, x + 1);
 
         }
 
         return board;
+    }
+
+    String pickId(int x, int y) { //<-- Wouln't have to do this with loops + arrays (:
+        String id;
+        String polarity = ((x % 2 == 0) ? "1" : "0")
+                + ((y % 2 == 0) ? "1" : "0");
+        switch (polarity) {
+            case "10":
+            case "01":
+                id = "even-tile";
+                break;
+            case "00":
+            case "11":
+                id = "odd-tile";
+                break;
+            default:
+                throw new NullPointerException("Out of range (???): " + polarity);
+        }
+        return id;
     }
 
     @FXML
