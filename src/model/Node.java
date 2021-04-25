@@ -27,30 +27,31 @@ public class Node {
     }
 
     public void addPiece(GamePiece add){
-    	GamePiece aux = new GamePiece(add.getCharacter(), add.getPath(), add.getNumber());
-		aux.setNext(piece);
-		piece = aux;
+    	addPiece(add,piece);
 	}
 
-    public void deletePiece(GamePiece delete,GamePiece start){
-    	if(delete == piece){
-    		piece = piece.getNext();
+    public void addPiece(GamePiece add,GamePiece start){
+    	if(piece==null){
+    		piece = new GamePiece(add.getCharacter(), add.getPath(), add.getNumber());
     		return;
 		}
-    	if(start.getNext()==null){
-    		if(delete == start){
-				start = start.getNext();
+    	else{
+    		if(start.getNext()==null){
+    			start.setNext(new GamePiece(add.getCharacter(), add.getPath(), add.getNumber()));
+    			return;
 			}
-			return;
+    		else{
+    			addPiece(add,start.getNext());
+			}
+		}
+	}
+
+	public void deletePiece(){
+    	if(piece == null){
+    		return;
 		}
     	else{
-			if(delete == start){
-				start = start.getNext();
-				return;
-			}
-			else{
-				deletePiece(delete,start.getNext());
-			}
+    		piece = piece.getNext();
 		}
 	}
 

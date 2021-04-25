@@ -34,13 +34,13 @@ public class Board {
 		addToSavedNumbers(size);
 		startBoard();
 		putPlayers(players);
-		System.out.println("Esto es lo que detecta como guardado");
-		System.out.println(gp.getNumber());
-		System.out.println(gp.getNext().getNumber());
-		System.out.println(gp.getNext().getNext().getNumber());
-		System.out.println(gp.getNext().getNext().getNext().getNumber());
-		System.out.println("Busquemos errores");
-		System.out.println(gpAt(3).getNumber());
+		//System.out.println("Esto es lo que detecta como guardado");
+		//System.out.println(gp.getNumber());
+		//System.out.println(gp.getNext().getNumber());
+		//System.out.println(gp.getNext().getNext().getNumber());
+		//System.out.println(gp.getNext().getNext().getNext().getNumber());
+		//System.out.println("Busquemos errores");
+		//System.out.println(gpAt(3).getNumber());
 		
 	}
 
@@ -79,14 +79,14 @@ public class Board {
 
 	private GamePiece gpAt(int index,GamePiece aux) {
 		if (aux == null) {
-			System.out.println("EN SERIO ....");
+			//System.out.println("EN SERIO ....");
 			return null;
 		}
 		else{
-			System.out.println("entro aqui pero no entendio ");
-			System.out.println(aux.getNumber());
+			//System.out.println("entro aqui pero no entendio ");
+			//System.out.println(aux.getNumber());
 			if(aux.getNumber()==index){
-				System.out.println("funciono");
+				//System.out.println("funciono");
 				return aux;
 			}
 			else{
@@ -115,15 +115,20 @@ public class Board {
 
 	public void movePieces(){
 		boardString = "";
-		int aux = turnToHisBase(turn)-1;
+		int aux = turnToHisBase(turn-1);
+		System.out.println(turn);
 		System.out.println("Es el turno "+aux);
 		gpAt(aux).rollTheDice();
 		int previousBox=gpAt(aux).getPreviousBox();
 		int actualBox = gpAt(aux).getActualBox();
-		System.out.println("Se pone en la casilla "+actualBox);
+		if(actualBox >= size){
+			System.out.println("Tenemos un ganador");
+			return;
+		}
+		//System.out.println("Se pone en la casilla "+actualBox);
 		if(previousBox!=0){
-			System.out.println("algo se borro wtf");
-			getANode(previousBox,upper).deletePiece(gpAt(aux),matrix.getPiece());
+			//System.out.println("algo se borro wtf");
+			getANode(previousBox,upper).deletePiece();
 		}
 		if(getANode(actualBox,upper).getTypeOfBox()==1){
 			useALadder(actualBox,aux);
@@ -147,8 +152,8 @@ public class Board {
 	}
 
 	private int turnToHisBase(int number){
-		if(number > players){
-			return numberToHisBase(number-(players));
+		if(number >= players){
+			return turnToHisBase(number-players);
 		}
 		else{
 			return number;
@@ -192,17 +197,17 @@ public class Board {
 	private void putPlayers(int players,int i) throws  NullPointerException{
 		if(i >= 0){
 			char p = (char)(i+33);
-			System.out.println("se agrega el "+i);
+			//System.out.println("se agrega el "+i);
 			GamePiece newPiece = new GamePiece(p,"",i);
 			GamePiece aux = gp;
 			gp = newPiece;
 			gp.setNext(aux);
 			putPlayers(players,i-1);
 		}
-		System.out.println(gp.getNumber()+" ->");
-		System.out.println(gp.getNext().getNumber());
-		System.out.println(gp.getNext().getNext().getNumber());
-		System.out.println(gp.getNext().getNext().getNext().getNumber());
+		//System.out.println(gp.getNumber()+" ->");
+		//System.out.println(gp.getNext().getNumber());
+		//System.out.println(gp.getNext().getNext().getNumber());
+		//System.out.println(gp.getNext().getNext().getNext().getNumber());
 	}
 
 	private int numberToHisBase(int number){
@@ -409,7 +414,7 @@ public class Board {
 	
 	public Node toTheRight(Node right) {
 		if(right.getNext()==null) {
-			boardString += "[ "+right.getPosition()+" "+right.getRealPosition();
+			boardString += "[ "+right.getPosition();//+" ";+right.getRealPosition();
 			if(right.getPiece()!=null){
 				boardString += " "+right.getPieceString();
 			}
@@ -427,7 +432,7 @@ public class Board {
 			return right;
 		}
 		else {
-			boardString += "[ "+right.getPosition()+" "+right.getRealPosition();
+			boardString += "[ "+right.getPosition();//+" "+right.getRealPosition();
 			if(right.getPiece()!=null){
 				boardString += " "+right.getPieceString();
 			}
