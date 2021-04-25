@@ -180,21 +180,25 @@ public class MainGUIController implements Initializable, CSSIDs {
     void startGame(ActionEvent event) {
         ((Stage) playersLV.getScene().getWindow()).close();
         ((Stage) mainPane.getScene().getWindow()).close();
-        game = new Board(4, 4, 3, 3, 2);
+        game = new Board(10, 10, 3, 3, 2);
         GridPane board = boardGP;
-        tileAP.setMinSize(750.0/game.getColumns(),750.0/game.getRows());
-        tileAP.setMaxSize(750.0/game.getColumns(),750.0/game.getRows());
-        tileAP.setPrefSize(750.0/game.getColumns(),750.0/game.getRows());
-        System.out.println(tileAP.getPrefHeight() + "x" + tileAP.getPrefWidth());
-        board.setAlignment(Pos.CENTER);
-        board.setPrefSize(750, 750);
-        board.setMinSize(750, 750);
-        board.setMaxSize(750, 750);
-        board.setHgap(5);
-        board.setVgap(5);
+        board = gridProperties(board);
         board = initializeBoard(0, board, 0, 0);
         launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE);
         boardPane.setCenter(board);
+    }
+
+    GridPane gridProperties(GridPane grid) {
+        grid.setAlignment(Pos.CENTER);
+        tileAP.setMinSize(750.0/game.getColumns(),750.0/game.getRows());
+        tileAP.setMaxSize(750.0/game.getColumns(),750.0/game.getRows());
+        tileAP.setPrefSize(750.0/game.getColumns(),750.0/game.getRows());
+        grid.setPrefSize(750, 750);
+        grid.setMinSize(750, 750);
+        grid.setMaxSize(750, 750);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        return grid;
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
@@ -205,7 +209,7 @@ public class MainGUIController implements Initializable, CSSIDs {
                 x = 0;
                 y++;
             }
-            System.out.println(x + "," + y);
+            System.out.println("-Column: " + (x + 1) + ", Row: " + (y + 1));
             //System.out.println(i+1);
 
             System.out.println(i+1);
