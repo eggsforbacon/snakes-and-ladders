@@ -302,7 +302,7 @@ public class Board {
 			return seeInformation(down.getDown());
 		}
 	}
-	
+
 	public Node getANode(int number,Node node) {
 		if(node.getDown()==null) {
 			return advance(node,number);
@@ -339,8 +339,43 @@ public class Board {
 			}
 		}
 	}
-	
-	
+
+	public Node getABox(int number,Node node) {
+		if(node.getDown()==null) {
+			return advance2(node,number);
+		}
+		else {
+			if(advance2(node,number)!=null){
+				//System.out.println(" entra ");
+				return advance2(node,number);
+			}
+			else {
+				return getABox(number,node.getDown());
+			}
+
+		}
+	}
+
+	public Node advance2(Node right,int number) {
+		if(right.getNext()==null) {
+			if(right.getRealPosition()==number) {
+				return right;
+			}
+			else {
+				//System.out.println("aca esta el error");
+				return null;
+			}
+
+		}
+		else {
+			if(right.getRealPosition()==number) {
+				return right;
+			}
+			else {
+				return advance2(right.getNext(),number);
+			}
+		}
+	}
 	
 	public boolean toDown(Node down) {
 		if(down.getDown()==null) {
