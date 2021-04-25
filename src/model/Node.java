@@ -26,9 +26,10 @@ public class Node {
     	piece = null;
     }
 
-    public void addPiece(GamePiece add){ ;
-		add.setNext(piece);
-		piece = add;
+    public void addPiece(GamePiece add){
+    	GamePiece aux = new GamePiece(add.getCharacter(), add.getPath(), add.getNumber());
+		aux.setNext(piece);
+		piece = aux;
 	}
 
     public void deletePiece(GamePiece delete,GamePiece start){

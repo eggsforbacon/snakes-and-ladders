@@ -5,6 +5,7 @@ import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Preloader;
 
 public class Board {
+	private Node start;
 	private Node matrix;
 	private int rows;
 	private int columns;
@@ -21,6 +22,7 @@ public class Board {
 
 	
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
+		start = new Node(0,0);
 		gp=null;
 		this.rows = rows;
 		this.columns = columns;
@@ -32,12 +34,13 @@ public class Board {
 		addToSavedNumbers(size);
 		startBoard();
 		putPlayers(players);
-		//System.out.println(" posicion real "+getABox(7).getPosition());
-
-		//System.out.println(gp.getNumber());
-		//System.out.println(gp.getNext().getNumber());
-		//System.out.println(gp.getNext().getNext().getNumber());
-		//System.out.println(gp.getNext().getNext().getNext().getNumber());
+		System.out.println("Esto es lo que detecta como guardado");
+		System.out.println(gp.getNumber());
+		System.out.println(gp.getNext().getNumber());
+		System.out.println(gp.getNext().getNext().getNumber());
+		System.out.println(gp.getNext().getNext().getNext().getNumber());
+		System.out.println("Busquemos errores");
+		System.out.println(gpAt(3).getNumber());
 		
 	}
 
@@ -47,6 +50,7 @@ public class Board {
 			upper = upper(matrix);
 			putLadders(ladders);
 			putSnakes(snakes);
+			start.setNext(matrix);
 		}
 		catch (NullPointerException e){
 			System.out.println("Lo improbable sucedio");
@@ -74,7 +78,6 @@ public class Board {
 	}
 
 	private GamePiece gpAt(int index,GamePiece aux) {
-		System.out.println(aux.getNumber());
 		if (aux == null) {
 			System.out.println("EN SERIO ....");
 			return null;
@@ -83,6 +86,7 @@ public class Board {
 			System.out.println("entro aqui pero no entendio ");
 			System.out.println(aux.getNumber());
 			if(aux.getNumber()==index){
+				System.out.println("funciono");
 				return aux;
 			}
 			else{
@@ -118,7 +122,8 @@ public class Board {
 		int actualBox = gpAt(aux).getActualBox();
 		System.out.println("Se pone en la casilla "+actualBox);
 		if(previousBox!=0){
-			getANode(previousBox,upper).deletePiece(gpAt(aux),upper.getPiece());
+			System.out.println("algo se borro wtf");
+			getANode(previousBox,upper).deletePiece(gpAt(aux),matrix.getPiece());
 		}
 		if(getANode(actualBox,upper).getTypeOfBox()==1){
 			useALadder(actualBox,aux);
@@ -196,6 +201,8 @@ public class Board {
 		}
 		System.out.println(gp.getNumber()+" ->");
 		System.out.println(gp.getNext().getNumber());
+		System.out.println(gp.getNext().getNext().getNumber());
+		System.out.println(gp.getNext().getNext().getNext().getNumber());
 	}
 
 	private int numberToHisBase(int number){
