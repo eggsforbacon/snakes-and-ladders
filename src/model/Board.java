@@ -1,8 +1,7 @@
 package model;
 
-import com.sun.javafx.application.LauncherImpl;
+import exceptions.GameAlreadyWonException;
 
-import javafx.application.Preloader;
 
 public class Board {
 	private Node start;
@@ -14,21 +13,29 @@ public class Board {
 	private int snakes;
 	private int size;
 	private GamePiece gp;
+	private GamePiece winnerGP;
 	private int turn;
 	private SavedNumber first;
 	private String boardString="";
 	private String boxesInformation="";
 	private Node upper;
+	private String movementInformation;
+	private String characters;
+	private char winnerPiece;
 
 	
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
 		start = new Node(0,0);
 		gp=null;
+		winnerGP = null;
+		winnerPiece = ' ';
+		movementInformation = "";
 		this.rows = rows;
 		this.columns = columns;
 		this.ladders = ladders;
 		this.snakes=snakes;
 		this.players = players;
+		characters = "";
 		turn = 1;
 		size = rows*columns;
 		addToSavedNumbers(size);
@@ -55,6 +62,7 @@ public class Board {
 		catch (NullPointerException e){
 			System.out.println("Lo improbable sucedio");
 			first=null;
+			addToSavedNumbers(size);
 			startBoard();
 		}
 	}
@@ -114,7 +122,7 @@ public class Board {
 		return first+((r+1)*change);
 	}
 
-	public void movePieces(){
+	public void movePieces() throws  GameAlreadyWonException{
 		boardString = "";
 		int aux = turnToHisBase(turn-1);
 		//System.out.println(turn);
@@ -123,8 +131,10 @@ public class Board {
 		int previousBox=gpAt(aux).getPreviousBox();
 		int actualBox = gpAt(aux).getActualBox();
 		if(actualBox >= size){
-			System.out.println("Tenemos un ganador");
-			return;
+			winnerGP = gpAt(aux);
+			winnerPiece = winnerGP.getCharacter();
+			winnerGP.setNext(null);
+			throw new GameAlreadyWonException();
 		}
 		//System.out.println("Se pone en la casilla "+actualBox);
 		if(previousBox!=0){
@@ -500,5 +510,52 @@ public class Board {
 
 	public int getColumns() {
 		return columns;
+	}
+
+	public String getMovementInformation() {
+		return movementInformation;
+	}
+
+	public void setMovementInformation(String movementInformation) {
+		this.movementInformation = movementInformation;
+	}
+
+	public GamePiece getWinnerGP() {
+		return winnerGP;
+	}
+
+	public void setWinnerGP(GamePiece winnerGP) {
+		this.winnerGP = winnerGP;
+	}
+
+	public int getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(int players) {
+		this.players = players;
+	}
+
+	public String getCharacters(){
+		getCharacters(gp);
+		return characters;
+	}
+
+	public void getCharacters(GamePiece g){
+		if(g==null){
+			characters += "";
+		}
+		else{
+			characters+=g.getCharacter();
+			getCharacters(g.getNext());
+		}
+	}
+
+	public char getWinnerPiece() {
+		return winnerPiece;
+	}
+
+	public void setWinnerPiece(char winnerPiece) {
+		this.winnerPiece = winnerPiece;
 	}
 }
