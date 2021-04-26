@@ -169,6 +169,8 @@
   -fx-text-fill: #1da616;
 }
 
+/*Board styles*/
+
 #roll-lbl {
   -fx-text-fill: #f5f7fa;
   -fx-stroke: black;
@@ -181,8 +183,6 @@
   -fx-background-color: #58b08b;
   -fx-background-radius: 5;
 }
-
-/*Board styles*/
 
 #even-tile {
   -fx-background-color: #f5aa42;

@@ -1,0 +1,29 @@
+.root {
+  -fx-font-family: "Helvetica";
+  -fx-font-size: 15px;
+}
+
+#close-button {
+  -fx-pref-width: 135.0;
+  -fx-pref-height: 25.0;
+  -fx-font-weight: bold;
+  -fx-font-size: 18px;
+  -fx-background-radius: 7;
+  -fx-background-color: #1071e0;
+  -fx-text-fill: #d9f1ff;
+  -fx-skin: 'ui.skins.ButtonHoverSkinBlue';
+}
+
+#close-button:hover {
+  -fx-text-fill: #08a4c7;
+}
+
+.label {
+  -fx-font-weight: bold;
+  -fx-font-size: 16px;
+  -fx-text-fill: #0d53b5;
+}
+
+#border-pane {
+  -fx-background-color: #76bae8;
+}

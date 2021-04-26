@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane id="player-ank" prefHeight="153.0" prefWidth="477.0" stylesheets="@../../css/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="player-ank" prefHeight="232.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -23,7 +24,28 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label id="player-lbl" text="Player Color" />
-                  <ColorPicker fx:id="colorPicker" prefHeight="38.0" prefWidth="216.0" />
+                  <HBox alignment="CENTER" prefHeight="29.0" prefWidth="277.0">
+                     <children>
+                        <RadioButton id="color1" mnemonicParsing="false">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="colors" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton id="color2" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color3" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color4" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color5" mnemonicParsing="false" toggleGroup="$colors" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="29.0" prefWidth="277.0">
+                     <children>
+                        <RadioButton id="color6" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color7" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color8" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color9" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color10" mnemonicParsing="false" toggleGroup="$colors" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
@@ -43,4 +65,8 @@
          </children>
       </HBox>
    </bottom>
+   <stylesheets>
+      <URL value="@../../css/radio-button.css" />
+      <URL value="@../../css/main.css" />
+   </stylesheets>
 </BorderPane>

@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.*;
 
+import javax.swing.event.ChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -34,6 +36,17 @@ public class MainGUIController implements Initializable, CSSIDs {
     private Label progress;
 
     public static Label label;
+
+    /*Dialogue Pane*/
+
+    @FXML
+    private BorderPane dialoguePane;
+
+    @FXML
+    private Label dialogueLBL = new Label();
+
+    @FXML
+    private Button dialogueButton;
 
     /*Main Pane*/
 
@@ -68,6 +81,10 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     private TextField laddersTF;
+
+    Tooltip colRowTT = new Tooltip("Please use integer numbers between 4 and 10.\nGoing above 10 is discouraged to avoid\nmemory shortage.");
+
+    Tooltip snakeLadderTT = new Tooltip("Keep the sum of snakes and ladders to a\nquarter of the size of the board to avoid\novercrowding.");
 
     //Add Player
 
@@ -135,14 +152,14 @@ public class MainGUIController implements Initializable, CSSIDs {
         eraseAllDataBTN.setId(mainPaneButtonsID);
     }
 
-    private void launchWindow(String fxml, String title, Modality modality) {
+    private void launchWindow(String fxml, String title, Modality modality, String stylesheet) {
         try {
             Parent loadedPane = loadFxml(fxml);
             Stage stage = new Stage();
             stage.setScene(new Scene(loadedPane));
             Image icon = new Image(String.valueOf(getClass().getResource("resources/snl-logo.png")));
             stage.getIcons().add(icon);
-            stage.getScene().getStylesheets().addAll(String.valueOf(getClass().getResource("css/main.css")));
+            stage.getScene().getStylesheets().addAll(String.valueOf(getClass().getResource(stylesheet)));
             stage.setTitle(title);
             stage.initModality(modality);
             stage.setResizable(false);
@@ -164,6 +181,13 @@ public class MainGUIController implements Initializable, CSSIDs {
         }
     }
 
+    /*Dialogue Pane*/
+
+    @FXML
+    void dismissDialogue(ActionEvent event) {
+
+    }
+
     /*Main Pane*/
 
     private void initializeMainMenu() {
@@ -177,14 +201,19 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void newGame(ActionEvent event) {
-        launchWindow("fxml/board/create-board.fxml", "Create new game", Modality.APPLICATION_MODAL);
+        launchWindow("fxml/board/create-board.fxml", "Create new game", Modality.APPLICATION_MODAL,"css/main.css");
+        rowsTF.setTooltip(colRowTT);
+        columnsTF.setTooltip(colRowTT);
+        snakesTF.setTooltip(snakeLadderTT);
+        laddersTF.setTooltip(snakeLadderTT);
     }
 
     //Pre Game
 
     @FXML
     void addPlayer(ActionEvent event) {
-
+        launchWindow("fxml/board/add-player.fxml","Add Player",Modality.APPLICATION_MODAL,"css/main.css");
+        
     }
 
     @FXML
@@ -199,14 +228,46 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void startGame(ActionEvent event) {
-        ((Stage) playersLV.getScene().getWindow()).close();
-        ((Stage) mainPane.getScene().getWindow()).close();
-        game = new Board(5, 5, 3, 3, 2);
-        GridPane board = boardGP;
-        board = gridProperties(board);
-        board = initializeBoard(0, board, 0, 0);
-        launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE);
-        boardPane.setCenter(board);
+        String wrong = "";
+        try {
+            int rows = Integer.parseInt(rowsTF.getText());
+            int columns = Integer.parseInt(columnsTF.getText());
+            int snakes = Integer.parseInt(snakesTF.getText());
+            int ladders = Integer.parseInt(laddersTF.getText());
+            int players = playersLV.getItems().size();
+            int size = rows * columns;
+            int specialTiles = (2 * snakes) + (2 * ladders);
+
+            if (rowsTF.getText().isEmpty() || columnsTF.getText().isEmpty() || snakesTF.getText().isEmpty() || laddersTF.getText().isEmpty()) {
+                wrong = "Some fields are empty. Try again";
+                throw new IllegalStateException();
+            }
+
+            if (size > 144) throw new ArithmeticException("The size is too big. Please remain between 4 and 10");
+            else if (size < 16) throw new ArithmeticException("The size is too small. Please remain between 4 and 10");
+            if (specialTiles * 2 > size) throw new ArithmeticException("There are too many snakes and ladders. Make sure you don't exceed a quarter of the tiles");
+            if (players == 0) throw new ArithmeticException("No players detected. Please try again");
+
+            game = new Board(rows, columns, snakes, ladders, players);
+            ((Stage) playersLV.getScene().getWindow()).close();
+            ((Stage) mainPane.getScene().getWindow()).close();
+            GridPane board = boardGP;
+            board = gridProperties(board);
+            board = initializeBoard(0, board, 0, 0);
+            launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE,"css/main.css");
+            boardPane.setCenter(board);
+        } catch (NumberFormatException nfe) {
+            wrong = "Make sure you enter an integer number and try again.";
+        } catch (ArithmeticException | IllegalStateException aise) {
+            wrong = aise.getMessage();
+            System.out.println(wrong);
+        }
+        finally {
+            if (!wrong.isEmpty()) {
+                launchWindow("fxml/dialogue.fxml","Error",Modality.APPLICATION_MODAL,"css/dialogue-blue.css");
+                dialogueLBL.setText(wrong);
+            }
+        }
     }
 
     GridPane gridProperties(GridPane grid) {

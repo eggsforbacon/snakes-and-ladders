@@ -1,0 +1,45 @@
+.radio-button .radio {
+  -fx-border-color: black;
+  -fx-border-radius: 15;
+  -fx-border-width: 2px;
+}
+
+#color1 .radio {
+  -fx-background-color: #c1272d;
+}
+
+#color2 .radio {
+  -fx-background-color: #f15a24;
+}
+
+#color3 .radio {
+  -fx-background-color: #29abe2;
+}
+
+#color4 .radio {
+  -fx-background-color: #00008e;
+}
+
+#color5 .radio {
+  -fx-background-color: #fbd850;
+}
+
+#color6 .radio {
+  -fx-background-color: #39b54a;
+}
+
+#color7 .radio {
+  -fx-background-color: #dd3358;
+}
+
+#color8 .radio {
+  -fx-background-color: #93278f;
+}
+
+#color9 .radio {
+  -fx-background-color: #c9e636;
+}
+
+#color10 .radio {
+  -fx-background-color: #dfdfdf;
+}
