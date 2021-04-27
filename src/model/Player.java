@@ -38,9 +38,6 @@ public class Player {
         return score;
     }
 
-    public Player getNext() {
-        return next;
-    }
 
 
     /*Setters*/
@@ -53,9 +50,6 @@ public class Player {
         this.score = score;
     }
 
-    public void setNext(Player next) {
-        this.next = next;
-    }
 
 
     public int getRows() {
