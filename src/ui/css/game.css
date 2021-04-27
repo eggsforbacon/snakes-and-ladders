@@ -1,0 +1,78 @@
+.root {
+  -fx-font-family: "Helvetica";
+  -fx-font-size: 15px;
+}
+
+.label {
+  -fx-text-fill: #a83939;
+}
+
+.button {
+  -fx-text-fill: #e8dcd1;
+  -fx-background-color: #e88527;
+  -fx-font-weight: bold;
+  -fx-font-size: 18px;
+  -fx-background-radius: 7;
+  -fx-pref-width: 155.0;
+  -fx-pref-height: 35.0;
+  -fx-skin: 'ui.skins.ButtonHoverSkinOrange';
+}
+
+.button:hover {
+  -fx-text-fill: #e88527;
+}
+
+.table-view {
+  -fx-background-color: #1e83ba;
+  -fx-background-radius: 7, 0, 0, 7;
+}
+
+.table-view .column-header {
+  -fx-background-color: #4c5463;
+  -fx-border-color: black;
+  -fx-background-radius: 0, 7, 7, 0;
+}
+
+.table-view .column-header .label, .table-view .placeholder .label {
+    -fx-text-fill: #f5f7fa;
+    -fx-font-weight: bold;
+}
+
+.grid-pane {
+  -fx-background-radius: 8;
+}
+
+#roll-lbl {
+  -fx-text-fill: #f5f7fa;
+  -fx-stroke: black;
+  -fx-stroke-width: 3px;
+  -fx-font-size: 22px;
+  -fx-font-weight: bold;
+}
+
+#game-sidebar {
+  -fx-background-color: #58b08b;
+  -fx-background-radius: 5;
+}
+
+#even-tile {
+  -fx-background-color: #f5aa42;
+  -fx-background-radius: 8;
+}
+
+#odd-tile {
+  -fx-background-color: #e06928;
+  -fx-background-radius: 8;
+}
+
+#tile-numbers {
+  -fx-text-fill: #202121;
+  -fx-font-size: 17px;
+  -fx-font-weight: bold;
+}
+
+#timer-lbl {
+  -fx-text-fill: #e04846;
+  -fx-font-size: 17px;
+  -fx-font-weight: bold;
+}

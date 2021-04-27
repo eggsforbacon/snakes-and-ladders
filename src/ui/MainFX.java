@@ -10,13 +10,16 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.Game;
 
 public class MainFX extends Application {
 
     static final int COUNT_LIMIT = 5500; //<- Number CAN'T UNDER ANY CIRCUMSTANCES be greater than this
     MainGUIController controller;
+    Game game;
     public MainFX() {
-        controller = new MainGUIController();
+        game = new Game();
+        controller = new MainGUIController(game);
     }
 
     public static void main(String[] args) {

@@ -26,24 +26,24 @@
                   <Label id="player-lbl" text="Player Color" />
                   <HBox alignment="CENTER" prefHeight="29.0" prefWidth="277.0">
                      <children>
-                        <RadioButton id="color1" mnemonicParsing="false">
+                        <RadioButton id="color1" fx:id="redRB" mnemonicParsing="false">
                            <toggleGroup>
                               <ToggleGroup fx:id="colors" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton id="color2" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color3" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color4" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color5" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color2" fx:id="orangeRB" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color3" fx:id="cyanRB" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color4" fx:id="darkBlueRB" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color5" fx:id="yellowRB" mnemonicParsing="false" toggleGroup="$colors" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="29.0" prefWidth="277.0">
                      <children>
-                        <RadioButton id="color6" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color7" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color8" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color9" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color10" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color6" fx:id="greenRB" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color7" fx:id="pinkRB" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color8" fx:id="purpleRB" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color9" fx:id="limeRB" mnemonicParsing="false" toggleGroup="$colors" />
+                        <RadioButton id="color10" fx:id="whiteRB" mnemonicParsing="false" toggleGroup="$colors" />
                      </children>
                   </HBox>
                </children>

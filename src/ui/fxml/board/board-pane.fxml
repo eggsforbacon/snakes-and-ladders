@@ -7,9 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 
 <BorderPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="860.0" prefWidth="1120.0" style="-fx-background-color: #f7e1c3; -fx-background-radius: 15;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <right>
@@ -21,7 +19,6 @@
             <Label id="roll-lbl" text="Roll dice!" />
             <ImageView fx:id="diceIMV" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#rollDice" pickOnBounds="true" preserveRatio="true" />
             <Button mnemonicParsing="false" onAction="#restartGame" text="Restart Game" />
-            <Button mnemonicParsing="false" onAction="#skipTurn" text="Skip Turn" />
             <TableView fx:id="localLeaderboardTBV" prefHeight="374.0" prefWidth="300.0">
               <columns>
                 <TableColumn fx:id="nameColBoard" prefWidth="75.0" text="Name" />
@@ -31,7 +28,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Label fx:id="timerLBL" text="00:00:00" />
+            <Label id="timer-lbl" fx:id="timerLBL" text="00:00:00" />
             <Button mnemonicParsing="false" onAction="#endGame" text="End Game" />
          </children>
          <padding>

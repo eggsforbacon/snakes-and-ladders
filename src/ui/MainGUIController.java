@@ -1,6 +1,8 @@
 package ui;
 
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,7 @@ import model.*;
 
 import javax.swing.event.ChangeListener;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainGUIController implements Initializable, CSSIDs {
@@ -48,6 +51,13 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private Button dialogueButton;
 
+    @FXML
+    private HBox bBarHBOX;
+
+    @FXML
+    private Button confirmDialogueBTN;
+
+
     /*Main Pane*/
 
     @FXML
@@ -61,6 +71,9 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     private Button eraseAllDataBTN;
+
+    @FXML
+    private Button closeGameBTN;
 
     @FXML
     private Label mainTitleLBL;
@@ -92,7 +105,37 @@ public class MainGUIController implements Initializable, CSSIDs {
     private TextField playernameTF;
 
     @FXML
-    private ColorPicker colorPicker;
+    private ToggleGroup colors;
+
+    @FXML
+    private RadioButton redRB;
+
+    @FXML
+    private RadioButton orangeRB;
+
+    @FXML
+    private RadioButton cyanRB;
+
+    @FXML
+    private RadioButton darkBlueRB;
+
+    @FXML
+    private RadioButton yellowRB;
+
+    @FXML
+    private RadioButton greenRB;
+
+    @FXML
+    private RadioButton pinkRB;
+
+    @FXML
+    private RadioButton purpleRB;
+
+    @FXML
+    private RadioButton limeRB;
+
+    @FXML
+    private RadioButton whiteRB;
 
     /*Game Pane*/
 
@@ -132,7 +175,11 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     /*Fields*/
 
-    Board game = null;
+    Game game;
+
+    public MainGUIController(Game game) {
+        this.game = game;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -150,6 +197,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         newGameBTN.setId(mainPaneButtonsID);
         scoreBoardBTN.setId(mainPaneButtonsID);
         eraseAllDataBTN.setId(mainPaneButtonsID);
+
     }
 
     private void launchWindow(String fxml, String title, Modality modality, String stylesheet) {
@@ -185,7 +233,14 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void dismissDialogue(ActionEvent event) {
+        ((Stage)dialoguePane.getScene().getWindow()).close();
+    }
 
+    @FXML
+    void confirmDialogue(ActionEvent event) {
+        ((Stage)confirmDialogueBTN.getScene().getWindow()).close();
+        ((Stage)boardGP.getScene().getWindow()).close();
+        launchWindow("fxml/main-pane.fxml","Snakes and Ladders: Start",Modality.NONE,"css/main.css");
     }
 
     /*Main Pane*/
@@ -200,8 +255,13 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     @FXML
+    void closeGame(ActionEvent event) {
+        ((Stage)mainPane.getScene().getWindow()).close();
+    }
+
+    @FXML
     void newGame(ActionEvent event) {
-        launchWindow("fxml/board/create-board.fxml", "Create new game", Modality.APPLICATION_MODAL,"css/main.css");
+        launchWindow("fxml/board/create-board.fxml", "Create new game", Modality.APPLICATION_MODAL,"css/create-game.css");
         rowsTF.setTooltip(colRowTT);
         columnsTF.setTooltip(colRowTT);
         snakesTF.setTooltip(snakeLadderTT);
@@ -212,18 +272,76 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void addPlayer(ActionEvent event) {
-        launchWindow("fxml/board/add-player.fxml","Add Player",Modality.APPLICATION_MODAL,"css/main.css");
-        
+        launchWindow("fxml/board/add-player.fxml","Add Player",Modality.APPLICATION_MODAL,"css/create-game.css");
     }
 
     @FXML
     void cancelPlayer(ActionEvent event) {
-
+        ((Stage)playernameTF.getScene().getWindow()).close();
     }
 
     @FXML
     void confirmPlayer(ActionEvent event) {
+        String wrong = "";
+        try {
+            String playerName = playernameTF.getText();
+            if (playerName.isEmpty()) throw new IllegalStateException("Please introduce a valid player name. Try again");
+            String color;
+            if (redRB.isSelected()) {
+                redRB.setDisable(true);
+                color = Colors.getHexValue(0);
+            }
+            else if (orangeRB.isSelected()) {
+                orangeRB.setDisable(true);
+                color = Colors.getHexValue(1);
+            }
+            else if (cyanRB.isSelected()) {
+                cyanRB.setDisable(true);
+                color = Colors.getHexValue(2);
+            }
+            else if (darkBlueRB.isSelected()) {
+                darkBlueRB.setDisable(true);
+                color = Colors.getHexValue(3);
+            }
+            else if (yellowRB.isSelected()) {
+                yellowRB.setDisable(true);
+                color = Colors.getHexValue(4);
+            }
+            else if (greenRB.isSelected()) {
+                greenRB.setDisable(true);
+                color = Colors.getHexValue(5);
+            }
+            else if (pinkRB.isSelected()) {
+                pinkRB.setDisable(true);
+                color = Colors.getHexValue(6);
+            }
+            else if (purpleRB.isSelected()) {
+                purpleRB.setDisable(true);
+                color = Colors.getHexValue(7);
+            }
+            else if (limeRB.isSelected()) {
+                limeRB.setDisable(true);
+                color = Colors.getHexValue(8);
+            }
+            else if (whiteRB.isSelected()) {
+                whiteRB.setDisable(true);
+                color = Colors.getHexValue(9);
+            }
+            else throw new IllegalStateException("No color selection. Try again");
 
+            playersLV.getItems().add(playerName);
+            //game.getBoard().addG() <- Pending
+
+        } catch (IllegalStateException ise) {
+            wrong = ise.getMessage();
+        } finally {
+            if (!wrong.isEmpty()) {
+                launchWindow("fxml/dialogue.fxml","Error",Modality.APPLICATION_MODAL,"css/dialogue-green.css");
+                dialogueLBL.setText(wrong);
+            } else {
+                ((Stage)playernameTF.getScene().getWindow()).close();
+            }
+        }
     }
 
     @FXML
@@ -246,15 +364,15 @@ public class MainGUIController implements Initializable, CSSIDs {
             if (size > 144) throw new ArithmeticException("The size is too big. Please remain between 4 and 10");
             else if (size < 16) throw new ArithmeticException("The size is too small. Please remain between 4 and 10");
             if (specialTiles * 2 > size) throw new ArithmeticException("There are too many snakes and ladders. Make sure you don't exceed a quarter of the tiles");
-            if (players == 0) throw new ArithmeticException("No players detected. Please try again");
+            if (players < 2) throw new ArithmeticException("No players detected. Please try again");
 
-            game = new Board(rows, columns, snakes, ladders, players);
+            game.startGame(rows,columns,snakes,ladders,players);
             ((Stage) playersLV.getScene().getWindow()).close();
             ((Stage) mainPane.getScene().getWindow()).close();
             GridPane board = boardGP;
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
-            launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE,"css/main.css");
+            launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE,"css/game.css");
             boardPane.setCenter(board);
         } catch (NumberFormatException nfe) {
             wrong = "Make sure you enter an integer number and try again.";
@@ -272,9 +390,9 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     GridPane gridProperties(GridPane grid) {
         grid.setAlignment(Pos.CENTER);
-        tileAP.setMinSize(750.0/game.getColumns(),750.0/game.getRows());
-        tileAP.setMaxSize(750.0/game.getColumns(),750.0/game.getRows());
-        tileAP.setPrefSize(750.0/game.getColumns(),750.0/game.getRows());
+        tileAP.setMinSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
+        tileAP.setMaxSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
+        tileAP.setPrefSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
         grid.setPrefSize(750, 750);
         grid.setMinSize(750, 750);
         grid.setMaxSize(750, 750);
@@ -285,14 +403,14 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
         System.out.println(" i es "+i);
-        if(game.getABox(i) != null){
-            Label number = new Label(String.valueOf(game.getABox(i).getPosition()));
+        if(game.getBoard().getABox(i) != null){
+            Label number = new Label(String.valueOf(game.getBoard().getABox(i).getPosition()));
             number.setId("tile-numbers");
             tileAP.getChildren().add(number);
         }
-        if (i < game.getSize()) {
+        if (i < game.getBoard().getSize()) {
             Parent tile;
-            if (x == game.getColumns()) {
+            if (x == game.getBoard().getColumns()) {
                 x = 0;
                 y++;
             }
@@ -345,11 +463,12 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void endGame(ActionEvent event) {
-
-    }
-
-    @FXML
-    void skipTurn(ActionEvent event) {
-
+        launchWindow("fxml/dialogue.fxml","Exit",Modality.APPLICATION_MODAL,"css/dialogue-orange.css");
+        dialogueLBL.setText("Are you sure you want to end the game?");
+        bBarHBOX.setSpacing(10.0);
+        confirmDialogueBTN.setId("close-button");
+        confirmDialogueBTN.setMinHeight(Button.USE_COMPUTED_SIZE);
+        confirmDialogueBTN.setText("End Game");
+        dialogueButton.setText("Cancel");
     }
 }

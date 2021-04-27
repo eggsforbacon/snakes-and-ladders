@@ -47,4 +47,8 @@ public class Game {
         Player newPlayer = new Player(name,actualWinner.getScore(), actualWinner.getRows(), actualWinner.getColumns(), actualWinner.getLadders(), actualWinner.getSnakes(), actualWinner.getPlayers(), actualWinner.getCharacters(), actualWinner.getWinner());
 
     }
+
+    public Board getBoard() {
+        return gameBoard;
+    }
 }

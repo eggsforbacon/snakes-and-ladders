@@ -3,6 +3,11 @@
   -fx-font-size: 15px;
 }
 
+#confirm-btn {
+  -fx-pref-width: 0;
+  -fx-pref-height: 0;
+}
+
 #close-button {
   -fx-pref-width: 135.0;
   -fx-pref-height: 25.0;
