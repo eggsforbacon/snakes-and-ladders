@@ -25,7 +25,7 @@ public class Game {
                 gameBoard.movePieces();
                 return gameBoard.getMovementInformation();
             } catch(GameAlreadyWonException w){
-                int score = gameBoard.getWinnerGP().getMovements()*gameBoard.getSize();
+                int score = gameBoard.getWinnerGP().getMovements()/gameBoard.getSize();
                 int rows = gameBoard.getRows();
                 int columns = gameBoard.getColumns();
                 int ladders = gameBoard.getLadders();
@@ -45,7 +45,28 @@ public class Game {
 
     public void createWinner(String name){
         Player newPlayer = new Player(name,actualWinner.getScore(), actualWinner.getRows(), actualWinner.getColumns(), actualWinner.getLadders(), actualWinner.getSnakes(), actualWinner.getPlayers(), actualWinner.getCharacters(), actualWinner.getWinner());
+        bestScores = insertPlayer(bestScores,newPlayer);
+    }
+    public Player insertPlayer(Player r, Player newPlayer)
+    {
 
+        /* If the tree is empty,
+        return a new node */
+        if (r == null)
+        {
+            r = newPlayer;
+            return r;
+        }
+
+        /* Otherwise, recur
+        down the tree */
+        if (newPlayer.getScore() < r.getScore())
+            r.setLeft(insertPlayer(r.getLeft(),newPlayer));
+        else if (newPlayer.getScore() > r.getScore())
+            r.setRight(insertPlayer(r.getRight(),newPlayer));
+
+        /* return the root */
+        return r;
     }
 
     public Board getBoard() {

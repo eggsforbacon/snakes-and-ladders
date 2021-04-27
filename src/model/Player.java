@@ -2,7 +2,8 @@ package model;
 
 public class Player {
 
-    private Player next;
+    private Player right;
+    private Player left;
     private String name;
     private int rows;
     private int columns;
@@ -23,6 +24,8 @@ public class Player {
         this.characters = characters;
         this.winner = winner;
         this.score = score;
+        this.right = null;
+        this.left = null;
     }
 
     /*Getters*/
@@ -109,5 +112,21 @@ public class Player {
 
     public void setWinner(char winner) {
         this.winner = winner;
+    }
+
+    public Player getRight() {
+        return right;
+    }
+
+    public void setRight(Player right) {
+        this.right = right;
+    }
+
+    public Player getLeft() {
+        return left;
+    }
+
+    public void setLeft(Player left) {
+        this.left = left;
     }
 }
