@@ -43,7 +43,6 @@
                         <RadioButton id="color7" fx:id="pinkRB" mnemonicParsing="false" toggleGroup="$colors" />
                         <RadioButton id="color8" fx:id="purpleRB" mnemonicParsing="false" toggleGroup="$colors" />
                         <RadioButton id="color9" fx:id="limeRB" mnemonicParsing="false" toggleGroup="$colors" />
-                        <RadioButton id="color10" fx:id="whiteRB" mnemonicParsing="false" toggleGroup="$colors" />
                      </children>
                   </HBox>
                </children>

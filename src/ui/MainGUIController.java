@@ -134,9 +134,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private RadioButton limeRB;
 
-    @FXML
-    private RadioButton whiteRB;
-
     /*Game Pane*/
 
     @FXML
@@ -322,10 +319,6 @@ public class MainGUIController implements Initializable, CSSIDs {
             else if (limeRB.isSelected()) {
                 limeRB.setDisable(true);
                 color = Colors.getHexValue(8);
-            }
-            else if (whiteRB.isSelected()) {
-                whiteRB.setDisable(true);
-                color = Colors.getHexValue(9);
             }
             else throw new IllegalStateException("No color selection. Try again");
 
