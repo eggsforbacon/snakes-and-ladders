@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.GameAlreadyWonException;
 import model.*;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -151,6 +152,9 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     private TimerTask task;
 
+    @FXML
+    private Label turnLBL;
+
     //Tiles
 
     @FXML
@@ -278,7 +282,6 @@ public class MainGUIController implements Initializable, CSSIDs {
             int columns = Integer.parseInt(columnsTF.getText());
             int snakes = Integer.parseInt(snakesTF.getText());
             int ladders = Integer.parseInt(laddersTF.getText());
-            int players = 0;
             int size = rows * columns;
             int specialTiles = (2 * snakes) + (2 * ladders);
 
@@ -290,12 +293,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             if (size > 144) throw new ArithmeticException("The size is too big. Please remain between 4 and 10");
             else if (size < 16) throw new ArithmeticException("The size is too small. Please remain between 4 and 10");
             if (specialTiles * 2 > size) throw new ArithmeticException("There are too many snakes and ladders. Make sure you don't exceed a quarter of the tiles");
-
-            game.startGame(rows,columns,snakes,ladders,players);
             ((Stage) mainPane.getScene().getWindow()).close();
-            GridPane board = boardGP;
-            board = gridProperties(board);
-            board = initializeBoard(0, board, 0, 0);
             launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE,"css/game.css");
 
             if (redRB.isSelected()) playersLV.getItems().add(Colors.getName(0));
@@ -311,6 +309,11 @@ public class MainGUIController implements Initializable, CSSIDs {
             if (playersLV.getItems().size() < 2) throw new ArithmeticException("No player selection or not enough players selected. Try again");
 
             ((Stage) redRB.getScene().getWindow()).close();
+            int players = playersLV.getItems().size();
+            game.startGame(rows,columns,snakes,ladders,players);
+            GridPane board = boardGP;
+            board = gridProperties(board);
+            board = initializeBoard(0, board, 0, 0);
             boardPane.setCenter(board);
             timer = new Timer();
 
@@ -361,7 +364,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
-        System.out.println(" i es "+i);
+        System.out.println(" i es " + i);
         if(game.getBoard().getABox(i) != null){
             Label number = new Label(String.valueOf(game.getBoard().getABox(i).getPosition()));
             number.setId("tile-numbers");
@@ -384,7 +387,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         return board;
     }
 
-    String pickId(int x, int y) { //<-- Wouln't have to do this with loops + arrays (:
+    String pickId(int x, int y) {
         String id;
         String polarity = ((x % 2 == 0) ? "1" : "0")
                 + ((y % 2 == 0) ? "1" : "0");
@@ -419,6 +422,12 @@ public class MainGUIController implements Initializable, CSSIDs {
     void rollDice(MouseEvent event) {
         //THIS IS A TEMPORAL IMPLEMENTATION. REAL IMPLEMENTATION WILL COME WITH DICE THROW FROM GAME PIECES
         int dice = (int) Math.floor(Math.random()*(6)+1);
+        try {
+            game.getBoard().movePieces();
+            GridPane board = new GridPane();
+            board = gridProperties(board);
+            board = initializeBoard(0, board, 0, 0);
+        } catch (GameAlreadyWonException ignore) {}
         FadeTransition pop = new FadeTransition();
         pop.setDuration(Duration.millis(1000));
         pop.setFromValue(1.0);
