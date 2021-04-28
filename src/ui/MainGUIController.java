@@ -364,7 +364,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
-        System.out.println(" i es " + i);
+        
         if(game.getBoard().getABox(i) != null){
             Label number = new Label(String.valueOf(game.getBoard().getABox(i).getPosition()));
             number.setId("tile-numbers");
@@ -376,7 +376,6 @@ public class MainGUIController implements Initializable, CSSIDs {
                 x = 0;
                 y++;
             }
-            System.out.println("-Column: " + (x + 1) + ", Row: " + (y + 1));
             tile = loadFxml("fxml/board/tile.fxml");
             tile.setId(pickId(x,y));
             board.add(tile,x,y);
@@ -422,9 +421,9 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     void rollDice(MouseEvent event) {
         //THIS IS A TEMPORAL IMPLEMENTATION. REAL IMPLEMENTATION WILL COME WITH DICE THROW FROM GAME PIECES
-        int dice = (int) Math.floor(Math.random()*(6)+1);
+        int dice = 0;
         try {
-            game.getBoard().movePieces();
+            dice = game.getBoard().movePieces();
             GridPane board = new GridPane();
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
