@@ -16,6 +16,9 @@ public class Game {
     public void startGame(int rows,int columns,int snakes, int ladders, int players){
         gameBoard = new Board(rows,columns,snakes,ladders,players);
     }
+    public void startGame(int rows,int columns,int snakes,int ladders,String players){
+        gameBoard = new Board(rows,columns,snakes,ladders,players);
+    }
     public void restartGame(){
         gameBoard = null;
     }
@@ -68,6 +71,8 @@ public class Game {
         /* return the root */
         return r;
     }
+
+
 
     public Board getBoard() {
         return gameBoard;

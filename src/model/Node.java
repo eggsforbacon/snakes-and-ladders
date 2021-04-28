@@ -12,6 +12,7 @@ public class Node {
     private Node up;
     private Node down;
     private GamePiece piece;
+    private String boxInformation;
     
     public Node(int position,int realPosition) {
     	this.position = position;
@@ -24,6 +25,7 @@ public class Node {
     	up = null;
     	down = null;
     	piece = null;
+    	boxInformation = " ";
     }
 
     public void addPiece(GamePiece add){
@@ -65,7 +67,7 @@ public class Node {
 
 	public String getPieceString(GamePiece piece){
     	if(piece==null){
-    		return "";
+    		return " ";
 		}
     	else{
     		return piece.getCharacter()+getPieceString(piece.getNext());
@@ -181,5 +183,13 @@ public class Node {
 
 	public void setRealPosition(int realPosition) {
 		this.realPosition = realPosition;
+	}
+
+	public String getBoxInformation() {
+		return boxInformation;
+	}
+
+	public void setBoxInformation(String boxInformation) {
+		this.boxInformation = boxInformation;
 	}
 }

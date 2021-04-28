@@ -23,7 +23,25 @@ public class Board {
 	private String characters;
 	private char winnerPiece;
 
-	
+	public Board(int rows,int columns,int snakes, int ladders,String playersString){
+		start = new Node(0,0);
+		gp = null;
+		choosePlayers(playersString);
+		winnerGP = null;
+		winnerPiece = ' ';
+		movementInformation = "";
+		this.rows = rows;
+		this.columns = columns;
+		this.ladders = ladders;
+		this.snakes=snakes;
+		this.players = players;
+		characters = "";
+		turn = 1;
+		size = rows*columns;
+		addToSavedNumbers(size);
+		startBoard();
+	}
+
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
 		start = new Node(0,0);
 		gp=null;
@@ -49,6 +67,20 @@ public class Board {
 		//System.out.println("Busquemos errores");
 		//System.out.println(gpAt(3).getNumber());
 		
+	}
+
+	public void choosePlayers(String playersString){
+		choosePlayers(playersString,0);
+	}
+
+	public void choosePlayers(String playersString,int i){
+		if(i<playersString.length()){
+			GamePiece newPiece = new GamePiece(playersString.charAt(i),"",i);
+			GamePiece aux = gp;
+			gp = newPiece;
+			gp.setNext(aux);
+			putPlayers(players,i+1);
+		}
 	}
 
 	public void startBoard(){
@@ -127,7 +159,9 @@ public class Board {
 		int aux = turnToHisBase(turn-1);
 		//System.out.println(turn);
 		//System.out.println("Es el turno "+aux);
-		gpAt(aux).rollTheDice();
+		int dice = gpAt(aux).rollTheDice();
+		movementInformation = "Player "+gpAt(aux).getCharacter()+" has rolled the dice and scored "+dice;
+
 		int previousBox=gpAt(aux).getPreviousBox();
 		int actualBox = gpAt(aux).getActualBox();
 		if(actualBox >= size){
@@ -195,8 +229,10 @@ public class Board {
 			//System.out.println(ladderStart);
 			//System.out.println(ladderEnd);
 			getANode(ladderStart, upper).setTypeOfBox(1);
+			getANode(ladderStart, upper).setBoxInformation((i+1)+"");
 			getANode(ladderStart, upper).setLadder(getANode(ladderEnd, upper));
 			getANode(ladderEnd, upper).setTypeOfBox(2);
+			getANode(ladderEnd, upper).setBoxInformation((i+1)+"");
 			putLadders(i + 1, ladders);
 		}
 	}
@@ -252,9 +288,12 @@ public class Board {
 			//System.out.println("El segundo random es "+random2);
 			int snakeTail = chooseBoxesForSnakes(snakeHead-aux,1,random2);
 			//System.out.println(snakeTail+" nuevo valor");
+			char information = (char) (i+65);
 			getANode(snakeHead, upper).setTypeOfBox(3);
+			getANode(snakeHead, upper).setBoxInformation(information+"");
 			getANode(snakeHead, upper).setSnake(getANode(snakeTail, upper));
 			getANode(snakeTail, upper).setTypeOfBox(4);
+			getANode(snakeTail, upper).setBoxInformation(information+"");
 			putSnakes(i+1,snakes);
 		}
 	}
@@ -306,9 +345,9 @@ public class Board {
 		}
 	}
 	
-	public String getBoardInformation() {
+	public String getBoardInformation(Boolean firstTime) {
 		Node last = upper;
-		toDown(last);
+		toDown(last,firstTime);
 		return boardString;
 	}
 
@@ -412,51 +451,35 @@ public class Board {
 		}
 	}
 	
-	public boolean toDown(Node down) {
+	public boolean toDown(Node down,Boolean firstTime) {
 		if(down.getDown()==null) {
-			toTheRight(down);
+			toTheRight(down,firstTime);
 			return true;
 		}
 		else {
-			toTheRight(down);
-			return toDown(down.getDown());
+			toTheRight(down,firstTime);
+			return toDown(down.getDown(),firstTime);
 		}
 	}
 	
-	public Node toTheRight(Node right) {
+	public Node toTheRight(Node right,Boolean firstTime) {
 		if(right.getNext()==null) {
-			boardString += "[ "+right.getPosition();//+" ";+right.getRealPosition();
-			if(right.getPiece()!=null){
-				boardString += " "+right.getPieceString();
+			boardString += "[";
+			if(firstTime){
+				boardString += " "+right.getPosition(); //+" ";+right.getRealPosition();
 			}
-			if(right.getTypeOfBox() == 1 || right.getTypeOfBox() == 2) {
-				boardString += " H ]"+"\n";
-			}
-			else if(right.getTypeOfBox() == 3|| right.getTypeOfBox() == 4){
-				boardString += " S ] "+"\n";
-			}
-			else {
-				boardString += " ] "+"\n";
-			}
+			boardString += " "+right.getPieceString()+" "+right.getBoxInformation()+" ]"+"\n";
 
 					
 			return right;
 		}
 		else {
-			boardString += "[ "+right.getPosition();//+" "+right.getRealPosition();
-			if(right.getPiece()!=null){
-				boardString += " "+right.getPieceString();
+			boardString += "[";
+			if(firstTime){
+				boardString += " "+right.getPosition(); //+" ";+right.getRealPosition();
 			}
-			if(right.getTypeOfBox() == 1 || right.getTypeOfBox() == 2) {
-				boardString += " H ]";
-			}
-			else if(right.getTypeOfBox() == 3 || right.getTypeOfBox() == 4){
-				boardString += " S ] ";
-			}
-			else {
-				boardString += " ] ";
-			}
-			return toTheRight(right.getNext());
+			boardString += " "+right.getPieceString()+" "+right.getBoxInformation()+" ]";
+			return toTheRight(right.getNext(),firstTime);
 		}
 	}
 
