@@ -1,13 +1,12 @@
 package ui;
 
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import model.*;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,17 +14,18 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import model.*;
-
-import javax.swing.event.ChangeListener;
+import javafx.util.Duration;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainGUIController implements Initializable, CSSIDs {
 
@@ -143,6 +143,9 @@ public class MainGUIController implements Initializable, CSSIDs {
     private ImageView diceIMV;
 
     @FXML
+    private Rectangle diceBorder;
+
+    @FXML
     private TableView<Player> localLeaderboardTBV;
 
     @FXML
@@ -152,12 +155,18 @@ public class MainGUIController implements Initializable, CSSIDs {
     private TableColumn<Player, Integer> scoreColBoard;
 
     @FXML
-    private Label timerLBL;
+    private Label timerLBL = new Label();
 
     //Board
 
     @FXML
     private GridPane boardGP = new GridPane();
+
+    private Timer timer = new Timer();
+
+    private int secs = 0, min = 0, hour = 0;
+
+    private TimerTask task;
 
     //Tiles
 
@@ -173,6 +182,8 @@ public class MainGUIController implements Initializable, CSSIDs {
     /*Fields*/
 
     Game game;
+
+    private boolean endgameFlag = false;
 
     public MainGUIController(Game game) {
         this.game = game;
@@ -203,6 +214,10 @@ public class MainGUIController implements Initializable, CSSIDs {
             Stage stage = new Stage();
             stage.setScene(new Scene(loadedPane));
             Image icon = new Image(String.valueOf(getClass().getResource("resources/snl-logo.png")));
+            stage.setOnCloseRequest(e -> {
+                Platform.exit();
+                System.exit(0);
+            });
             stage.getIcons().add(icon);
             stage.getScene().getStylesheets().addAll(String.valueOf(getClass().getResource(stylesheet)));
             stage.setTitle(title);
@@ -235,9 +250,13 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void confirmDialogue(ActionEvent event) {
-        ((Stage)confirmDialogueBTN.getScene().getWindow()).close();
-        ((Stage)boardGP.getScene().getWindow()).close();
-        launchWindow("fxml/main-pane.fxml","Snakes and Ladders: Start",Modality.NONE,"css/main.css");
+        if (endgameFlag) {
+            ((Stage) confirmDialogueBTN.getScene().getWindow()).close();
+            timer.cancel();
+            secs = 0; min = 0; hour = 0;
+            ((Stage) boardGP.getScene().getWindow()).close();
+            launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, "css/main.css");
+        }
     }
 
     /*Main Pane*/
@@ -367,6 +386,30 @@ public class MainGUIController implements Initializable, CSSIDs {
             board = initializeBoard(0, board, 0, 0);
             launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE,"css/game.css");
             boardPane.setCenter(board);
+            timer = new Timer();
+
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    secs++;
+
+                    if (secs > 59) {
+                        secs = 0;
+                        min++;
+                    }
+                    if (min > 59) {
+                        min = 0;
+                        hour++;
+                    }
+
+                    System.out.printf("%02d:%02d:%02d\n", hour, min, secs);
+                    Platform.runLater(() -> timerLBL.setText(String.format("%02d:%02d:%02d", hour, min, secs)));
+                }
+            };
+
+            timer.scheduleAtFixedRate(task,1000,1000);
+            Image face1 = new Image(String.valueOf(getClass().getResource("resources/dice/1.png")));
+            diceIMV.setImage(face1);
         } catch (NumberFormatException nfe) {
             wrong = "Make sure you enter an integer number and try again.";
         } catch (ArithmeticException | IllegalStateException aise) {
@@ -451,7 +494,15 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void rollDice(MouseEvent event) {
-
+        //THIS IS A TEMPORAL IMPLEMENTATION. REAL IMPLEMENTATION WILL COME WITH DICE THROW FROM GAME PIECES
+        int dice = (int) Math.floor(Math.random()*(6)+1);
+        FadeTransition pop = new FadeTransition();
+        pop.setDuration(Duration.millis(1000));
+        pop.setFromValue(1.0);
+        pop.setToValue(0.0);
+        pop.setNode(diceBorder);
+        diceIMV.setImage(new Image(String.valueOf(getClass().getResource("resources/dice/" + dice + ".png"))));
+        pop.play();
     }
 
     @FXML
@@ -463,5 +514,14 @@ public class MainGUIController implements Initializable, CSSIDs {
         confirmDialogueBTN.setMinHeight(Button.USE_COMPUTED_SIZE);
         confirmDialogueBTN.setText("End Game");
         dialogueButton.setText("Cancel");
+        endgameFlag = true;
+    }
+
+    public static void wait(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
     }
 }

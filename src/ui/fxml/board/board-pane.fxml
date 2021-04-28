@@ -5,9 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
 <BorderPane fx:id="boardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="860.0" prefWidth="1120.0" style="-fx-background-color: #f7e1c3; -fx-background-radius: 15;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <right>
@@ -17,7 +20,16 @@
          </BorderPane.margin>
          <children>
             <Label id="roll-lbl" text="Roll dice!" />
-            <ImageView fx:id="diceIMV" fitHeight="150.0" fitWidth="150.0" onMouseClicked="#rollDice" pickOnBounds="true" preserveRatio="true" />
+            <AnchorPane prefHeight="164.0" prefWidth="280.0">
+               <children>
+                  <Rectangle fx:id="diceBorder" arcHeight="5.0" arcWidth="10.0" fill="#eb5b5b" height="172.0" layoutX="54.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0;" width="172.0" />
+                  <ImageView fx:id="diceIMV" fitHeight="150.0" fitWidth="150.0" layoutX="65.0" layoutY="7.0" onMouseClicked="#rollDice" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/dice/1.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
             <Button mnemonicParsing="false" onAction="#restartGame" text="Restart Game" />
             <TableView fx:id="localLeaderboardTBV" prefHeight="374.0" prefWidth="300.0">
               <columns>
