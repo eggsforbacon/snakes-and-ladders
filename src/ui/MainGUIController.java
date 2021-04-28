@@ -81,9 +81,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     //New Game
 
     @FXML
-    private ListView<String> playersLV;
-
-    @FXML
     private TextField columnsTF;
 
     @FXML
@@ -98,14 +95,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     Tooltip colRowTT = new Tooltip("Please use integer numbers between 4 and 10.\nGoing above 10 is discouraged to avoid\nmemory shortage.");
 
     Tooltip snakeLadderTT = new Tooltip("Keep the sum of snakes and ladders to a\nquarter of the size of the board to avoid\novercrowding.");
-
-    //Add Player
-
-    @FXML
-    private TextField playernameTF;
-
-    @FXML
-    private ToggleGroup colors;
 
     @FXML
     private RadioButton redRB;
@@ -146,21 +135,15 @@ public class MainGUIController implements Initializable, CSSIDs {
     private Rectangle diceBorder;
 
     @FXML
-    private TableView<Player> localLeaderboardTBV;
-
-    @FXML
-    private TableColumn<Player, String> nameColBoard;
-
-    @FXML
-    private TableColumn<Player, Integer> scoreColBoard;
-
-    @FXML
     private Label timerLBL = new Label();
 
     //Board
 
     @FXML
     private GridPane boardGP = new GridPane();
+
+    @FXML
+    private ListView<String> playersLV = new ListView<>();
 
     private Timer timer = new Timer();
 
@@ -251,6 +234,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     void confirmDialogue(ActionEvent event) {
         if (endgameFlag) {
+            playersLV.getItems().clear();
             ((Stage) confirmDialogueBTN.getScene().getWindow()).close();
             timer.cancel();
             secs = 0; min = 0; hour = 0;
@@ -287,76 +271,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     //Pre Game
 
     @FXML
-    void addPlayer(ActionEvent event) {
-        launchWindow("fxml/board/add-player.fxml","Add Player",Modality.APPLICATION_MODAL,"css/create-game.css");
-    }
-
-    @FXML
-    void cancelPlayer(ActionEvent event) {
-        ((Stage)playernameTF.getScene().getWindow()).close();
-    }
-
-    @FXML
-    void confirmPlayer(ActionEvent event) {
-        String wrong = "";
-        try {
-            String playerName = playernameTF.getText();
-            if (playerName.isEmpty()) throw new IllegalStateException("Please introduce a valid player name. Try again");
-            String color;
-            if (redRB.isSelected()) {
-                redRB.setDisable(true);
-                color = Colors.getHexValue(0);
-            }
-            else if (orangeRB.isSelected()) {
-                orangeRB.setDisable(true);
-                color = Colors.getHexValue(1);
-            }
-            else if (cyanRB.isSelected()) {
-                cyanRB.setDisable(true);
-                color = Colors.getHexValue(2);
-            }
-            else if (darkBlueRB.isSelected()) {
-                darkBlueRB.setDisable(true);
-                color = Colors.getHexValue(3);
-            }
-            else if (yellowRB.isSelected()) {
-                yellowRB.setDisable(true);
-                color = Colors.getHexValue(4);
-            }
-            else if (greenRB.isSelected()) {
-                greenRB.setDisable(true);
-                color = Colors.getHexValue(5);
-            }
-            else if (pinkRB.isSelected()) {
-                pinkRB.setDisable(true);
-                color = Colors.getHexValue(6);
-            }
-            else if (purpleRB.isSelected()) {
-                purpleRB.setDisable(true);
-                color = Colors.getHexValue(7);
-            }
-            else if (limeRB.isSelected()) {
-                limeRB.setDisable(true);
-                color = Colors.getHexValue(8);
-            }
-            else throw new IllegalStateException("No color selection. Try again");
-
-            playersLV.getItems().add(playerName);
-            //game.getBoard().addG() <- Pending
-
-        } catch (IllegalStateException ise) {
-            wrong = ise.getMessage();
-        } finally {
-            if (!wrong.isEmpty()) {
-                launchWindow("fxml/dialogue.fxml","Error",Modality.APPLICATION_MODAL,"css/dialogue-green.css");
-                dialogueLBL.setText(wrong);
-            } else {
-                ((Stage)playernameTF.getScene().getWindow()).close();
-            }
-        }
-    }
-
-    @FXML
     void startGame(ActionEvent event) {
         String wrong = "";
         try {
@@ -364,7 +278,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             int columns = Integer.parseInt(columnsTF.getText());
             int snakes = Integer.parseInt(snakesTF.getText());
             int ladders = Integer.parseInt(laddersTF.getText());
-            int players = playersLV.getItems().size();
+            int players = 0;
             int size = rows * columns;
             int specialTiles = (2 * snakes) + (2 * ladders);
 
@@ -376,15 +290,27 @@ public class MainGUIController implements Initializable, CSSIDs {
             if (size > 144) throw new ArithmeticException("The size is too big. Please remain between 4 and 10");
             else if (size < 16) throw new ArithmeticException("The size is too small. Please remain between 4 and 10");
             if (specialTiles * 2 > size) throw new ArithmeticException("There are too many snakes and ladders. Make sure you don't exceed a quarter of the tiles");
-            if (players < 2) throw new ArithmeticException("No players detected. Please try again");
 
             game.startGame(rows,columns,snakes,ladders,players);
-            ((Stage) playersLV.getScene().getWindow()).close();
             ((Stage) mainPane.getScene().getWindow()).close();
             GridPane board = boardGP;
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
             launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE,"css/game.css");
+
+            if (redRB.isSelected()) playersLV.getItems().add(Colors.getName(0));
+            if (orangeRB.isSelected()) playersLV.getItems().add(Colors.getName(1));
+            if (cyanRB.isSelected()) playersLV.getItems().add(Colors.getName(2));
+            if (darkBlueRB.isSelected()) playersLV.getItems().add(Colors.getName(3));
+            if (yellowRB.isSelected()) playersLV.getItems().add(Colors.getName(4));
+            if (greenRB.isSelected()) playersLV.getItems().add(Colors.getName(5));
+            if (pinkRB.isSelected()) playersLV.getItems().add(Colors.getName(6));
+            if (purpleRB.isSelected()) playersLV.getItems().add(Colors.getName(7));
+            if (limeRB.isSelected()) playersLV.getItems().add(Colors.getName(8));
+
+            if (playersLV.getItems().size() < 2) throw new ArithmeticException("No player selection or not enough players selected. Try again");
+
+            ((Stage) redRB.getScene().getWindow()).close();
             boardPane.setCenter(board);
             timer = new Timer();
 
@@ -392,7 +318,6 @@ public class MainGUIController implements Initializable, CSSIDs {
                 @Override
                 public void run() {
                     secs++;
-
                     if (secs > 59) {
                         secs = 0;
                         min++;
@@ -401,8 +326,6 @@ public class MainGUIController implements Initializable, CSSIDs {
                         min = 0;
                         hour++;
                     }
-
-                    System.out.printf("%02d:%02d:%02d\n", hour, min, secs);
                     Platform.runLater(() -> timerLBL.setText(String.format("%02d:%02d:%02d", hour, min, secs)));
                 }
             };
@@ -523,5 +446,9 @@ public class MainGUIController implements Initializable, CSSIDs {
         } catch (Exception e) {
             e.fillInStackTrace();
         }
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }

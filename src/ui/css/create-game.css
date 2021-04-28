@@ -36,19 +36,6 @@
   -fx-text-fill: #1071e0;
 }
 
-#player-lv, #player-lv .list-cell {
-  -fx-background-color: #af99bf;
-  -fx-text-fill: #e9f2f5;
-  -fx-pref-width: 100px;
-  -fx-font-weight: bold;
-  -fx-background-radius: 8;
-}
-
-#player-lv .list-cell:odd {
-  -fx-background-color: #786dbd;
-  -fx-text-fill: #e9f2f5;
-}
-
 #create-tf {
   -fx-background-color: #3f93f2;
   -fx-border-color: #0d60bd;

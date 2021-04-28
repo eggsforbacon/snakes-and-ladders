@@ -38,6 +38,20 @@
     -fx-font-weight: bold;
 }
 
+.list-view, .list-view .list-cell {
+  -fx-background-color: #76bbdb;
+  -fx-text-fill: #e9f2f5;
+  -fx-font-size: 17px;
+  -fx-pref-width: 100px;
+  -fx-font-weight: bold;
+  -fx-background-radius: 8;
+}
+
+.list-view .list-cell:odd {
+  -fx-background-color: #3a51c2;
+  -fx-text-fill: #e9f2f5;
+}
+
 .grid-pane {
   -fx-background-radius: 8;
 }

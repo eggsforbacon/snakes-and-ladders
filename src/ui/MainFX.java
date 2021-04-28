@@ -54,10 +54,6 @@ public class MainFX extends Application {
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
-        primaryStage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
         primaryStage.setScene(scene);
         Image icon = new Image(String.valueOf(getClass().getResource("resources/snl-logo.png")));
         primaryStage.getIcons().add(icon);
@@ -70,6 +66,6 @@ public class MainFX extends Application {
     @Override
     public void stop() {
         System.out.println("Closed, gBye");
-
+        controller.getTimer().cancel();
     }
 }
