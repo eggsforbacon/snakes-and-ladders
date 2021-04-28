@@ -416,6 +416,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     void restartGame(ActionEvent event) {
 
+
     }
 
     @FXML
