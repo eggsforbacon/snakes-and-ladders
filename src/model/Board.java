@@ -30,6 +30,7 @@ public class Board {
 		winnerGP = null;
 		winnerPiece = ' ';
 		movementInformation = "";
+		players = playersString.length();
 		this.rows = rows;
 		this.columns = columns;
 		this.ladders = ladders;
@@ -160,7 +161,8 @@ public class Board {
 		//System.out.println(turn);
 		//System.out.println("Es el turno "+aux);
 		int dice = gpAt(aux).rollTheDice();
-		movementInformation = "Player "+gpAt(aux).getCharacter()+" has rolled the dice and scored "+dice;
+		movementInformation = "Player "+gpAt(aux).getCharacter()+" has rolled the dice and scored "+dice+"\n";
+		movementInformation += getBoardInformation(false);
 
 		int previousBox=gpAt(aux).getPreviousBox();
 		int actualBox = gpAt(aux).getActualBox();
@@ -466,9 +468,12 @@ public class Board {
 		if(right.getNext()==null) {
 			boardString += "[";
 			if(firstTime){
-				boardString += " "+right.getPosition(); //+" ";+right.getRealPosition();
+				boardString += " "+right.getPosition()+" "+right.getBoxInformation()+" ]"+"\n"; //+" ";+right.getRealPosition();
 			}
-			boardString += " "+right.getPieceString()+" "+right.getBoxInformation()+" ]"+"\n";
+			else{
+				boardString += " "+right.getPieceString()+" "+right.getBoxInformation()+" ]"+"\n";
+			}
+
 
 					
 			return right;
@@ -476,9 +481,11 @@ public class Board {
 		else {
 			boardString += "[";
 			if(firstTime){
-				boardString += " "+right.getPosition(); //+" ";+right.getRealPosition();
+				boardString += " "+right.getPosition()+" "+right.getBoxInformation()+" ]"; //+" ";+right.getRealPosition();
 			}
-			boardString += " "+right.getPieceString()+" "+right.getBoxInformation()+" ]";
+			else{
+				boardString += " "+right.getPieceString()+" "+right.getBoxInformation()+" ]";
+			}
 			return toTheRight(right.getNext(),firstTime);
 		}
 	}
