@@ -155,15 +155,13 @@ public class Board {
 		return first+((r+1)*change);
 	}
 
-	public void movePieces() throws  GameAlreadyWonException{
+	public int movePieces() throws  GameAlreadyWonException{
 		boardString = "";
 		int aux = turnToHisBase(turn-1);
 		//System.out.println(turn);
 		//System.out.println("Es el turno "+aux);
 		int dice = gpAt(aux).rollTheDice();
 		movementInformation = "Player "+gpAt(aux).getCharacter()+" has rolled the dice and scored "+dice+"\n";
-		movementInformation += getBoardInformation(false);
-
 		int previousBox=gpAt(aux).getPreviousBox();
 		int actualBox = gpAt(aux).getActualBox();
 		if(actualBox >= size){
@@ -186,8 +184,9 @@ public class Board {
 		else{
 			getANode(actualBox,upper).addPiece(gpAt(aux));
 		}
-
+		movementInformation += getBoardInformation(false);
 		turn++;
+		return  dice;
 	}
 
 	private void useALadder(int actualBox,int player){
