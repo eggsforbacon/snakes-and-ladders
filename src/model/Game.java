@@ -2,10 +2,13 @@ package model;
 
 import exceptions.GameAlreadyWonException;
 
-public class Game {
+import java.io.Serializable;
+
+public class Game implements Serializable {
     private Board gameBoard;
     private Player actualWinner;
     private Player bestScores;
+    private static final long serialVersionUID = 1;
 
     public Game(){
         gameBoard=null;
@@ -30,7 +33,7 @@ public class Game {
             } catch(GameAlreadyWonException w){
                 String message;
                 message = gameBoard.getMovementInformation()+"\n"+"Player "+gameBoard.getWinnerGP().getCharacter()+" has won the game! Congratulations"+"\n";
-                int score = gameBoard.getWinnerGP().getMovements()/gameBoard.getSize();
+                double score = (double) gameBoard.getWinnerGP().getMovements()/gameBoard.getSize();
                 int rows = gameBoard.getRows();
                 int columns = gameBoard.getColumns();
                 int ladders = gameBoard.getLadders();
