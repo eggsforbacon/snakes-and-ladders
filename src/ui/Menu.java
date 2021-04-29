@@ -3,6 +3,7 @@ package ui;
 import exceptions.GameAlreadyWonException;
 import model.Board;
 import model.Game;
+import model.Player;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class Menu {
 	private final static int EXIT = 3;
 
 	public Menu(){
-		game = null;
+		game = new Game();
 		sc = new Scanner(System.in);
 	}
 
@@ -51,16 +52,30 @@ public class Menu {
 				play();
 				break;
 			case SEE_LEADERBOARD:
-
+				if(game != null){
+					seeLeaderboard(game.getBestScores());
+				}else{
+					System.out.println("There are no scores yet");
+				}
+				
 				break;
 			case EXIT:
 				break;
 			default: System.out.println("Choose a valid option");
 		}
 	}
+	
+	public void seeLeaderboard(Player score){
+		if (score != null) {
+			seeLeaderboard(score.getLeft());
+			System.out.println(score.getName() + " ");
+			seeLeaderboard(score.getRight());
+		}
+
+		
+	}
 
 	public void play(){
-		game = new Game();
 		System.out.println("First create the board");
 		System.out.println("Enter the number of rows, the number of columns, the number of ladders, the number of snakes and the players");
 		System.out.println("If you want the game pieces to be distributed randomly, enter the data as in the following example: ");
@@ -76,8 +91,8 @@ public class Menu {
 			if((ladders+snakes)*2<=(rows*columns)/2){
 				if(isInteger(info[4])){
 					int players = Integer.parseInt(info[4]);
-					if(players > 9){
-						System.out.println("The maximum number of players is 9. Try again");
+					if(players > 9 || players < 2){
+						System.out.println("The maximum number of players is 9 and the minimum is 2. Try again");
 						play();
 					}
 					else{
@@ -92,14 +107,20 @@ public class Menu {
 					}
 				}
 				else{
-					game.startGame(rows,columns,snakes,ladders,info[4]);
-					System.out.println(game.getBoard().getBoardInformation(true));
-					System.out.println(game.getBoard().getBoxesInformation());
-					System.out.println("Enter a line break if you want to go to the next turn");
-					System.out.println("Enter num if you want to see the initial board");
-					System.out.println("Enter simul if you want the game to play itself");
-					System.out.println("Enter menu to return and end the game");
-					startGameOptions(false);
+					if(info[4].length() > 9){
+						System.out.println("The maximum number of players is 9. Try again");
+						play();
+					}
+					else{
+						game.startGame(rows,columns,snakes,ladders,info[4]);
+						System.out.println(game.getBoard().getBoardInformation(true));
+						System.out.println(game.getBoard().getBoxesInformation());
+						System.out.println("Enter a line break if you want to go to the next turn");
+						System.out.println("Enter num if you want to see the initial board");
+						System.out.println("Enter simul if you want the game to play itself");
+						System.out.println("Enter menu to return and end the game");
+						startGameOptions(false);
+					}
 				}
 			}
 			else{
@@ -130,7 +151,7 @@ public class Menu {
 			case "":
 				String movement = game.move();
 				System.out.println(movement);
-				if(movement == w.getMessage()){
+				if(movement.contains(w.getMessage())){
 					System.out.println("Enter the name of the winner");
 					String name = sc.nextLine();
 					game.createWinner(name);
@@ -140,7 +161,7 @@ public class Menu {
 			case "num":
 				System.out.println(game.getBoard().getBoardInformation(true));
 				System.out.println(game.getBoard().getBoxesInformation());
-				sc.next();
+				sc.nextLine();
 				System.out.println(game.getBoard().getBoardInformation(false));
 				break;
 			case "simul":
@@ -164,7 +185,7 @@ public class Menu {
 			TimeUnit.SECONDS.sleep(2);
 			String movement =game.move();
 			System.out.println(movement);
-			if(movement != message){
+			if(!movement.contains(message)){
 				simulation(message);
 			}
 			return;

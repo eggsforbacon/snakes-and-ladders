@@ -23,8 +23,8 @@ public class Board {
 	private String characters;
 	private char winnerPiece;
 
-	public Board(int rows,int columns,int snakes, int ladders,String playersString){
-		start = new Node(0,0);
+	public Board(int rows,int columns,int snakes, int ladders,String playersString) {
+		start = new Node(0, 0);
 		gp = null;
 		choosePlayers(playersString);
 		winnerGP = null;
@@ -34,11 +34,11 @@ public class Board {
 		this.rows = rows;
 		this.columns = columns;
 		this.ladders = ladders;
-		this.snakes=snakes;
-		this.players = players;
+		this.snakes = snakes;
 		characters = "";
 		turn = 1;
 		size = rows*columns;
+		addToSavedNumbers(1);
 		addToSavedNumbers(size);
 		startBoard();
 	}
@@ -57,16 +57,10 @@ public class Board {
 		characters = "";
 		turn = 1;
 		size = rows*columns;
+		addToSavedNumbers(1);
 		addToSavedNumbers(size);
 		startBoard();
 		putPlayers(players);
-		//System.out.println("Esto es lo que detecta como guardado");
-		//System.out.println(gp.getNumber());
-		//System.out.println(gp.getNext().getNumber());
-		//System.out.println(gp.getNext().getNext().getNumber());
-		//System.out.println(gp.getNext().getNext().getNext().getNumber());
-		//System.out.println("Busquemos errores");
-		//System.out.println(gpAt(3).getNumber());
 		
 	}
 
@@ -80,7 +74,7 @@ public class Board {
 			GamePiece aux = gp;
 			gp = newPiece;
 			gp.setNext(aux);
-			putPlayers(players,i+1);
+			choosePlayers(playersString,i+1);
 		}
 	}
 
@@ -93,8 +87,8 @@ public class Board {
 			start.setNext(matrix);
 		}
 		catch (NullPointerException e){
-			System.out.println("Lo improbable sucedio");
 			first=null;
+			addToSavedNumbers(1);
 			addToSavedNumbers(size);
 			startBoard();
 		}
@@ -106,7 +100,6 @@ public class Board {
         }
 		
 		Node aux = new Node(translator(c,r),originalTranslator(c,r));
-		//System.out.println(c+" "+r);
 		
 		aux.setPrev(current);
 		aux.setDown(current);
@@ -121,14 +114,10 @@ public class Board {
 
 	private GamePiece gpAt(int index,GamePiece aux) {
 		if (aux == null) {
-			//System.out.println("EN SERIO ....");
 			return null;
 		}
 		else{
-			//System.out.println("entro aqui pero no entendio ");
-			//System.out.println(aux.getNumber());
 			if(aux.getNumber()==index){
-				//System.out.println("funciono");
 				return aux;
 			}
 			else{
@@ -138,7 +127,6 @@ public class Board {
 	}
 	public int originalTranslator(int r,int c){
 		int first = columns*(rows-c)-(columns);
-		//System.out.println("first es: "+first);
 		return first+r+1;
 	}
 	public int translator(int r,int c) {
@@ -158,8 +146,6 @@ public class Board {
 	public int movePieces() throws  GameAlreadyWonException{
 		boardString = "";
 		int aux = turnToHisBase(turn-1);
-		//System.out.println(turn);
-		//System.out.println("Es el turno "+aux);
 		int dice = gpAt(aux).rollTheDice();
 		movementInformation = "Player "+gpAt(aux).getCharacter()+" has rolled the dice and scored "+dice+"\n";
 		int previousBox=gpAt(aux).getPreviousBox();
@@ -170,13 +156,12 @@ public class Board {
 			winnerGP.setNext(null);
 			throw new GameAlreadyWonException();
 		}
-		//System.out.println("Se pone en la casilla "+actualBox);
 		if(previousBox!=0){
-			//System.out.println("algo se borro wtf");
 			getANode(previousBox,upper).deletePiece();
 		}
 		if(getANode(actualBox,upper).getTypeOfBox()==1){
 			useALadder(actualBox,aux);
+
 		}
 		else if(getANode(actualBox,upper).getTypeOfBox()==3){
 			useASnake(actualBox,aux);
@@ -191,15 +176,17 @@ public class Board {
 
 	private void useALadder(int actualBox,int player){
 		getANode(actualBox,upper).getLadder().addPiece(gpAt(player));
+		gpAt(player).setActualBox(getANode(actualBox,upper).getLadder().getPosition());
 	}
 
 	private void useASnake(int actualBox,int player){
 		getANode(actualBox,upper).getSnake().addPiece(gpAt(player));
+		gpAt(player).setActualBox(getANode(actualBox,upper).getSnake().getPosition());
 	}
 
 	private int turnToHisBase(int number){
 		if(number >= players){
-			return turnToHisBase(number-players);
+			return turnToHisBase(number-players); //3  4 -
 		}
 		else{
 			return number;
@@ -213,22 +200,14 @@ public class Board {
 	private void putLadders(int i,int ladders) throws  NullPointerException{
 		if (i < ladders) {
 			int limit = 1; //antes era columns+1
-			//System.out.println("El limite es "+limit);
 			if (ladders > limit) {
 				limit = ladders;
 			}
 			int random = (int) Math.floor(Math.random() * (size - limit - columns) + 1);
-			//System.out.println(random+" es el numero generado");
 			int ladderStart = chooseBoxes(limit - columns, 1, random, limit);
 			int aux = numberToHisBase(ladderStart);
-			//System.out.println(ladderStart+" es el principio");
-			//System.out.println(aux+" es el numero base");
-			//System.out.println("Empieza desde: "+(ladderStart+((columns+1)-aux)));
 			int random2 = (int) Math.floor(Math.random() * (size - (ladderStart + ((columns + 1) - aux))) + (ladderStart + ((columns + 1) - aux)));
-			//System.out.println("Originalmente era "+random2);
 			int ladderEnd = chooseBoxes(ladderStart + ((columns + 1) - aux), ladderStart + ((columns + 1) - aux), random2, 1);
-			//System.out.println(ladderStart);
-			//System.out.println(ladderEnd);
 			getANode(ladderStart, upper).setTypeOfBox(1);
 			getANode(ladderStart, upper).setBoxInformation((i+1)+"");
 			getANode(ladderStart, upper).setLadder(getANode(ladderEnd, upper));
@@ -245,17 +224,12 @@ public class Board {
 	private void putPlayers(int players,int i) throws  NullPointerException{
 		if(i >= 0){
 			char p = (char)(i+33);
-			//System.out.println("se agrega el "+i);
 			GamePiece newPiece = new GamePiece(p,"",i);
 			GamePiece aux = gp;
 			gp = newPiece;
 			gp.setNext(aux);
 			putPlayers(players,i-1);
 		}
-		//System.out.println(gp.getNumber()+" ->");
-		//System.out.println(gp.getNext().getNumber());
-		//System.out.println(gp.getNext().getNext().getNumber());
-		//System.out.println(gp.getNext().getNext().getNext().getNumber());
 	}
 
 	private int numberToHisBase(int number){
@@ -277,18 +251,12 @@ public class Board {
 
 			if(snakes>limit){
 				limit = snakes;
-				//System.out.println("El limite son las serpientes");
 			}
 			int random = (int) Math.floor(Math.random()*(size-limit-2)+limit);
-			//System.out.println("El limite es "+limit);
-			//System.out.println(random+" El primer random");
 			int snakeHead = chooseBoxesForSnakes(limit-2,limit,random);
-			//System.out.println(snakeHead+" nuevo valor");
 			int aux = numberToHisBase(snakeHead);
 			int random2 = (int) Math.floor(Math.random()*(snakeHead-aux)+1);
-			//System.out.println("El segundo random es "+random2);
 			int snakeTail = chooseBoxesForSnakes(snakeHead-aux,1,random2);
-			//System.out.println(snakeTail+" nuevo valor");
 			char information = (char) (i+65);
 			getANode(snakeHead, upper).setTypeOfBox(3);
 			getANode(snakeHead, upper).setBoxInformation(information+"");
@@ -304,7 +272,6 @@ public class Board {
 			return number;
 		}
 		else{
-			//System.out.println(number+" esta ocupado");
 			if(number-1<b){
 				number = (int)Math.floor(Math.random()*(size-a)+b);
 			}
@@ -319,7 +286,6 @@ public class Board {
 			else {
 				if(number >= size-limit) {
 					number = (int)Math.floor(Math.random()*(size-a)+b);
-					//System.out.println("se propone "+number);
 				}
 				return chooseBoxes(a,b,number+1,limit);
 			}	
@@ -338,7 +304,6 @@ public class Board {
 			return false;
 		}
 		if(number == toFind.getData()) {
-			//System.out.println(" Si lo encontro");
 			return true;
 		}
 		else{
@@ -347,6 +312,7 @@ public class Board {
 	}
 	
 	public String getBoardInformation(Boolean firstTime) {
+		boardString = "";
 		Node last = upper;
 		toDown(last,firstTime);
 		return boardString;
@@ -357,6 +323,7 @@ public class Board {
 	}
 
 	public String getBoxesInformation(){
+		boxesInformation = "";
 		Node last = upper;
 		seeInformation(last);
 		return boxesInformation;
@@ -379,7 +346,6 @@ public class Board {
 		}
 		else {
 			if(advance(node,number)!=null){
-				//System.out.println(" entra ");
 				return advance(node,number);
 			}
 			else {
@@ -396,7 +362,6 @@ public class Board {
 				return right;
 			}
 			else {
-				//System.out.println("aca esta el error");
 				return null;
 			}
 					
@@ -421,7 +386,6 @@ public class Board {
 		}
 		else {
 			if(advance2(node,number)!=null){
-				//System.out.println(" entra ");
 				return advance2(node,number);
 			}
 			else {
@@ -437,7 +401,6 @@ public class Board {
 				return right;
 			}
 			else {
-				//System.out.println("aca esta el error");
 				return null;
 			}
 

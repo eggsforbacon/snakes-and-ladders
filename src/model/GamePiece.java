@@ -20,10 +20,8 @@ public class GamePiece {
 
     public int rollTheDice(){
         int dice = (int) Math.floor(Math.random()*(6)+1);
-        //System.out.println("salio un "+dice);
         previousBox = actualBox;
         actualBox += dice;
-        //System.out.println("se mueve a la casilla "+actualBox);
         movements++;
         return dice;
     }

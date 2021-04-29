@@ -1,6 +1,7 @@
 .idea
 out
 bin
-.settings
+.setting
+snakes-and-ladders.iml
 .project
 .classpath
