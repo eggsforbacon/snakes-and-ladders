@@ -1,6 +1,9 @@
 package ui;
 
 import exceptions.GameAlreadyWonException;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
+import javafx.stage.StageStyle;
 import model.*;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -15,10 +18,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -155,16 +154,21 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     private Label turnLBL;
 
+    //Winning
+
+    @FXML
+    private TextField winnerTF;
+
     //Tiles
 
     @FXML
-    private Label tileLBL = new Label();
+    private BorderPane tileBP = new BorderPane();
 
     @FXML
-    private AnchorPane tileAP = new AnchorPane();
+    private Label numberLBL = new Label();
 
     @FXML
-    private ImageView specialTileLBL;
+    private TilePane tilePane;
 
     /*Fields*/
 
@@ -195,7 +199,7 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     }
 
-    private void launchWindow(String fxml, String title, Modality modality, String stylesheet) {
+    private void launchWindow(String fxml, String title, Modality modality, StageStyle style, String stylesheet) {
         try {
             Parent loadedPane = loadFxml(fxml);
             Stage stage = new Stage();
@@ -209,6 +213,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             stage.getScene().getStylesheets().addAll(String.valueOf(getClass().getResource(stylesheet)));
             stage.setTitle(title);
             stage.initModality(modality);
+            stage.initStyle(style);
             stage.setResizable(false);
             stage.show();
         } catch (NullPointerException npe) {
@@ -243,7 +248,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             timer.cancel();
             secs = 0; min = 0; hour = 0;
             ((Stage) boardGP.getScene().getWindow()).close();
-            launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, "css/main.css");
+            launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
         }
     }
 
@@ -265,7 +270,7 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void newGame(ActionEvent event) {
-        launchWindow("fxml/board/create-board.fxml", "Create new game", Modality.APPLICATION_MODAL,"css/create-game.css");
+        launchWindow("fxml/board/create-board.fxml", "Create new game", Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/create-game.css");
         rowsTF.setTooltip(colRowTT);
         columnsTF.setTooltip(colRowTT);
         snakesTF.setTooltip(snakeLadderTT);
@@ -277,6 +282,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     void startGame(ActionEvent event) {
         String wrong = "";
+        game.restartGame();
         try {
             int rows = Integer.parseInt(rowsTF.getText());
             int columns = Integer.parseInt(columnsTF.getText());
@@ -294,9 +300,12 @@ public class MainGUIController implements Initializable, CSSIDs {
             else if (size < 16) throw new ArithmeticException("The size is too small. Please remain between 4 and 10");
             if (specialTiles * 2 > size) throw new ArithmeticException("There are too many snakes and ladders. Make sure you don't exceed a quarter of the tiles");
             ((Stage) mainPane.getScene().getWindow()).close();
-            launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE,"css/game.css");
+            launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE, StageStyle.DECORATED, "css/game.css");
 
-            if (redRB.isSelected()) playersLV.getItems().add(Colors.getName(0));
+            if (redRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(0));
+
+            }
             if (orangeRB.isSelected()) playersLV.getItems().add(Colors.getName(1));
             if (cyanRB.isSelected()) playersLV.getItems().add(Colors.getName(2));
             if (darkBlueRB.isSelected()) playersLV.getItems().add(Colors.getName(3));
@@ -311,6 +320,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             ((Stage) redRB.getScene().getWindow()).close();
             int players = playersLV.getItems().size();
             game.startGame(rows,columns,snakes,ladders,players);
+            boardGP = new GridPane();
             GridPane board = boardGP;
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
@@ -344,7 +354,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         }
         finally {
             if (!wrong.isEmpty()) {
-                launchWindow("fxml/dialogue.fxml","Error",Modality.APPLICATION_MODAL,"css/dialogue-blue.css");
+                launchWindow("fxml/dialogue.fxml","Error",Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/dialogue-blue.css");
                 dialogueLBL.setText(wrong);
             }
         }
@@ -352,9 +362,9 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     GridPane gridProperties(GridPane grid) {
         grid.setAlignment(Pos.CENTER);
-        tileAP.setMinSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
-        tileAP.setMaxSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
-        tileAP.setPrefSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
+        tileBP.setMinSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
+        tileBP.setMaxSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
+        tileBP.setPrefSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
         grid.setPrefSize(750, 750);
         grid.setMinSize(750, 750);
         grid.setMaxSize(750, 750);
@@ -366,9 +376,10 @@ public class MainGUIController implements Initializable, CSSIDs {
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
 
         if(game.getBoard().getABox(i) != null){
-            Label number = new Label(String.valueOf(game.getBoard().getABox(i).getPosition()));
-            number.setId("tile-numbers");
-            tileAP.getChildren().add(number);
+            numberLBL.setText(String.valueOf(game.getBoard().getABox(i).getPosition()));
+            numberLBL.setId("tile-numbers");
+            numberLBL.setStyle("\n-fx-text-fill: red;");
+
         }
         if (i < game.getBoard().getSize()) {
             Parent tile;
@@ -378,6 +389,13 @@ public class MainGUIController implements Initializable, CSSIDs {
             }
             tile = loadFxml("fxml/board/tile.fxml");
             tile.setId(pickId(x,y));
+
+            if (game.getBoard().getABox(0) != null){
+                GamePiece piece = game.getBoard().getABox(i).getPiece();
+                if (piece != null) {
+                    tilePane.setStyle("\n-fx-background-color: black;");
+                }
+            }
             board.add(tile,x,y);
             return initializeBoard(i + 1, board, y, x + 1);
 
@@ -427,19 +445,23 @@ public class MainGUIController implements Initializable, CSSIDs {
             GridPane board = new GridPane();
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
-        } catch (GameAlreadyWonException ignore) {}
-        FadeTransition pop = new FadeTransition();
-        pop.setDuration(Duration.millis(1000));
-        pop.setFromValue(1.0);
-        pop.setToValue(0.0);
-        pop.setNode(diceBorder);
-        diceIMV.setImage(new Image(String.valueOf(getClass().getResource("resources/dice/" + dice + ".png"))));
-        pop.play();
+            FadeTransition pop = new FadeTransition();
+            pop.setDuration(Duration.millis(1000));
+            pop.setFromValue(1.0);
+            pop.setToValue(0.0);
+            pop.setNode(diceBorder);
+            System.out.println(dice);
+            diceIMV.setImage(new Image(String.valueOf(getClass().getResource("resources/dice/" + dice + ".png"))));
+            pop.play();
+        } catch (GameAlreadyWonException ignore) {
+            launchWindow("fxml/board/game-won.fxml","We have a winner!",Modality.APPLICATION_MODAL, StageStyle.UNDECORATED,"css/create-game.css");
+        }
+
     }
 
     @FXML
     void endGame(ActionEvent event) {
-        launchWindow("fxml/dialogue.fxml","Exit",Modality.APPLICATION_MODAL,"css/dialogue-orange.css");
+        launchWindow("fxml/dialogue.fxml","Exit",Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/dialogue-orange.css");
         dialogueLBL.setText("Are you sure you want to end the game?");
         bBarHBOX.setSpacing(10.0);
         confirmDialogueBTN.setId("close-button");
@@ -447,6 +469,14 @@ public class MainGUIController implements Initializable, CSSIDs {
         confirmDialogueBTN.setText("End Game");
         dialogueButton.setText("Cancel");
         endgameFlag = true;
+    }
+
+    @FXML
+    void exitAfterWin(ActionEvent event) {
+        game.createWinner(winnerTF.getText());
+        ((Stage)winnerTF.getScene().getWindow()).close();
+        ((Stage) timerLBL.getScene().getWindow()).close();
+        launchWindow("fxml/main-pane.fxml","Snakes and Ladders: Start",Modality.NONE,StageStyle.DECORATED,"css/main.css");
     }
 
     public static void wait(int millis) {

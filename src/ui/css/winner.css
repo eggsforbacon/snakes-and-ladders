@@ -1,0 +1,8 @@
+.root {
+  -fx-font-family: "Helvetica";
+  -fx-font-size: 15px;
+}
+
+.label {
+  -fx-text-fill: #a83939;
+}

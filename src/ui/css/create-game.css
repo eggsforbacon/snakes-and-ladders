@@ -39,6 +39,8 @@
 #create-tf {
   -fx-background-color: #3f93f2;
   -fx-border-color: #0d60bd;
+  -fx-font-weight: bold;
+  -fx-text-fill: white;
 }
 
 #create-lbl {
