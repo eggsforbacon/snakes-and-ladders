@@ -8,12 +8,14 @@ public class Game implements Serializable {
     private Board gameBoard;
     private Player actualWinner;
     private Player bestScores;
+    private int dice;
     private static final long serialVersionUID = 1;
 
     public Game(){
         gameBoard=null;
         bestScores=null;
         actualWinner=null;
+        dice = 0;
     }
 
     public void startGame(int rows,int columns,int snakes, int ladders, int players){
@@ -28,7 +30,7 @@ public class Game implements Serializable {
     public String move(){
         if(gameBoard != null){
             try{
-                gameBoard.movePieces();
+                dice = gameBoard.movePieces();
                 return gameBoard.getMovementInformation();
             } catch(GameAlreadyWonException w){
                 String message;
@@ -90,5 +92,13 @@ public class Game implements Serializable {
 
     public void setBestScores(Player bestScores) {
         this.bestScores = bestScores;
+    }
+
+    public int getDice() {
+        return dice;
+    }
+
+    public void setDice(int dice) {
+        this.dice = dice;
     }
 }

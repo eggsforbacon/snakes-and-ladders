@@ -439,9 +439,10 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     void rollDice(MouseEvent event) {
         //THIS IS A TEMPORAL IMPLEMENTATION. REAL IMPLEMENTATION WILL COME WITH DICE THROW FROM GAME PIECES
+        GameAlreadyWonException e = new GameAlreadyWonException();
         int dice = 0;
-        try {
-            dice = game.getBoard().movePieces();
+            String message = game.move();
+            dice = game.getDice();
             GridPane board = new GridPane();
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
@@ -453,10 +454,9 @@ public class MainGUIController implements Initializable, CSSIDs {
             System.out.println(dice);
             diceIMV.setImage(new Image(String.valueOf(getClass().getResource("resources/dice/" + dice + ".png"))));
             pop.play();
-        } catch (GameAlreadyWonException ignore) {
-            launchWindow("fxml/board/game-won.fxml","We have a winner!",Modality.APPLICATION_MODAL, StageStyle.UNDECORATED,"css/create-game.css");
-        }
-
+            if(message.contains(e.getMessage())){
+                launchWindow("fxml/board/game-won.fxml","We have a winner!",Modality.APPLICATION_MODAL, StageStyle.UNDECORATED,"css/create-game.css");
+            }
     }
 
     @FXML
