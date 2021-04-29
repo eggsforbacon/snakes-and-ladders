@@ -25,6 +25,7 @@ public class Board {
 
 	public Board(int rows,int columns,int snakes, int ladders,String playersString) {
 		start = new Node(0, 0);
+		characters = "";
 		gp = null;
 		choosePlayers(playersString);
 		winnerGP = null;
@@ -35,7 +36,6 @@ public class Board {
 		this.columns = columns;
 		this.ladders = ladders;
 		this.snakes = snakes;
-		characters = "";
 		turn = 1;
 		size = rows*columns;
 		addToSavedNumbers(1);
@@ -45,7 +45,9 @@ public class Board {
 
 	public Board(int rows,int columns,int snakes, int ladders, int players) {
 		start = new Node(0,0);
+		characters = "";
 		gp=null;
+		putPlayers(players);
 		winnerGP = null;
 		winnerPiece = ' ';
 		movementInformation = "";
@@ -54,14 +56,11 @@ public class Board {
 		this.ladders = ladders;
 		this.snakes=snakes;
 		this.players = players;
-		characters = "";
 		turn = 1;
 		size = rows*columns;
 		addToSavedNumbers(1);
 		addToSavedNumbers(size);
 		startBoard();
-		putPlayers(players);
-		
 	}
 
 	public void choosePlayers(String playersString){
@@ -71,6 +70,7 @@ public class Board {
 	public void choosePlayers(String playersString,int i){
 		if(i<playersString.length()){
 			GamePiece newPiece = new GamePiece(playersString.charAt(i),"",i);
+			characters += playersString.charAt(i);
 			GamePiece aux = gp;
 			gp = newPiece;
 			gp.setNext(aux);
@@ -224,6 +224,7 @@ public class Board {
 	private void putPlayers(int players,int i) throws  NullPointerException{
 		if(i >= 0){
 			char p = (char)(i+33);
+			characters += p;
 			GamePiece newPiece = new GamePiece(p,"",i);
 			GamePiece aux = gp;
 			gp = newPiece;
@@ -529,19 +530,21 @@ public class Board {
 	}
 
 	public String getCharacters(){
-		getCharacters(gp);
 		return characters;
 	}
 
-	public void getCharacters(GamePiece g){
-		if(g==null){
+	/*
+	public void getCharacters(int counter){
+		if(counter>=players){
 			characters += "";
 		}
 		else{
-			characters+=g.getCharacter();
-			getCharacters(g.getNext());
+			System.out.println("falla en "+ counter);
+			characters+=gpAt(counter).getCharacter();
+			getCharacters(counter+1);
 		}
 	}
+	*/
 
 	public char getWinnerPiece() {
 		return winnerPiece;

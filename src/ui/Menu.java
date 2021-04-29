@@ -5,6 +5,7 @@ import model.Board;
 import model.Game;
 import model.Player;
 
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -12,13 +13,40 @@ import java.util.concurrent.TimeUnit;
 public class Menu {
 	private Game game;
 	private Scanner sc;
+	private final static String GAME_PATH_FILE = "data/Game.z&1";
 	private final static int  PLAY = 1;
 	private final static int SEE_LEADERBOARD = 2;
 	private final static int EXIT = 3;
 
 	public Menu(){
 		game = new Game();
+		loadGameData();
 		sc = new Scanner(System.in);
+	}
+
+	public void save() {
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(GAME_PATH_FILE));
+			oos.writeObject(game);
+			oos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadGameData() {
+		File f = new File(GAME_PATH_FILE);
+		if (f.exists()) {
+			ObjectInputStream ois;
+			try {
+				ois = new ObjectInputStream(new FileInputStream(f));
+				game = (Game) ois.readObject();
+				ois.close();
+			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("File is empty or something else went wrong.");
+			}
+		}
 	}
 
 	public void showMenuOptions(){
@@ -60,6 +88,7 @@ public class Menu {
 				
 				break;
 			case EXIT:
+				save();
 				break;
 			default: System.out.println("Choose a valid option");
 		}
@@ -68,7 +97,12 @@ public class Menu {
 	public void seeLeaderboard(Player score){
 		if (score != null) {
 			seeLeaderboard(score.getLeft());
-			System.out.println(score.getName() + " ");
+			System.out.println("__________________________________________________________________________");
+			System.out.println("Game parameters: ROWS: "+score.getRows()+" COLUMNS: "+score.getColumns()+" LADDERS: "+score.getLadders()+" SNAKES: "+score.getSnakes()+" PLAYERS: "+score.getPlayers());
+			System.out.println("Symbols used by players: "+score.getCharacters());
+			System.out.println("Winner: "+score.getName()+" with the symbol "+score.getWinner());
+			System.out.println("Score: "+score.getScore());
+			System.out.println("__________________________________________________________________________");
 			seeLeaderboard(score.getRight());
 		}
 
@@ -107,8 +141,8 @@ public class Menu {
 					}
 				}
 				else{
-					if(info[4].length() > 9){
-						System.out.println("The maximum number of players is 9. Try again");
+					if(info[4].length() > 9|| info[4].length() < 2){
+						System.out.println("The maximum number of players is 9 and the minimum is 2. Try again");
 						play();
 					}
 					else{

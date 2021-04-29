@@ -1,6 +1,10 @@
 package model;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
+
+    private static final long serialVersionUID = 1;
 
     private Player right;
     private Player left;
@@ -12,9 +16,9 @@ public class Player {
     private int players;
     private String characters;
     private char winner;
-    private int score;
+    private double score;
 
-    public Player(String name, int score,int rows,int columns,int ladders,int snakes,int players,String characters,char winner) {
+    public Player(String name, double score,int rows,int columns,int ladders,int snakes,int players,String characters,char winner) {
         this.name = name;
         this.rows = rows;
         this.columns = columns;
@@ -34,7 +38,7 @@ public class Player {
         return name;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
@@ -46,7 +50,7 @@ public class Player {
         this.name = name;
     }
 
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score = score;
     }
 
