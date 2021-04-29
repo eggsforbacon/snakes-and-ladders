@@ -28,6 +28,8 @@ public class Game {
                 gameBoard.movePieces();
                 return gameBoard.getMovementInformation();
             } catch(GameAlreadyWonException w){
+                String message;
+                message = gameBoard.getMovementInformation()+"\n"+"Player "+gameBoard.getWinnerGP().getCharacter()+" has won the game! Congratulations"+"\n";
                 int score = gameBoard.getWinnerGP().getMovements()/gameBoard.getSize();
                 int rows = gameBoard.getRows();
                 int columns = gameBoard.getColumns();
@@ -38,7 +40,8 @@ public class Game {
                 char wChar = gameBoard.getWinnerPiece();
                 actualWinner = new Player("",score,rows,columns,ladders,snakes,players,characters,wChar);
                 restartGame();
-                return w.getMessage();
+                message += w.getMessage();
+                return message;
             }
         }
         else{
@@ -52,23 +55,15 @@ public class Game {
     }
     public Player insertPlayer(Player r, Player newPlayer)
     {
-
-        /* If the tree is empty,
-        return a new node */
-        if (r == null)
-        {
+        if (r == null) {
             r = newPlayer;
             return r;
         }
-
-        /* Otherwise, recur
-        down the tree */
-        if (newPlayer.getScore() < r.getScore())
+        if (newPlayer.getScore() <= r.getScore())
             r.setLeft(insertPlayer(r.getLeft(),newPlayer));
         else if (newPlayer.getScore() > r.getScore())
             r.setRight(insertPlayer(r.getRight(),newPlayer));
 
-        /* return the root */
         return r;
     }
 
@@ -76,5 +71,21 @@ public class Game {
 
     public Board getBoard() {
         return gameBoard;
+    }
+
+    public Player getActualWinner() {
+        return actualWinner;
+    }
+
+    public void setActualWinner(Player actualWinner) {
+        this.actualWinner = actualWinner;
+    }
+
+    public Player getBestScores() {
+        return bestScores;
+    }
+
+    public void setBestScores(Player bestScores) {
+        this.bestScores = bestScores;
     }
 }

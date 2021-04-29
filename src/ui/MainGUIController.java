@@ -364,7 +364,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
-        
+
         if(game.getBoard().getABox(i) != null){
             Label number = new Label(String.valueOf(game.getBoard().getABox(i).getPosition()));
             number.setId("tile-numbers");
