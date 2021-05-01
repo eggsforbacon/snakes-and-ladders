@@ -8,14 +8,6 @@
   -fx-border-radius: 7;
 }
 
-.color-picker {
-  -fx-background-color: #00000033;
-}
-
-.color-picker .arrow {
-  -fx-background-color: #dae5f5;
-}
-
 #creator-hbox {
   -fx-background-color: #db8ab1;
   -fx-background-radius: 8;
@@ -48,32 +40,4 @@
   -fx-stroke: black;
   -fx-stroke-width: 3px;
   -fx-font-weight: bold;
-}
-
-#player-ank {
-  -fx-background-color: #89d999;
-}
-
-#player-tf {
-  -fx-background-color: #64bf5a;
-  -fx-border-color: #097a10;
-}
-
-#player-lbl, .color-picker .label {
-  -fx-text-fill: #13451d;
-  -fx-font-size: 17px;
-  -fx-font-weight: bold;
-}
-
-#player-btn {
-  -fx-background-color: #1da616;
-  -fx-text-fill: #d9ffe1;
-  -fx-font-size: 15px;
-  -fx-pref-width: 120.0;
-  -fx-pref-height: 35.0;
-  -fx-skin: 'ui.skins.ButtonHoverSkinGreen';
-}
-
-#player-btn:hover {
-  -fx-text-fill: #1da616;
 }

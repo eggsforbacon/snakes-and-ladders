@@ -1,38 +1,40 @@
 package model;
 
 public enum Colors {
-    RED("#c1272d","Red"), ORANGE("#f15a24", "Orange"), CYAN("#29abe2", "Cyan"),
-    DARK_BLUE("#00008e", "Dark blue"), YELLOW("#fbd850", "Yellow"),
-    GREEN("#39b54a","Green"), PINK("#dd3358","Pink"), PURPLE("#93278f","Purple"),
-    LIME("#c9e636","Lime");
+    RED("#c1272d","Red",'*'), ORANGE("#f15a24", "Orange",'!'), CYAN("#29abe2", "Cyan",'O'),
+    DARK_BLUE("#00008e", "Dark blue",'X'), YELLOW("#fbd850", "Yellow",'%'),
+    GREEN("#39b54a","Green",'$'), PINK("#dd3358","Pink",'#'), PURPLE("#93278f","Purple",'+'),
+    LIME("#c9e636","Lime",'&');
 
     String hexValue;
     String name;
+    char symbol;
 
-    Colors(String hexValue, String name) {
+    Colors(String hexValue, String name, char symbol) {
         this.hexValue = hexValue;
         this.name = name;
+        this.symbol = symbol;
     }
 
-    public static String getHexValue(int index) {
-        switch (index) {
-            case 0:
+    public static String getHexValue(String name) {
+        switch (name) {
+            case "Red":
                 return RED.hexValue;
-            case 1:
+            case "Orange":
                 return ORANGE.hexValue;
-            case 2:
+            case "Cyan":
                 return CYAN.hexValue;
-            case 3:
+            case "Dark blue":
                 return DARK_BLUE.hexValue;
-            case 4:
+            case "Yellow":
                 return YELLOW.hexValue;
-            case 5:
+            case "Green":
                 return GREEN.hexValue;
-            case 6:
+            case "Pink":
                 return PINK.hexValue;
-            case 7:
+            case "Purple":
                 return PURPLE.hexValue;
-            case 8:
+            case "Lime":
                 return LIME.hexValue;
             default:
                 return "empty";
@@ -61,6 +63,31 @@ public enum Colors {
                 return LIME.name;
             default:
                 return "empty";
+        }
+    }
+
+    public static String getHexWithChar(char winner) {
+        switch (winner) {
+            case '*':
+                return RED.hexValue;
+            case '!':
+                return ORANGE.hexValue;
+            case 'O':
+                return CYAN.hexValue;
+            case 'X':
+                return DARK_BLUE.hexValue;
+            case '%':
+                return YELLOW.hexValue;
+            case '$':
+                return GREEN.hexValue;
+            case '#':
+                return PINK.hexValue;
+            case '+':
+                return PURPLE.hexValue;
+            case '&':
+                return LIME.hexValue;
+            default:
+                return "#00000000";
         }
     }
 }

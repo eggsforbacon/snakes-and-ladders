@@ -19,7 +19,7 @@
       </HBox>
    </top>
    <center>
-      <TilePane fx:id="tilePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TilePane fx:id="tilePane" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
       <HBox prefHeight="25.0" prefWidth="188.0" BorderPane.alignment="CENTER">

@@ -1,8 +1,10 @@
 package ui;
 
 import exceptions.GameAlreadyWonException;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.stage.StageStyle;
 import model.*;
 import javafx.animation.FadeTransition;
@@ -168,13 +170,31 @@ public class MainGUIController implements Initializable, CSSIDs {
     private Label numberLBL = new Label();
 
     @FXML
-    private TilePane tilePane;
+    private TilePane tilePane = new TilePane();
+
+    /*Scoreboard*/
+
+    @FXML
+    private ListView<String> leaderboardLV = new ListView<>();
+
+    @FXML
+    private Label playerNameLBL = new Label();
+
+    @FXML
+    private Label scoreLBL = new Label();
+
+    @FXML
+    private Button winnerBTN;
 
     /*Fields*/
 
     Game game;
 
     private boolean endgameFlag = false;
+
+    private boolean restartGameFlag = false;
+
+    int turn = 0;
 
     public MainGUIController(Game game) {
         this.game = game;
@@ -189,7 +209,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     /***************************************METHODS***************************************/
 
     /*General*/
-
     private void initIDs() {
         mainTitleLBL.setId(titleLBLId);
         mainPane.setId(mainPaneID);
@@ -237,18 +256,30 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void dismissDialogue(ActionEvent event) {
-        ((Stage)dialoguePane.getScene().getWindow()).close();
+        try {
+            ((Stage) dialoguePane.getScene().getWindow()).close();
+            System.out.println("dialogue");
+        } catch (NullPointerException npe) {
+            ((Stage) winnerBTN.getScene().getWindow()).close();
+            System.out.println("score");
+        }
     }
 
     @FXML
     void confirmDialogue(ActionEvent event) {
+        secs = 0;
+        min = 0;
+        hour = 0;
+        timer.cancel();
         if (endgameFlag) {
             playersLV.getItems().clear();
             ((Stage) confirmDialogueBTN.getScene().getWindow()).close();
-            timer.cancel();
-            secs = 0; min = 0; hour = 0;
             ((Stage) boardGP.getScene().getWindow()).close();
             launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
+        } else if (restartGameFlag) {
+            playersLV.getItems().clear();
+            ((Stage) dialoguePane.getScene().getWindow()).close();
+            launchWindow("fxml/board/create-board.fxml","Create new game", Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/create-game.css");
         }
     }
 
@@ -265,7 +296,7 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void closeGame(ActionEvent event) {
-        ((Stage)mainPane.getScene().getWindow()).close();
+        ((Stage) mainPane.getScene().getWindow()).close();
     }
 
     @FXML
@@ -298,15 +329,18 @@ public class MainGUIController implements Initializable, CSSIDs {
 
             if (size > 144) throw new ArithmeticException("The size is too big. Please remain between 4 and 10");
             else if (size < 16) throw new ArithmeticException("The size is too small. Please remain between 4 and 10");
-            if (specialTiles * 2 > size) throw new ArithmeticException("There are too many snakes and ladders. Make sure you don't exceed a quarter of the tiles");
-            ((Stage) mainPane.getScene().getWindow()).close();
+            if (specialTiles * 2 > size)
+                throw new ArithmeticException("There are too many snakes and ladders. Make sure you don't exceed a quarter of the tiles");
+            if (!restartGameFlag) ((Stage) mainPane.getScene().getWindow()).close();
+            else ((Stage) turnLBL.getScene().getWindow()).close();
             launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE, StageStyle.DECORATED, "css/game.css");
 
             if (redRB.isSelected()) {
                 playersLV.getItems().add(Colors.getName(0));
-
             }
-            if (orangeRB.isSelected()) playersLV.getItems().add(Colors.getName(1));
+            if (orangeRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(1));
+            }
             if (cyanRB.isSelected()) playersLV.getItems().add(Colors.getName(2));
             if (darkBlueRB.isSelected()) playersLV.getItems().add(Colors.getName(3));
             if (yellowRB.isSelected()) playersLV.getItems().add(Colors.getName(4));
@@ -315,11 +349,12 @@ public class MainGUIController implements Initializable, CSSIDs {
             if (purpleRB.isSelected()) playersLV.getItems().add(Colors.getName(7));
             if (limeRB.isSelected()) playersLV.getItems().add(Colors.getName(8));
 
-            if (playersLV.getItems().size() < 2) throw new ArithmeticException("No player selection or not enough players selected. Try again");
+            if (playersLV.getItems().size() < 2)
+                throw new ArithmeticException("No player selection or not enough players selected. Try again");
 
             ((Stage) redRB.getScene().getWindow()).close();
             int players = playersLV.getItems().size();
-            game.startGame(rows,columns,snakes,ladders,players);
+            game.startGame(rows, columns, snakes, ladders, players);
             boardGP = new GridPane();
             GridPane board = boardGP;
             board = gridProperties(board);
@@ -343,18 +378,20 @@ public class MainGUIController implements Initializable, CSSIDs {
                 }
             };
 
-            timer.scheduleAtFixedRate(task,1000,1000);
+            timer.scheduleAtFixedRate(task, 1000, 1000);
             Image face1 = new Image(String.valueOf(getClass().getResource("resources/dice/1.png")));
             diceIMV.setImage(face1);
+            turn = (int) Math.floor(Math.random()*(playersLV.getItems().size() - 1));
+            turnLBL.setText("It's " + playersLV.getItems().get(turn) + "'s turn!");
+            turn++;
         } catch (NumberFormatException nfe) {
             wrong = "Make sure you enter an integer number and try again.";
         } catch (ArithmeticException | IllegalStateException aise) {
             wrong = aise.getMessage();
             System.out.println(wrong);
-        }
-        finally {
+        } finally {
             if (!wrong.isEmpty()) {
-                launchWindow("fxml/dialogue.fxml","Error",Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/dialogue-blue.css");
+                launchWindow("fxml/dialogue.fxml", "Error", Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/dialogue-blue.css");
                 dialogueLBL.setText(wrong);
             }
         }
@@ -362,9 +399,12 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     GridPane gridProperties(GridPane grid) {
         grid.setAlignment(Pos.CENTER);
-        tileBP.setMinSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
-        tileBP.setMaxSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
-        tileBP.setPrefSize(750.0/game.getBoard().getColumns(),750.0/game.getBoard().getRows());
+        tileBP.setMinSize(750.0 / game.getBoard().getColumns(), 750.0 / game.getBoard().getRows());
+        tileBP.setMaxSize(750.0 / game.getBoard().getColumns(), 750.0 / game.getBoard().getRows());
+        tileBP.setPrefSize(750.0 / game.getBoard().getColumns(), 750.0 / game.getBoard().getRows());
+        tilePane.setMinSize(tileBP.getPrefWidth() - 60, tileBP.getPrefHeight() - 60);
+        tilePane.setMaxSize(tileBP.getPrefWidth() - 60, tileBP.getPrefHeight() - 60);
+        tilePane.setPrefSize(tileBP.getPrefWidth() - 60, tileBP.getPrefHeight() - 60);
         grid.setPrefSize(750, 750);
         grid.setMinSize(750, 750);
         grid.setMaxSize(750, 750);
@@ -375,11 +415,16 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     GridPane initializeBoard(int i, GridPane board, int y, int x) {
 
-        if(game.getBoard().getABox(i) != null){
+        if (game.getBoard().getABox(i) != null) {
             numberLBL.setText(String.valueOf(game.getBoard().getABox(i).getPosition()));
             numberLBL.setId("tile-numbers");
-            numberLBL.setStyle("\n-fx-text-fill: red;");
-
+            GamePiece piece = game.getBoard().getABox(i).getPiece();
+            if (piece != null) {
+                Label box = new Label("O");
+                box.setPrefSize(tilePane.getPrefWidth() / 9, tilePane.getPrefHeight() / 9);
+                box.setStyle("-fx-background-color: red;");
+                tilePane.getChildren().add(box);
+            }
         }
         if (i < game.getBoard().getSize()) {
             Parent tile;
@@ -388,15 +433,8 @@ public class MainGUIController implements Initializable, CSSIDs {
                 y++;
             }
             tile = loadFxml("fxml/board/tile.fxml");
-            tile.setId(pickId(x,y));
-
-            if (game.getBoard().getABox(0) != null){
-                GamePiece piece = game.getBoard().getABox(i).getPiece();
-                if (piece != null) {
-                    tilePane.setStyle("\n-fx-background-color: black;");
-                }
-            }
-            board.add(tile,x,y);
+            tile.setId(pickId(x, y));
+            board.add(tile, x, y);
             return initializeBoard(i + 1, board, y, x + 1);
 
         }
@@ -423,45 +461,53 @@ public class MainGUIController implements Initializable, CSSIDs {
         return id;
     }
 
-    @FXML
-    void scoreBoard(ActionEvent event) {
-
-    }
-
     /*Game Pane*/
 
     @FXML
     void restartGame(ActionEvent event) {
-
-
+        launchWindow("fxml/dialogue.fxml","Restart game",Modality.APPLICATION_MODAL,StageStyle.DECORATED,"css/dialogue-orange.css");
+        dialogueLBL.setText("Are you sure you want to restart the game?");
+        bBarHBOX.setSpacing(10.0);
+        confirmDialogueBTN.setId("close-button");
+        confirmDialogueBTN.setMinHeight(Button.USE_COMPUTED_SIZE);
+        confirmDialogueBTN.setText("End Game");
+        dialogueButton.setText("Cancel");
+        restartGameFlag = true;
     }
 
     @FXML
     void rollDice(MouseEvent event) {
-        //THIS IS A TEMPORAL IMPLEMENTATION. REAL IMPLEMENTATION WILL COME WITH DICE THROW FROM GAME PIECES
         GameAlreadyWonException e = new GameAlreadyWonException();
-        int dice = 0;
-            String message = game.move();
-            dice = game.getDice();
-            GridPane board = new GridPane();
+        int dice;
+        String message = game.move();
+        dice = game.getDice();
+        turnLBL.setText("It's " + playersLV.getItems().get(turn) + "'s turn!");
+        GridPane board = new GridPane();
+        try {
             board = gridProperties(board);
-            board = initializeBoard(0, board, 0, 0);
-            FadeTransition pop = new FadeTransition();
-            pop.setDuration(Duration.millis(1000));
-            pop.setFromValue(1.0);
-            pop.setToValue(0.0);
-            pop.setNode(diceBorder);
-            System.out.println(dice);
-            diceIMV.setImage(new Image(String.valueOf(getClass().getResource("resources/dice/" + dice + ".png"))));
-            pop.play();
-            if(message.contains(e.getMessage())){
-                launchWindow("fxml/board/game-won.fxml","We have a winner!",Modality.APPLICATION_MODAL, StageStyle.UNDECORATED,"css/create-game.css");
-            }
+            initializeBoard(0, board, 0, 0);
+        } catch (NullPointerException ignore) {}
+        FadeTransition pop = new FadeTransition();
+        pop.setDuration(Duration.millis(1000));
+        pop.setFromValue(1.0);
+        pop.setToValue(0.0);
+        pop.setNode(diceBorder);
+        System.out.println(dice);
+        diceIMV.setImage(new Image(String.valueOf(getClass().getResource("resources/dice/" + dice + ".png"))));
+        pop.play();
+        turn++;
+        try {
+            if (turn == game.getBoard().getPlayers()) turn = 0;
+        } catch (NullPointerException ignore) {}
+        if (message.contains(e.getMessage())) {
+            launchWindow("fxml/board/game-won.fxml", "We have a winner!", Modality.APPLICATION_MODAL, StageStyle.UNDECORATED, "css/create-game.css");
+
+        }
     }
 
     @FXML
     void endGame(ActionEvent event) {
-        launchWindow("fxml/dialogue.fxml","Exit",Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/dialogue-orange.css");
+        launchWindow("fxml/dialogue.fxml", "Exit", Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/dialogue-orange.css");
         dialogueLBL.setText("Are you sure you want to end the game?");
         bBarHBOX.setSpacing(10.0);
         confirmDialogueBTN.setId("close-button");
@@ -474,17 +520,49 @@ public class MainGUIController implements Initializable, CSSIDs {
     @FXML
     void exitAfterWin(ActionEvent event) {
         game.createWinner(winnerTF.getText());
-        ((Stage)winnerTF.getScene().getWindow()).close();
+        ((Stage) winnerTF.getScene().getWindow()).close();
         ((Stage) timerLBL.getScene().getWindow()).close();
-        launchWindow("fxml/main-pane.fxml","Snakes and Ladders: Start",Modality.NONE,StageStyle.DECORATED,"css/main.css");
+        launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
+        hour = 0;
+        min = 0;
+        secs = 0;
+        timer.cancel();
     }
 
-    public static void wait(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (Exception e) {
-            e.fillInStackTrace();
+    /*Scoreboard*/
+
+    @FXML
+    void scoreBoard(ActionEvent event) {
+        ((Stage) mainPane.getScene().getWindow()).close();
+        launchWindow("fxml/leaderboard.fxml", "Leaderboard", Modality.NONE, StageStyle.DECORATED, "css/leaderboard.css");
+        fillLB(game.getBestScores());
+    }
+
+    void fillLB(Player bestScores) {
+        if (bestScores != null) {
+            leaderboardLV.getItems().add(bestScores.getName());
+            fillLB(bestScores.getRight());
         }
+    }
+
+    @FXML
+    void goBackHome(ActionEvent event) {
+        ((Stage) leaderboardLV.getScene().getWindow()).close();
+        launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
+    }
+
+    @FXML
+    void showPlayerInfo(ContextMenuEvent event) {
+        launchWindow("fxml/winner-info.fxml","Winner info",Modality.APPLICATION_MODAL,StageStyle.UNDECORATED,"css/leaderboard.css");
+        String desired = leaderboardLV.getSelectionModel().getSelectedItem();
+        Player current = advanceSearch(desired, game.getBestScores());
+        playerNameLBL.setText(current.getName());
+        scoreLBL.setText("" + current.getScore());
+    }
+
+    Player advanceSearch(String desired, Player current) {
+        if (desired.equals(current.getName())) return current;
+        else return advanceSearch(desired, current.getRight());
     }
 
     public Timer getTimer() {
