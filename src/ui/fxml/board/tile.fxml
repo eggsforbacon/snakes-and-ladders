@@ -3,43 +3,28 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
-<BorderPane fx:id="tileBP" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="187.5" prefWidth="187.5" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="188.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="numberLBL" text="0" />
-         </children>
+<BorderPane fx:id="tileBP" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="212.5" prefWidth="212.5" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <Label fx:id="specialLBL" alignment="CENTER" prefHeight="23.0" prefWidth="84.0" text="n -&gt; m" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets left="5.0" top="5.0" />
+            <Insets bottom="5.0" />
          </BorderPane.margin>
-      </HBox>
+      </Label>
+   </bottom>
+   <top>
+      <Label fx:id="numberLBL" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="29.0" text="0" textAlignment="CENTER" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold" size="48.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </Label>
    </top>
    <center>
-      <TilePane fx:id="tilePane" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TextFlow fx:id="piecesTFLOW" prefHeight="44.0" prefWidth="118.0" textAlignment="CENTER" BorderPane.alignment="CENTER" />
    </center>
-   <bottom>
-      <HBox prefHeight="25.0" prefWidth="188.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" />
-         </BorderPane.margin>
-      </HBox>
-   </bottom>
-   <right>
-      <VBox prefHeight="188.0" prefWidth="25.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets right="5.0" />
-         </BorderPane.margin>
-      </VBox>
-   </right>
-   <left>
-      <VBox prefHeight="188.0" prefWidth="25.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets left="5.0" />
-         </BorderPane.margin>
-      </VBox>
-   </left>
 </BorderPane>

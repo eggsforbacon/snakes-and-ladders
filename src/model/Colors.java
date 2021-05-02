@@ -66,8 +66,8 @@ public enum Colors {
         }
     }
 
-    public static String getHexWithChar(char winner) {
-        switch (winner) {
+    public static String getHexWithChar(char c) {
+        switch (c) {
             case '*':
                 return RED.hexValue;
             case '!':
@@ -88,6 +88,31 @@ public enum Colors {
                 return LIME.hexValue;
             default:
                 return "#00000000";
+        }
+    }
+
+    public static char getChar(int index) {
+        switch (index) {
+            case 0:
+                return RED.symbol;
+            case 1:
+                return ORANGE.symbol;
+            case 2:
+                return CYAN.symbol;
+            case 3:
+                return DARK_BLUE.symbol;
+            case 4:
+                return YELLOW.symbol;
+            case 5:
+                return GREEN.symbol;
+            case 6:
+                return PINK.symbol;
+            case 7:
+                return PURPLE.symbol;
+            case 8:
+                return LIME.symbol;
+            default:
+                return '\0';
         }
     }
 }

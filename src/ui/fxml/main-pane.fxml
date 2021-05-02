@@ -15,8 +15,7 @@
                <children>
                   <Button fx:id="newGameBTN" mnemonicParsing="false" onAction="#newGame" text="New Game" />
                   <Button fx:id="scoreBoardBTN" mnemonicParsing="false" onAction="#scoreBoard" text="Scoreboard" />
-                  <Button fx:id="eraseAllDataBTN" mnemonicParsing="false" onAction="#eraseAllData" text="Erase Data" />
-                  <Button fx:id="closeGameBTN" layoutX="265.0" layoutY="330.0" mnemonicParsing="false" onAction="#closeGame" text="Exit" />
+                  <Button fx:id="closeGameBTN" layoutX="265.0" layoutY="330.0" mnemonicParsing="false" onAction="#closeGame" prefHeight="31.0" prefWidth="94.0" text="Exit" />
                </children>
             </VBox>
          </children>

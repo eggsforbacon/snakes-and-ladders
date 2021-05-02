@@ -70,18 +70,18 @@
 }
 
 #even-tile {
-  -fx-background-color: #f5aa42;
+  -fx-background-color: #f0b86c;
   -fx-background-radius: 8;
 }
 
 #odd-tile {
-  -fx-background-color: #e06928;
+  -fx-background-color: #f28c55;
   -fx-background-radius: 8;
 }
 
 #tile-numbers {
   -fx-text-fill: #202121;
-  -fx-font-size: 17px;
+  -fx-font-size: 20px;
   -fx-font-weight: bold;
 }
 
@@ -89,4 +89,16 @@
   -fx-text-fill: #e04846;
   -fx-font-size: 17px;
   -fx-font-weight: bold;
+}
+
+#snake {
+  -fx-text-fill: #962a0c;
+  -fx-font-weight: bold;
+  -fx-font-size: 18px;
+}
+
+#ladder {
+  -fx-text-fill: #186e00;
+  -fx-font-weight: bold;
+  -fx-font-size: 18px;
 }

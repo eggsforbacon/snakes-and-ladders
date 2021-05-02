@@ -5,6 +5,8 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.StageStyle;
 import model.*;
 import javafx.animation.FadeTransition;
@@ -70,9 +72,6 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     private Button scoreBoardBTN;
-
-    @FXML
-    private Button eraseAllDataBTN;
 
     @FXML
     private Button closeGameBTN;
@@ -159,7 +158,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     //Winning
 
     @FXML
-    private TextField winnerTF;
+    private TextField winnerTF = new TextField();
 
     //Tiles
 
@@ -170,7 +169,10 @@ public class MainGUIController implements Initializable, CSSIDs {
     private Label numberLBL = new Label();
 
     @FXML
-    private TilePane tilePane = new TilePane();
+    private TextFlow piecesTFLOW = new TextFlow();
+
+    @FXML
+    private Label specialLBL;
 
     /*Scoreboard*/
 
@@ -214,7 +216,6 @@ public class MainGUIController implements Initializable, CSSIDs {
         mainPane.setId(mainPaneID);
         newGameBTN.setId(mainPaneButtonsID);
         scoreBoardBTN.setId(mainPaneButtonsID);
-        eraseAllDataBTN.setId(mainPaneButtonsID);
 
     }
 
@@ -335,33 +336,59 @@ public class MainGUIController implements Initializable, CSSIDs {
             else ((Stage) turnLBL.getScene().getWindow()).close();
             launchWindow("fxml/board/board-pane.fxml", "Now playing!", Modality.NONE, StageStyle.DECORATED, "css/game.css");
 
+            String playerSymbols = "";
             if (redRB.isSelected()) {
                 playersLV.getItems().add(Colors.getName(0));
+                playerSymbols += Colors.getChar(0);
             }
             if (orangeRB.isSelected()) {
                 playersLV.getItems().add(Colors.getName(1));
+                playerSymbols += Colors.getChar(1);
             }
-            if (cyanRB.isSelected()) playersLV.getItems().add(Colors.getName(2));
-            if (darkBlueRB.isSelected()) playersLV.getItems().add(Colors.getName(3));
-            if (yellowRB.isSelected()) playersLV.getItems().add(Colors.getName(4));
-            if (greenRB.isSelected()) playersLV.getItems().add(Colors.getName(5));
-            if (pinkRB.isSelected()) playersLV.getItems().add(Colors.getName(6));
-            if (purpleRB.isSelected()) playersLV.getItems().add(Colors.getName(7));
-            if (limeRB.isSelected()) playersLV.getItems().add(Colors.getName(8));
+            if (cyanRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(2));
+                playerSymbols += Colors.getChar(2);
+            }
+            if (darkBlueRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(3));
+                playerSymbols += Colors.getChar(3);
+            }
+            if (yellowRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(4));
+                playerSymbols += Colors.getChar(4);
+            }
+            if (greenRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(5));
+                playerSymbols += Colors.getChar(5);
+            }
+            if (pinkRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(6));
+                playerSymbols += Colors.getChar(6);
+            }
+            if (purpleRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(7));
+                playerSymbols += Colors.getChar(7);
+            }
+            if (limeRB.isSelected()) {
+                playersLV.getItems().add(Colors.getName(8));
+                playerSymbols += Colors.getChar(8);
+            }
 
             if (playersLV.getItems().size() < 2)
                 throw new ArithmeticException("No player selection or not enough players selected. Try again");
 
             ((Stage) redRB.getScene().getWindow()).close();
-            int players = playersLV.getItems().size();
-            game.startGame(rows, columns, snakes, ladders, players);
+            //int players = playersLV.getItems().size();
+            game.startGame(rows, columns, snakes, ladders, playerSymbols);
             boardGP = new GridPane();
             GridPane board = boardGP;
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
             boardPane.setCenter(board);
+            hour = 0;
+            min = 0;
+            secs = 0;
             timer = new Timer();
-
             task = new TimerTask() {
                 @Override
                 public void run() {
@@ -399,15 +426,12 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     GridPane gridProperties(GridPane grid) {
         grid.setAlignment(Pos.CENTER);
-        tileBP.setMinSize(750.0 / game.getBoard().getColumns(), 750.0 / game.getBoard().getRows());
-        tileBP.setMaxSize(750.0 / game.getBoard().getColumns(), 750.0 / game.getBoard().getRows());
-        tileBP.setPrefSize(750.0 / game.getBoard().getColumns(), 750.0 / game.getBoard().getRows());
-        tilePane.setMinSize(tileBP.getPrefWidth() - 60, tileBP.getPrefHeight() - 60);
-        tilePane.setMaxSize(tileBP.getPrefWidth() - 60, tileBP.getPrefHeight() - 60);
-        tilePane.setPrefSize(tileBP.getPrefWidth() - 60, tileBP.getPrefHeight() - 60);
-        grid.setPrefSize(750, 750);
-        grid.setMinSize(750, 750);
-        grid.setMaxSize(750, 750);
+        tileBP.setMinSize(850.0 / game.getBoard().getColumns(), 850.0 / game.getBoard().getRows());
+        tileBP.setMaxSize(850.0 / game.getBoard().getColumns(), 850.0 / game.getBoard().getRows());
+        tileBP.setPrefSize(850.0 / game.getBoard().getColumns(), 850.0 / game.getBoard().getRows());
+        grid.setPrefSize(850, 850);
+        grid.setMinSize(850, 850);
+        grid.setMaxSize(850, 850);
         grid.setHgap(5);
         grid.setVgap(5);
         return grid;
@@ -418,12 +442,11 @@ public class MainGUIController implements Initializable, CSSIDs {
         if (game.getBoard().getABox(i) != null) {
             numberLBL.setText(String.valueOf(game.getBoard().getABox(i).getPosition()));
             numberLBL.setId("tile-numbers");
-            GamePiece piece = game.getBoard().getABox(i).getPiece();
-            if (piece != null) {
-                Label box = new Label("O");
-                box.setPrefSize(tilePane.getPrefWidth() / 9, tilePane.getPrefHeight() / 9);
-                box.setStyle("-fx-background-color: red;");
-                tilePane.getChildren().add(box);
+            specialLBL.setText(game.getBoard().getABox(i).getBoxInformation());
+            if (Character.isDigit(game.getBoard().getABox(i).getBoxInformation().charAt(0))) specialLBL.setId("ladder");
+            else specialLBL.setId("snake");
+            if (game.getBoard().getABox(i).getPiece() != null) {
+                piecesTFLOW.getChildren().add(new Text(game.getBoard().getABox(i).getPieceString()));
             }
         }
         if (i < game.getBoard().getSize()) {
@@ -523,9 +546,6 @@ public class MainGUIController implements Initializable, CSSIDs {
         ((Stage) winnerTF.getScene().getWindow()).close();
         ((Stage) timerLBL.getScene().getWindow()).close();
         launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
-        hour = 0;
-        min = 0;
-        secs = 0;
         timer.cancel();
     }
 
@@ -540,6 +560,7 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     void fillLB(Player bestScores) {
         if (bestScores != null) {
+            System.out.println(bestScores.getName());
             leaderboardLV.getItems().add(bestScores.getName());
             fillLB(bestScores.getRight());
         }
@@ -553,11 +574,13 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void showPlayerInfo(ContextMenuEvent event) {
-        launchWindow("fxml/winner-info.fxml","Winner info",Modality.APPLICATION_MODAL,StageStyle.UNDECORATED,"css/leaderboard.css");
-        String desired = leaderboardLV.getSelectionModel().getSelectedItem();
-        Player current = advanceSearch(desired, game.getBestScores());
-        playerNameLBL.setText(current.getName());
-        scoreLBL.setText("" + current.getScore());
+        try {
+            String desired = leaderboardLV.getSelectionModel().getSelectedItem();
+            Player current = advanceSearch(desired, game.getBestScores());
+            launchWindow("fxml/winner-info.fxml","Winner info",Modality.APPLICATION_MODAL,StageStyle.UNDECORATED,"css/leaderboard.css");
+            playerNameLBL.setText(current.getName());
+            scoreLBL.setText("" + current.getScore());
+        } catch (NullPointerException ignored) {}
     }
 
     Player advanceSearch(String desired, Player current) {

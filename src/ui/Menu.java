@@ -179,7 +179,7 @@ public class Menu {
 	}
 
 	public boolean doGameOptions(String option){
-		Boolean finish = false;
+		boolean finish = false;
 		GameAlreadyWonException w = new GameAlreadyWonException();
 		switch(option) {
 			case "":
