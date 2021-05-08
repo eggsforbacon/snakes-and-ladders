@@ -1,10 +1,10 @@
 package model;
 
 public enum Colors {
-    RED("#c1272d","Red",'*'), ORANGE("#f15a24", "Orange",'!'), CYAN("#29abe2", "Cyan",'O'),
-    DARK_BLUE("#00008e", "Dark blue",'X'), YELLOW("#fbd850", "Yellow",'%'),
+    RED("#c1272d","Red",'*'), ORANGE("#f15a24", "Orange",'!'), CYAN("#0283ba", "Cyan",'O'),
+    DARK_BLUE("#00008e", "Dark blue",'X'), YELLOW("#c29b02", "Yellow",'%'),
     GREEN("#39b54a","Green",'$'), PINK("#dd3358","Pink",'#'), PURPLE("#93278f","Purple",'+'),
-    LIME("#c9e636","Lime",'&');
+    LIME("#a0bf00","Lime",'&');
 
     String hexValue;
     String name;

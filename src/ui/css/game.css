@@ -70,13 +70,17 @@
 }
 
 #even-tile {
-  -fx-background-color: #f0b86c;
-  -fx-background-radius: 8;
+  -fx-background-color: #ffe5c4;
+  -fx-background-radius: 10;
+  -fx-border-color: black;
+  -fx-border-radius: 10;
 }
 
 #odd-tile {
-  -fx-background-color: #f28c55;
-  -fx-background-radius: 8;
+  -fx-background-color: #ffcbad;
+  -fx-background-radius: 10;
+  -fx-border-color: black;
+  -fx-border-radius: 10;
 }
 
 #tile-numbers {

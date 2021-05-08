@@ -169,7 +169,31 @@ public class MainGUIController implements Initializable, CSSIDs {
     private Label numberLBL = new Label();
 
     @FXML
-    private TextFlow piecesTFLOW = new TextFlow();
+    private Label player1 = new Label();
+
+    @FXML
+    private Label player2 = new Label();
+
+    @FXML
+    private Label player3 = new Label();
+
+    @FXML
+    private Label player4 = new Label();
+
+    @FXML
+    private Label player5 = new Label();
+
+    @FXML
+    private Label player6 = new Label();
+
+    @FXML
+    private Label player7 = new Label();
+
+    @FXML
+    private Label player8 = new Label();
+
+    @FXML
+    private Label player9 = new Label();
 
     @FXML
     private Label specialLBL;
@@ -216,6 +240,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         mainPane.setId(mainPaneID);
         newGameBTN.setId(mainPaneButtonsID);
         scoreBoardBTN.setId(mainPaneButtonsID);
+        closeGameBTN.setId(mainPaneButtonsID);
 
     }
 
@@ -272,10 +297,11 @@ public class MainGUIController implements Initializable, CSSIDs {
         min = 0;
         hour = 0;
         timer.cancel();
+        turn = 0;
         if (endgameFlag) {
             playersLV.getItems().clear();
             ((Stage) confirmDialogueBTN.getScene().getWindow()).close();
-            ((Stage) boardGP.getScene().getWindow()).close();
+            ((Stage) playersLV.getScene().getWindow()).close();
             launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
         } else if (restartGameFlag) {
             playersLV.getItems().clear();
@@ -378,7 +404,7 @@ public class MainGUIController implements Initializable, CSSIDs {
                 throw new ArithmeticException("No player selection or not enough players selected. Try again");
 
             ((Stage) redRB.getScene().getWindow()).close();
-            //int players = playersLV.getItems().size();
+            System.out.println(playerSymbols);
             game.startGame(rows, columns, snakes, ladders, playerSymbols);
             boardGP = new GridPane();
             GridPane board = boardGP;
@@ -408,14 +434,12 @@ public class MainGUIController implements Initializable, CSSIDs {
             timer.scheduleAtFixedRate(task, 1000, 1000);
             Image face1 = new Image(String.valueOf(getClass().getResource("resources/dice/1.png")));
             diceIMV.setImage(face1);
-            turn = (int) Math.floor(Math.random()*(playersLV.getItems().size() - 1));
             turnLBL.setText("It's " + playersLV.getItems().get(turn) + "'s turn!");
             turn++;
         } catch (NumberFormatException nfe) {
             wrong = "Make sure you enter an integer number and try again.";
         } catch (ArithmeticException | IllegalStateException aise) {
             wrong = aise.getMessage();
-            System.out.println(wrong);
         } finally {
             if (!wrong.isEmpty()) {
                 launchWindow("fxml/dialogue.fxml", "Error", Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/dialogue-blue.css");
@@ -442,12 +466,38 @@ public class MainGUIController implements Initializable, CSSIDs {
         if (game.getBoard().getABox(i) != null) {
             numberLBL.setText(String.valueOf(game.getBoard().getABox(i).getPosition()));
             numberLBL.setId("tile-numbers");
-            specialLBL.setText(game.getBoard().getABox(i).getBoxInformation());
+            specialLBL.setText(String.valueOf(game.getBoard().getABox(i).getBoxInformation()));
             if (Character.isDigit(game.getBoard().getABox(i).getBoxInformation().charAt(0))) specialLBL.setId("ladder");
             else specialLBL.setId("snake");
-            if (game.getBoard().getABox(i).getPiece() != null) {
-                piecesTFLOW.getChildren().add(new Text(game.getBoard().getABox(i).getPieceString()));
-            }
+            //The following lines of code are a homage to senior C# developer, yanderedev
+            if (game.getBoard().getABox(i).getPieceString().contains("*")) {
+                player1.setText("O");
+                player1.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('*') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("!")) {
+                player2.setText("O");
+                player2.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('!') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("O")) {
+                player3.setText("O");
+                player3.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('O') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("X")) {
+                player4.setText("O");
+                player4.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('X') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("%")) {
+                player5.setText("O");
+                player5.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('%') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("$")) {
+                player6.setText("O");
+                player6.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('$') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("#")) {
+                player7.setText("O");
+                player7.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('#') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("+")) {
+                player8.setText("O");
+                player8.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('+') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } if (game.getBoard().getABox(i).getPieceString().contains("&")) {
+                player9.setText("O");
+                player9.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('&') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
+            } // Optimization is for the weak minded, Optimization is a moral construct
         }
         if (i < game.getBoard().getSize()) {
             Parent tile;
@@ -509,6 +559,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         try {
             board = gridProperties(board);
             initializeBoard(0, board, 0, 0);
+            boardPane.setCenter(board);
         } catch (NullPointerException ignore) {}
         FadeTransition pop = new FadeTransition();
         pop.setDuration(Duration.millis(1000));
@@ -524,7 +575,6 @@ public class MainGUIController implements Initializable, CSSIDs {
         } catch (NullPointerException ignore) {}
         if (message.contains(e.getMessage())) {
             launchWindow("fxml/board/game-won.fxml", "We have a winner!", Modality.APPLICATION_MODAL, StageStyle.UNDECORATED, "css/create-game.css");
-
         }
     }
 
