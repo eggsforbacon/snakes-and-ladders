@@ -1,16 +1,9 @@
 package ui;
 
 import exceptions.GameAlreadyWonException;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import javafx.stage.StageStyle;
-import model.*;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +14,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import model.Colors;
+import model.Game;
+import model.Player;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -37,92 +38,92 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     /*Splash Screen*/
     @FXML
-    private BorderPane preloaderPane;
+    private BorderPane preloaderPane = new BorderPane();
 
     @FXML
-    private Label progress;
+    private Label progress = new Label();
 
     public static Label label;
 
     /*Dialogue Pane*/
 
     @FXML
-    private BorderPane dialoguePane;
+    private BorderPane dialoguePane = new BorderPane();
 
     @FXML
     private Label dialogueLBL = new Label();
 
     @FXML
-    private Button dialogueButton;
+    private Button dialogueButton = new Button();
 
     @FXML
-    private HBox bBarHBOX;
+    private HBox bBarHBOX = new HBox();
 
     @FXML
-    private Button confirmDialogueBTN;
+    private Button confirmDialogueBTN = new Button();
 
 
     /*Main Pane*/
 
     @FXML
-    private BorderPane mainPane;
+    private BorderPane mainPane = new BorderPane();
 
     @FXML
-    private Button newGameBTN;
+    private Button newGameBTN = new Button();
 
     @FXML
-    private Button scoreBoardBTN;
+    private Button scoreBoardBTN = new Button();
 
     @FXML
-    private Button closeGameBTN;
+    private Button closeGameBTN = new Button();
 
     @FXML
-    private Label mainTitleLBL;
+    private Label mainTitleLBL = new Label();
 
     //New Game
 
     @FXML
-    private TextField columnsTF;
+    private TextField columnsTF = new TextField();
 
     @FXML
-    private TextField rowsTF;
+    private TextField rowsTF = new TextField();
 
     @FXML
-    private TextField snakesTF;
+    private TextField snakesTF = new TextField();
 
     @FXML
-    private TextField laddersTF;
+    private TextField laddersTF =  new TextField();
 
     Tooltip colRowTT = new Tooltip("Please use integer numbers between 4 and 10.\nGoing above 10 is discouraged to avoid\nmemory shortage.");
 
     Tooltip snakeLadderTT = new Tooltip("Keep the sum of snakes and ladders to a\nquarter of the size of the board to avoid\novercrowding.");
 
     @FXML
-    private RadioButton redRB;
+    private RadioButton redRB = new RadioButton();
 
     @FXML
-    private RadioButton orangeRB;
+    private RadioButton orangeRB = new RadioButton();
 
     @FXML
-    private RadioButton cyanRB;
+    private RadioButton cyanRB = new RadioButton();
 
     @FXML
-    private RadioButton darkBlueRB;
+    private RadioButton darkBlueRB = new RadioButton();
 
     @FXML
-    private RadioButton yellowRB;
+    private RadioButton yellowRB = new RadioButton();
 
     @FXML
-    private RadioButton greenRB;
+    private RadioButton greenRB = new RadioButton();
 
     @FXML
-    private RadioButton pinkRB;
+    private RadioButton pinkRB = new RadioButton();
 
     @FXML
-    private RadioButton purpleRB;
+    private RadioButton purpleRB = new RadioButton();
 
     @FXML
-    private RadioButton limeRB;
+    private RadioButton limeRB = new RadioButton();
 
     /*Game Pane*/
 
@@ -130,10 +131,10 @@ public class MainGUIController implements Initializable, CSSIDs {
     private BorderPane boardPane = new BorderPane();
 
     @FXML
-    private ImageView diceIMV;
+    private ImageView diceIMV = new ImageView();
 
     @FXML
-    private Rectangle diceBorder;
+    private Rectangle diceBorder = new Rectangle();
 
     @FXML
     private Label timerLBL = new Label();
@@ -150,10 +151,8 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     private int secs = 0, min = 0, hour = 0;
 
-    private TimerTask task;
-
     @FXML
-    private Label turnLBL;
+    private Label turnLBL = new Label();
 
     //Winning
 
@@ -196,7 +195,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     private Label player9 = new Label();
 
     @FXML
-    private Label specialLBL;
+    private Label specialLBL = new Label();
 
     /*Scoreboard*/
 
@@ -210,7 +209,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     private Label scoreLBL = new Label();
 
     @FXML
-    private Button winnerBTN;
+    private Button winnerBTN = new Button();
 
     /*Fields*/
 
@@ -219,6 +218,8 @@ public class MainGUIController implements Initializable, CSSIDs {
     private boolean endgameFlag = false;
 
     private boolean restartGameFlag = false;
+
+    private boolean simulFlag = false;
 
     int turn = 0;
 
@@ -278,6 +279,32 @@ public class MainGUIController implements Initializable, CSSIDs {
         }
     }
 
+    private void updateFlags(int key) {
+        switch (key) {
+            case 0:
+                endgameFlag = false;
+                restartGameFlag = false;
+                simulFlag = false;
+            case 1:
+                endgameFlag = true;
+                restartGameFlag = false;
+                simulFlag = false;
+                break;
+            case 2:
+                endgameFlag = false;
+                restartGameFlag = true;
+                simulFlag = false;
+                break;
+            case 3:
+                endgameFlag = false;
+                restartGameFlag = false;
+                simulFlag = true;
+                break;
+            default:
+                throw new IllegalStateException("Invalid key: " + key);
+        }
+    }
+
     /*Dialogue Pane*/
 
     @FXML
@@ -293,20 +320,45 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void confirmDialogue(ActionEvent event) {
-        secs = 0;
-        min = 0;
-        hour = 0;
-        timer.cancel();
-        turn = 0;
         if (endgameFlag) {
+            secs = 0;
+            min = 0;
+            hour = 0;
+            timer.cancel();
+            turn = 0;
             playersLV.getItems().clear();
             ((Stage) confirmDialogueBTN.getScene().getWindow()).close();
             ((Stage) playersLV.getScene().getWindow()).close();
             launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
         } else if (restartGameFlag) {
+            secs = 0;
+            min = 0;
+            hour = 0;
+            timer.cancel();
+            turn = 0;
             playersLV.getItems().clear();
             ((Stage) dialoguePane.getScene().getWindow()).close();
             launchWindow("fxml/board/create-board.fxml","Create new game", Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/create-game.css");
+        } else if (simulFlag) {
+            ((Stage) dialoguePane.getScene().getWindow()).close();
+            runSimulation();
+        }
+    }
+
+    void runSimulation() {
+        if (boardGP != null) {
+            rollDice(null);
+            Task<Void> sleeper = new Task<Void>() {
+                @Override
+                protected Void call() {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ignore) {}
+                    return null;
+                }
+            };
+            sleeper.setOnSucceeded(event -> runSimulation());
+            new Thread(sleeper).start();
         }
     }
 
@@ -314,11 +366,6 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     private void initializeMainMenu() {
         initIDs();
-    }
-
-    @FXML
-    void eraseAllData(ActionEvent event) {
-
     }
 
     @FXML
@@ -407,15 +454,16 @@ public class MainGUIController implements Initializable, CSSIDs {
             System.out.println(playerSymbols);
             game.startGame(rows, columns, snakes, ladders, playerSymbols);
             boardGP = new GridPane();
-            GridPane board = boardGP;
+            GridPane board = new GridPane();
             board = gridProperties(board);
             board = initializeBoard(0, board, 0, 0);
-            boardPane.setCenter(board);
+            boardGP = board;
+            boardPane.setCenter(boardGP);
             hour = 0;
             min = 0;
             secs = 0;
             timer = new Timer();
-            task = new TimerTask() {
+            TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
                     secs++;
@@ -434,6 +482,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             timer.scheduleAtFixedRate(task, 1000, 1000);
             Image face1 = new Image(String.valueOf(getClass().getResource("resources/dice/1.png")));
             diceIMV.setImage(face1);
+            turn = 0;
             turnLBL.setText("It's " + playersLV.getItems().get(turn) + "'s turn!");
             turn++;
         } catch (NumberFormatException nfe) {
@@ -543,9 +592,21 @@ public class MainGUIController implements Initializable, CSSIDs {
         bBarHBOX.setSpacing(10.0);
         confirmDialogueBTN.setId("close-button");
         confirmDialogueBTN.setMinHeight(Button.USE_COMPUTED_SIZE);
-        confirmDialogueBTN.setText("End Game");
+        confirmDialogueBTN.setText("Restart");
         dialogueButton.setText("Cancel");
-        restartGameFlag = true;
+        updateFlags(2);
+    }
+
+    @FXML
+    void simulation(ActionEvent event) {
+        launchWindow("fxml/dialogue.fxml","Restart game",Modality.APPLICATION_MODAL,StageStyle.DECORATED,"css/dialogue-orange.css");
+        dialogueLBL.setText("Are you sure you want to run the game on AutoPilot? (Start simulation");
+        bBarHBOX.setSpacing(10.0);
+        confirmDialogueBTN.setId("close-button");
+        confirmDialogueBTN.setMinHeight(Button.USE_COMPUTED_SIZE);
+        confirmDialogueBTN.setText("Run");
+        dialogueButton.setText("Cancel");
+        updateFlags(3);
     }
 
     @FXML
@@ -560,7 +621,9 @@ public class MainGUIController implements Initializable, CSSIDs {
             board = gridProperties(board);
             initializeBoard(0, board, 0, 0);
             boardPane.setCenter(board);
-        } catch (NullPointerException ignore) {}
+        } catch (NullPointerException ignore) {
+            System.out.println("A nullpointer¿");
+        }
         FadeTransition pop = new FadeTransition();
         pop.setDuration(Duration.millis(1000));
         pop.setFromValue(1.0);
@@ -587,7 +650,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         confirmDialogueBTN.setMinHeight(Button.USE_COMPUTED_SIZE);
         confirmDialogueBTN.setText("End Game");
         dialogueButton.setText("Cancel");
-        endgameFlag = true;
+        updateFlags(1);
     }
 
     @FXML
@@ -597,6 +660,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         ((Stage) timerLBL.getScene().getWindow()).close();
         launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
         timer.cancel();
+        updateFlags(0);
     }
 
     /*Scoreboard*/

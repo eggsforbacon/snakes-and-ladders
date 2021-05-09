@@ -16,31 +16,6 @@ public enum Colors {
         this.symbol = symbol;
     }
 
-    public static String getHexValue(String name) {
-        switch (name) {
-            case "Red":
-                return RED.hexValue;
-            case "Orange":
-                return ORANGE.hexValue;
-            case "Cyan":
-                return CYAN.hexValue;
-            case "Dark blue":
-                return DARK_BLUE.hexValue;
-            case "Yellow":
-                return YELLOW.hexValue;
-            case "Green":
-                return GREEN.hexValue;
-            case "Pink":
-                return PINK.hexValue;
-            case "Purple":
-                return PURPLE.hexValue;
-            case "Lime":
-                return LIME.hexValue;
-            default:
-                return "empty";
-        }
-    }
-
     public static String getName(int index) {
         switch (index) {
             case 0:
