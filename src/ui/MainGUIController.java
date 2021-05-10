@@ -681,12 +681,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     @FXML
-    void goBackHome(ActionEvent event) {
-        ((Stage) leaderboardLV.getScene().getWindow()).close();
-        launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
-    }
-
-    @FXML
     void showPlayerInfo(ContextMenuEvent event) {
         try {
             String desired = leaderboardLV.getSelectionModel().getSelectedItem();
@@ -700,6 +694,12 @@ public class MainGUIController implements Initializable, CSSIDs {
     Player advanceSearch(String desired, Player current) {
         if (desired.equals(current.getName())) return current;
         else return advanceSearch(desired, current.getRight());
+    }
+
+    @FXML
+    void goBackHome(ActionEvent event) {
+        ((Stage) leaderboardLV.getScene().getWindow()).close();
+        launchWindow("fxml/main-pane.fxml", "Snakes and Ladders: Start", Modality.NONE, StageStyle.DECORATED, "css/main.css");
     }
 
     public Timer getTimer() {
