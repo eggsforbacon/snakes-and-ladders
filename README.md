@@ -5,7 +5,7 @@
 
 ---
     
-###About the Game:
+### About the Game:
 
 This is an emulation of the original Snakes and Ladders game. The game plays out with a
 fixed number of players, represented in-game by a <b>"O"</b> of one of the following colors:
@@ -24,7 +24,7 @@ The game has the possibility to run by itself by rolling the dice every second. 
 played by up to <b>9</b> players and at most a board of 14x14 (The recommended range for the board
 is of 4x4 - 10x10, although going up to 14x14 will load the game at the cost of more loading time).
 
-### Main Menu
+### Main Menu 
 
 The main menu has 3 options: "New Game", "Leaderboard" and "Exit". The former option creates a new
 game, and asks the user to input the size of the board, and the amount of snakes and ladders that the
@@ -32,7 +32,9 @@ game will have. It also asks for the user to determine the colors that will be p
 warn the user if there are less than 2 players selected or if the size exceeds the recommended. Once
 the game has started, a timer will start running, and at that point the user has 4 options: roll the
 dice, "Auto-RUN!", end the game or restart it.
+
 ---
+
 ### Game
 
 #### Roll the Dice
