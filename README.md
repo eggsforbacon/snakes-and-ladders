@@ -5,7 +5,7 @@
 
 ---
     
-###About the Game:
+### About the Game:
 
 This is an emulation of the original Snakes and Ladders game. The game plays out with a
 fixed number of players, represented in-game by a <b>"O"</b> of one of the following colors:
