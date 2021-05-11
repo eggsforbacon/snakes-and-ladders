@@ -30,24 +30,12 @@ public class GamePiece {
         return character;
     }
 
-    public void setCharacter(char character) {
-        this.character = character;
-    }
-
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     public GamePiece getNext() {
@@ -62,10 +50,6 @@ public class GamePiece {
         return previousBox;
     }
 
-    public void setPreviousBox(int previousBox) {
-        this.previousBox = previousBox;
-    }
-
     public int getActualBox() {
         return actualBox;
     }
@@ -77,10 +61,4 @@ public class GamePiece {
     public int getMovements() {
         return movements;
     }
-
-    public void setMovements(int movements) {
-        this.movements = movements;
-    }
-
-
 }

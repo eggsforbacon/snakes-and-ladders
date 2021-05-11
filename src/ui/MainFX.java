@@ -65,7 +65,8 @@ public class MainFX extends Application {
 
     @Override
     public void stop() {
-        System.out.println("Closed, gBye");
+        Platform.exit();
+        System.exit(0);
         controller.getTimer().cancel();
     }
 }

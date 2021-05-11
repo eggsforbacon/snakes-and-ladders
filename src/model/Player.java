@@ -46,38 +46,16 @@ public class Player implements Serializable {
 
     /*Setters*/
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setScore(double score) {
-        this.score = score;
-    }
-
-
-
     public int getRows() {
         return rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
     }
 
     public int getColumns() {
         return columns;
     }
 
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
-
     public int getLadders() {
         return ladders;
-    }
-
-    public void setLadders(int ladders) {
-        this.ladders = ladders;
     }
 
     public int getSnakes() {
@@ -92,24 +70,12 @@ public class Player implements Serializable {
         return players;
     }
 
-    public void setPlayers(int players) {
-        this.players = players;
-    }
-
     public String getCharacters() {
         return characters;
     }
 
-    public void setCharacters(String characters) {
-        this.characters = characters;
-    }
-
     public char getWinner() {
         return winner;
-    }
-
-    public void setWinner(char winner) {
-        this.winner = winner;
     }
 
     public Player getRight() {

@@ -130,8 +130,8 @@ public class Board {
 		return first+r+1;
 	}
 	public int translator(int r,int c) {
-		int first = 0;
-		int change = 0;
+		int first;
+		int change;
 		if(c % 2 ==0) {
 			first = (columns*c);
 			change = 1;
@@ -509,48 +509,19 @@ public class Board {
 		return movementInformation;
 	}
 
-	public void setMovementInformation(String movementInformation) {
-		this.movementInformation = movementInformation;
-	}
-
 	public GamePiece getWinnerGP() {
 		return winnerGP;
-	}
-
-	public void setWinnerGP(GamePiece winnerGP) {
-		this.winnerGP = winnerGP;
 	}
 
 	public int getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(int players) {
-		this.players = players;
-	}
-
 	public String getCharacters(){
 		return characters;
 	}
 
-	/*
-	public void getCharacters(int counter){
-		if(counter>=players){
-			characters += "";
-		}
-		else{
-			System.out.println("falla en "+ counter);
-			characters+=gpAt(counter).getCharacter();
-			getCharacters(counter+1);
-		}
-	}
-	*/
-
 	public char getWinnerPiece() {
 		return winnerPiece;
-	}
-
-	public void setWinnerPiece(char winnerPiece) {
-		this.winnerPiece = winnerPiece;
 	}
 }

@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainGUIController implements Initializable, CSSIDs {
+public class MainGUIController implements Initializable {
 
     /****************************************FIELDS****************************************/
 
@@ -223,6 +223,8 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     int turn = 0;
 
+    private int unnamed = 1;
+
     public MainGUIController(Game game) {
         this.game = game;
     }
@@ -230,20 +232,11 @@ public class MainGUIController implements Initializable, CSSIDs {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         label = progress;
-        initializeMainMenu();
     }
 
     /***************************************METHODS***************************************/
 
     /*General*/
-    private void initIDs() {
-        mainTitleLBL.setId(titleLBLId);
-        mainPane.setId(mainPaneID);
-        newGameBTN.setId(mainPaneButtonsID);
-        scoreBoardBTN.setId(mainPaneButtonsID);
-        closeGameBTN.setId(mainPaneButtonsID);
-
-    }
 
     private void launchWindow(String fxml, String title, Modality modality, StageStyle style, String stylesheet) {
         try {
@@ -251,10 +244,6 @@ public class MainGUIController implements Initializable, CSSIDs {
             Stage stage = new Stage();
             stage.setScene(new Scene(loadedPane));
             Image icon = new Image(String.valueOf(getClass().getResource("resources/snl-logo.png")));
-            stage.setOnCloseRequest(e -> {
-                Platform.exit();
-                System.exit(0);
-            });
             stage.getIcons().add(icon);
             stage.getScene().getStylesheets().addAll(String.valueOf(getClass().getResource(stylesheet)));
             stage.setTitle(title);
@@ -309,13 +298,12 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void dismissDialogue(ActionEvent event) {
-        try {
-            ((Stage) dialoguePane.getScene().getWindow()).close();
-            System.out.println("dialogue");
-        } catch (NullPointerException npe) {
-            ((Stage) winnerBTN.getScene().getWindow()).close();
-            System.out.println("score");
-        }
+        ((Stage) dialoguePane.getScene().getWindow()).close();
+    }
+
+    @FXML
+    void dismissInfo(ActionEvent event) {
+        ((Stage) winnerBTN.getScene().getWindow()).close();
     }
 
     @FXML
@@ -337,7 +325,8 @@ public class MainGUIController implements Initializable, CSSIDs {
             timer.cancel();
             turn = 0;
             playersLV.getItems().clear();
-            ((Stage) dialoguePane.getScene().getWindow()).close();
+            ((Stage) confirmDialogueBTN.getScene().getWindow()).close();
+            ((Stage) playersLV.getScene().getWindow()).close();
             launchWindow("fxml/board/create-board.fxml","Create new game", Modality.APPLICATION_MODAL, StageStyle.DECORATED, "css/create-game.css");
         } else if (simulFlag) {
             ((Stage) dialoguePane.getScene().getWindow()).close();
@@ -346,7 +335,7 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     void runSimulation() {
-        if (boardGP != null) {
+        if (!turnLBL.getText().contains("won")) {
             rollDice(null);
             Task<Void> sleeper = new Task<Void>() {
                 @Override
@@ -363,10 +352,6 @@ public class MainGUIController implements Initializable, CSSIDs {
     }
 
     /*Main Pane*/
-
-    private void initializeMainMenu() {
-        initIDs();
-    }
 
     @FXML
     void closeGame(ActionEvent event) {
@@ -451,7 +436,6 @@ public class MainGUIController implements Initializable, CSSIDs {
                 throw new ArithmeticException("No player selection or not enough players selected. Try again");
 
             ((Stage) redRB.getScene().getWindow()).close();
-            System.out.println(playerSymbols);
             game.startGame(rows, columns, snakes, ladders, playerSymbols);
             boardGP = new GridPane();
             GridPane board = new GridPane();
@@ -518,7 +502,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             specialLBL.setText(String.valueOf(game.getBoard().getABox(i).getBoxInformation()));
             if (Character.isDigit(game.getBoard().getABox(i).getBoxInformation().charAt(0))) specialLBL.setId("ladder");
             else specialLBL.setId("snake");
-            //The following lines of code are a homage to senior C# developer, yanderedev
+            //The following lines of code are a homage to senior C# developer, yanderedev <- for legal reasons that's a joke
             if (game.getBoard().getABox(i).getPieceString().contains("*")) {
                 player1.setText("O");
                 player1.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('*') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
@@ -546,7 +530,7 @@ public class MainGUIController implements Initializable, CSSIDs {
             } if (game.getBoard().getABox(i).getPieceString().contains("&")) {
                 player9.setText("O");
                 player9.setStyle("\n-fx-text-fill: " + Colors.getHexWithChar('&') + ";\n-fx-font-weight: bold;\n-fx-font-size: 17px;");
-            } // Optimization is for the weak minded, Optimization is a moral construct
+            } // Optimization is for the weak minded. Optimization is nothing but a mere moral construct
         }
         if (i < game.getBoard().getSize()) {
             Parent tile;
@@ -558,7 +542,6 @@ public class MainGUIController implements Initializable, CSSIDs {
             tile.setId(pickId(x, y));
             board.add(tile, x, y);
             return initializeBoard(i + 1, board, y, x + 1);
-
         }
 
         return board;
@@ -599,7 +582,7 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void simulation(ActionEvent event) {
-        launchWindow("fxml/dialogue.fxml","Restart game",Modality.APPLICATION_MODAL,StageStyle.DECORATED,"css/dialogue-orange.css");
+        launchWindow("fxml/dialogue.fxml","Run Simulation", Modality.APPLICATION_MODAL,StageStyle.DECORATED,"css/dialogue-orange.css");
         dialogueLBL.setText("Are you sure you want to run the game on AutoPilot? (Start simulation");
         bBarHBOX.setSpacing(10.0);
         confirmDialogueBTN.setId("close-button");
@@ -615,28 +598,29 @@ public class MainGUIController implements Initializable, CSSIDs {
         int dice;
         String message = game.move();
         dice = game.getDice();
-        turnLBL.setText("It's " + playersLV.getItems().get(turn) + "'s turn!");
         GridPane board = new GridPane();
-        try {
-            board = gridProperties(board);
-            initializeBoard(0, board, 0, 0);
-            boardPane.setCenter(board);
-        } catch (NullPointerException ignore) {
-            System.out.println("A nullpointer¿");
-        }
+        board = gridProperties(board);
+        initializeBoard(0, board, 0, 0);
+        boardPane.setCenter(board);
         FadeTransition pop = new FadeTransition();
         pop.setDuration(Duration.millis(1000));
         pop.setFromValue(1.0);
         pop.setToValue(0.0);
         pop.setNode(diceBorder);
-        System.out.println(dice);
         diceIMV.setImage(new Image(String.valueOf(getClass().getResource("resources/dice/" + dice + ".png"))));
         pop.play();
+        turnLBL.setText("It's " + playersLV.getItems().get(turn) + "'s turn!");
+        int prev = turn - 1;
         turn++;
-        try {
-            if (turn == game.getBoard().getPlayers()) turn = 0;
-        } catch (NullPointerException ignore) {}
+        if (turn == game.getBoard().getPlayers()) turn = 0;
+        if (prev < 0) prev = game.getBoard().getPlayers() - 1;
         if (message.contains(e.getMessage())) {
+            board = gridProperties(board);
+            initializeBoard(0, board, 0, 0);
+            boardPane.setCenter(board);
+            turnLBL.setText(playersLV.getItems().get(prev) + " has won!");
+            turnLBL.setId("turn-lbl-won");
+            timerLBL.setId("timer-lbl-won");
             launchWindow("fxml/board/game-won.fxml", "We have a winner!", Modality.APPLICATION_MODAL, StageStyle.UNDECORATED, "css/create-game.css");
         }
     }
@@ -655,6 +639,10 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     @FXML
     void exitAfterWin(ActionEvent event) {
+        if (winnerTF.getText().isEmpty()) {
+            winnerTF.setText("Unnamed Winner " + unnamed);
+            unnamed += 1;
+        }
         game.createWinner(winnerTF.getText());
         ((Stage) winnerTF.getScene().getWindow()).close();
         ((Stage) timerLBL.getScene().getWindow()).close();
@@ -674,7 +662,6 @@ public class MainGUIController implements Initializable, CSSIDs {
 
     void fillLB(Player bestScores) {
         if (bestScores != null) {
-            System.out.println(bestScores.getName());
             leaderboardLV.getItems().add(bestScores.getName());
             fillLB(bestScores.getRight());
         }
@@ -685,7 +672,7 @@ public class MainGUIController implements Initializable, CSSIDs {
         try {
             String desired = leaderboardLV.getSelectionModel().getSelectedItem();
             Player current = advanceSearch(desired, game.getBestScores());
-            launchWindow("fxml/winner-info.fxml","Winner info",Modality.APPLICATION_MODAL,StageStyle.UNDECORATED,"css/leaderboard.css");
+            launchWindow("fxml/winner-info.fxml","Winner info",Modality.APPLICATION_MODAL,StageStyle.DECORATED,"css/leaderboard.css");
             playerNameLBL.setText(current.getName());
             scoreLBL.setText("" + current.getScore());
         } catch (NullPointerException ignored) {}

@@ -80,9 +80,8 @@ Finally, the exit button on the main menu will close the game immediately.
 
 ## Known Bugs
 
-- Only one winner gets added to the leaderboard.
-- Pressing the [X] button on any window will result on complete shutdown
-- Winner won't move to the last tile on winning
+- Inconsistent addition of winners to leaderboard.
+- Board creation may bug out (extremely rare bug)
 
 ---
 

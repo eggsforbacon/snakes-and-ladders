@@ -85,13 +85,30 @@
 
 #tile-numbers {
   -fx-text-fill: #202121;
+  -fx-font-size: 19px;
+  -fx-font-weight: bold;
+}
+
+#turn-lbl {
+  -fx-text-fill: #d1ebd1;
   -fx-font-size: 20px;
   -fx-font-weight: bold;
 }
 
 #timer-lbl {
-  -fx-text-fill: #e04846;
+  -fx-text-fill: #662424;
   -fx-font-size: 17px;
+  -fx-font-weight: bold;
+}
+
+#timer-lbl-won {
+  -fx-text-fill: #4be34b;
+  -fx-font-weight: bold;
+}
+
+#turn-lbl-won {
+  -fx-text-fill: #7bff2e;
+  -fx-font-size: 22px;
   -fx-font-weight: bold;
 }
 

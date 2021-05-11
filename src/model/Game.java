@@ -44,7 +44,6 @@ public class Game implements Serializable {
                 String characters = gameBoard.getCharacters();
                 char wChar = gameBoard.getWinnerPiece();
                 actualWinner = new Player("",score,rows,columns,ladders,snakes,players,characters,wChar);
-                restartGame();
                 message += w.getMessage();
                 return message;
             }

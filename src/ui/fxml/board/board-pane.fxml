@@ -31,8 +31,8 @@
                </children>
             </AnchorPane>
             <Button mnemonicParsing="false" onAction="#restartGame" text="Restart Game" />
-            <Label id="timer-lbl" fx:id="turnLBL" text="It's BLANK's turn!" />
-            <ListView fx:id="playersLV" prefHeight="315.0" prefWidth="280.0" />
+            <Label id="turn-lbl" fx:id="turnLBL" text="It's BLANK's turn!" />
+            <ListView fx:id="playersLV" prefHeight="326.0" prefWidth="280.0" />
             <Label id="timer-lbl" fx:id="timerLBL" text="00:00:00" />
             <Button mnemonicParsing="false" onAction="#endGame" text="End Game" />
          </children>
